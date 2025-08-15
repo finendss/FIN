@@ -376,14 +376,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ChinaQY/Scripts/Main/
   end
 })
 
-Tab:AddButton({
-  Name = "国内最强被遗弃脚本",
-  Default = false,
-  Callback = function(Value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/lyyanai/tianscript/refs/heads/main/Games/被遗弃.lua"))()
-  end
-})
-
 local Tab = Window:MakeTab({
 	Name = "死铁轨",
 	Icon = "rbxassetid://4483345998",
@@ -399,5 +391,19 @@ QUN = "160369111"
 TX = "死铁轨刷债券V3"
 script = "死铁轨免费刷债券"
 loadstring(game:HttpGet("https://raw.githubusercontent.com/JsYb666/Item/refs/heads/main/刷债券"))()
+  end
+})
+
+local Tab = Window:MakeTab({
+	Name = "doors",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "doors超好用",
+  Default = false,
+  Callback = function(Value)
+--[[Doors Blackking And BobHub脚本汉化]]loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105\110\46\99\111\109\47\114\97\119\47\54\53\84\119\84\56\106\97"))()
   end
 })
