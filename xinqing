@@ -230,6 +230,7 @@ end)
 
 Tab:AddToggle({
 	Name = "透视",
+	Default = false,
 	Callback = function()
       	local FillColor = Color3.fromRGB(175,25,255)
 local DepthMode = "AlwaysOnTop"
@@ -282,22 +283,26 @@ Players.PlayerRemoving:Connect(function(plr)
 end)
   	end
 })
+
 Tab:AddButton({
   Name = "死亡笔记",
+  Default = false,
   Callback = function()
   loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/tt/main/%E6%AD%BB%E4%BA%A1%E7%AC%94%E8%AE%B0%20(1).txt"))()
   end
 })
 
 Tab:AddButton({
-  Name = "转起来",
-  Callback = function()
+   Name = "转起来",
+   Default = false,
+   Callback = function()
     loadstring(game:HttpGet('https://pastebin.com/raw/r97d7dS0', true))()
   end
 })
 
 Tab:AddButton({
 	Name = "踏空",
+	Default = false,
 	Callback = function()
 loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
 	end
@@ -309,6 +314,7 @@ local Section = Tab:AddSection({
 
 Tab:AddToggle({
   Name = "光影",
+  Default = false,
   Callback = function()
     loadstring(game:HttpGet("https://pastebin.com/raw/arzRCgwS"))()
   end
@@ -324,6 +330,7 @@ Tab:AddToggle({
 
 Tab:AddToggle({
 	Name = "画质",
+	Default = false,
 	Callback = function()
 loadstring(game:HttpGet("https://pastebin.com/raw/jHBfJYmS"))()
 end
@@ -355,6 +362,7 @@ Tab:AddButton({
 
 Tab:AddButton({
   Name = "铁拳",
+  Default = false,
   Callback = function()
  loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_rf6iQURzu1fqrytcnLBAvW34C9N55kS9g9G3CKz086rC47M6632sEd4ZZYB0AYgV.lua.txt'))()
   end
