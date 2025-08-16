@@ -1,8 +1,8 @@
 --禁止倒卖
 
 local OrionLib = loadstring(game:HttpGet("https://pastebin.com/raw/VeaMSRZK"))()
-local LBLG = Instance.new("ScreenGui", game.CoreGui)
-local LBL = Instance.new("TextLabel", LBLG)
+local LBLG = Instance.new("ScreenGui", getParent)
+local LBL = Instance.new("TextLabel", getParent)
 local player = game.Players.LocalPlayer
 
 LBLG.Name = "LBLG"
@@ -548,8 +548,7 @@ local function flingSelectedPlayers()
     end
 end
 
--- 创建玩家选择下拉菜单
-local playerDropdown = Tab:AddDropdown({
+Tab:AddDropdown({
     Name = "选择要甩飞的玩家",
     Default = "",
     Options = {},
