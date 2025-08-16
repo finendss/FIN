@@ -1,238 +1,134 @@
-        local WindUI = loadstring(game:HttpGet("https://pastefy.app/ddceJmmm/raw"))()
+local repo = 'https://raw.githubusercontent.com/deividcomsono/Obsidian/main/'
 
-        WindUI:Popup({
-            Title = "👑尊贵的"..game.Players.LocalPlayer.DisplayName.."用户",
-            Icon = "info",
-            Content = "欢迎使用fin被遗弃脚本",
-            Buttons = {
-                {
-                    Title = "取消",
-                    Callback = function() end,
-                    Variant = "Tertiary",
-                },
-                {
-                    Title = "执行",
-                    Icon = "arrow-right",
-                    Callback = function() 
-                        DDZX = true 
-                    end,
-                    Variant = "Primary",
-                }   
-            }
-        })
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+local Options = Library.Options
+local Toggles = Library.Toggles
 
-        repeat
-            wait()
-        until DDZX
-       
-       local Window = WindUI:CreateWindow({
-            Title = " fin被遗弃脚本",
-            Icon = "",
-            Author = ("" .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name),
-            Folder = "Sukuna",
-            Size = UDim2.fromOffset(100, 150),
-            Transparent = true,
-            Theme = "Dark",
-            UserEnabled = false,
-            SideBarWidth = 200,
-            HasOutline = true
-        })
 
-        Window:EditOpenButton({
-            Title = "fin被遗弃脚本",
-            Icon = "sword",
-            CornerRadius = UDim.new(0, 16),
-            StrokeThickness = 2,
-            Color = ColorSequence.new(Color3.fromHex("FF0F7B"), Color3.fromHex("F89B29")),
-            Draggable = true
-        })
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-        local Tab = Window:Tab({
-            Title = "选项卡",
-            Icon = "sword",
-            Locked = false,
-        })
 
-local Button =
-    Tab:Button(
-    {
-        Title = T("被遗弃"),
-        Desc = T("加载被遗弃菜单"),
-        Locked = false,
-        Callback = function()
-            game:GetService("RunService").Heartbeat:Connect(function()
-                game.TextChatService.ChatWindowConfiguration.Enabled = true
-            end)
+if not table.clone then
+    table.clone = function(t)
+        local nt = {}
+        for k,v in pairs(t) do nt[k] = v end
+        return nt
+    end
+end
 
-            local function modifyPrompt(prompt)
-                prompt.HoldDuration = 0
-                prompt.RequiresLineOfSight = false
-                prompt.MaxActivationDistance = 15
-            end
-        
-            for _, prompt in ipairs(workspace:GetDescendants()) do
-                if prompt:IsA("ProximityPrompt") then
-                    modifyPrompt(prompt)
-                end
-            end
+Library.ShowToggleFrameInKeybinds = true 
+Library.ShowCustomCursor = true
+Library.NotifySide = "Right"
 
-            workspace.DescendantAdded:Connect(function(instance)
-                if instance:IsA("ProximityPrompt") then
-                    modifyPrompt(instance)
-                end
-            end)
+local Window = Library:CreateWindow({
+    Title = ' 被遗弃｜FIN',
+    Footer = "正式版 V1.0.0",
+    Icon = 106397684977541,
+    Center = true,
+    AutoShow = true,
+    Resizable = true,
+    ShowCustomCursor = true,
+    NotifySide = "Right",
+    TabPadding = 8,
+    MenuFadeTime = 0
+})
 
-            local Tab = Window:Tab({
-                Title = T("被遗弃"),
-                Icon = "bird",
-                Locked = false,
-            })
+local Tabs = {
+    new = Window:AddTab('公告', 'user'),
+    Main = Window:AddTab('快捷功能区','house'),
+    Aimbot = Window:AddTab('自瞄区','earth'),
+    Esp = Window:AddTab('绘制区','eye'),
+    tzq = Window:AddTab('通知提示','eye'),
+    ani = Window:AddTab('反效果区','file'),
+    Max = Window:AddTab('动作区','file'),
+    Sat = Window:AddTab('体力区','moon'),
+    zdg = Window:AddTab('自动格挡','file'),
+    zdx = Window:AddTab('自动修机','moon'),
+    lol = Window:AddTab('披萨区','earth'),
+    tfz = Window:AddTab('塔夫炸弹','moon'),
+    ["UI Settings"] = Window:AddTab('UI调试', 'settings')
+}
 
-            local espT
-            local textLabels = {}
-            local connections = {} 
-            local progressConnections = {}
-            
-            local function createEspText(obj, text, color)
-                if textLabels[obj] then return end
-                
-                local billboard = Instance.new("BillboardGui")
-                billboard.Adornee = obj
-                billboard.Size = UDim2.new(0, 200, 0, 50)
-                billboard.StudsOffset = Vector3.new(0, 3, 0)
-                billboard.AlwaysOnTop = true
-                
-                local textLabel = Instance.new("TextLabel")
-                textLabel.Size = UDim2.new(1, 0, 1, 0)
-                textLabel.BackgroundTransparency = 1
-                textLabel.Text = text
-                textLabel.TextColor3 = color
-                textLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-                textLabel.TextStrokeTransparency = 0
-                textLabel.TextSize = 20
-                textLabel.Font = Enum.Font.SourceSansBold
-                textLabel.Parent = billboard
-                billboard.Parent = obj
-                textLabels[obj] = billboard
-            
-                table.insert(connections, obj.AncestryChanged:Connect(function(_, parent)
-                    if not parent then
-                        if textLabels[obj] then
-                            textLabels[obj]:Remove()
-                            textLabels[obj] = nil
-                        end
-                    end
-                end))
-            end
-            
-            local function setupEsp()
-                for obj, label in pairs(textLabels) do
-                    label:Remove()
-                end
-                textLabels = {}
-                
-                for _, conn in ipairs(progressConnections) do
-                    conn:Disconnect()
-                end
-                progressConnections = {}
-            
-                local colors = {
-                    Survivor = Color3.fromRGB(0, 255, 0),
-                    Killer = Color3.fromRGB(255, 0, 0),
-                    Generator = Color3.fromRGB(0, 191, 255),
-                    Item = Color3.fromRGB(255, 255, 0)
-                }
-            
-                local function setupPlayerEsp(folder, typeName)
-                    for _, obj in ipairs(folder:GetChildren()) do
-                        if obj:FindFirstChild("HumanoidRootPart") then
-                            createEspText(obj.HumanoidRootPart, typeName..": "..obj.Name, colors[typeName])
-                        end
-                    end
-            
-                    table.insert(connections, folder.ChildAdded:Connect(function(obj)
-                        if obj:FindFirstChild("HumanoidRootPart") then
-                            createEspText(obj.HumanoidRootPart, typeName..": "..obj.Name, colors[typeName])
-                        end
-                    end))
-                end
-                
-                if workspace:FindFirstChild("Players") then
-                    if workspace.Players:FindFirstChild("Survivors") then
-                        setupPlayerEsp(workspace.Players.Survivors, "Survivor")
-                    end
-                    if workspace.Players:FindFirstChild("Killers") then
-                        setupPlayerEsp(workspace.Players.Killers, "Killer")
-                    end
-                end
-            
-                local function setupGeneratorEsp()
-                    local ingameFolder = workspace:FindFirstChild("Map") and workspace.Map:FindFirstChild("Ingame")
-                    if ingameFolder then
-                        local mapFolder = ingameFolder:FindFirstChild("Map")
-                        if mapFolder then
-                            for _, g in ipairs(mapFolder:GetChildren()) do
-                                if g.Name == "Generator" and g:FindFirstChild("Main") then
-                                    createEspText(g.Main, T("发电机 进度:") .. g.Progress.Value, colors.Generator)
-                                    
-                                    local progressConn = g.Progress.Changed:Connect(function()
-                                        if textLabels[g.Main] then
-                                            textLabels[g.Main].TextLabel.Text = T("发电机 进度:") .. g.Progress.Value
-                                        end
-                                    end)
-                                    table.insert(progressConnections, progressConn)
-                                end
-                            end
-            
-                            table.insert(connections, mapFolder.ChildAdded:Connect(function(child)
-                                if child.Name == "Generator" and child:FindFirstChild("Main") then
-                                    createEspText(child.Main, T("发电机 进度:") .. child.Progress.Value, colors.Generator)
-                                    
-                                    local progressConn = child.Progress.Changed:Connect(function()
-                                        if textLabels[child.Main] then
-                                            textLabels[child.Main].TextLabel.Text = T("发电机 进度:") .. child.Progress.Value
-                                        end
-                                    end)
-                                    table.insert(progressConnections, progressConn)
-                                end
-                            end))
-                        end
-                    end
-                end
-                
-                setupGeneratorEsp()
-            
-                local Items = {"Medkit", "BloxyCola"}
-                local function setupItemEsp()
-                    for _, item in ipairs(Items) do
-                        for _, obj in ipairs(workspace.Map.Ingame:GetDescendants()) do
-                            if obj:IsA("Model") and obj.Name == item then
-                                for _, child in ipairs(obj:GetChildren()) do
-                                    if child:IsA("BasePart") then
-                                        createEspText(child, T("物品:")..obj.Name, colors.Item)
-                                        break
-                                    end
-                                end
-                            end
-                        end
-                        
-                        table.insert(connections, workspace.Map.Ingame.DescendantAdded:Connect(function(descendant)
-                            if descendant:IsA("Model") and table.find(Items, descendant.Name) then
-                                for _, child in ipairs(descendant:GetChildren()) do
-                                    if child:IsA("BasePart") then
-                                        createEspText(child, T("物品:")..descendant.Name, colors.Item)
-                                        break
-                                    end
-                                end
-                            end
-                        end))
-                    end
-                end
-                
-                setupItemEsp()
-            end
-            
-            local function cleanup()
-                for _, conn in ipairs(connections) do
-                    conn:Disconnect()
-                end
+local _env = getgenv and getgenv() or {}
+local _hrp = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+local new = Tabs.new:AddRightGroupbox('V1.0.0版本更新内容')
+
+new:AddLabel("[+]添加 去除前摇 后摇 缓慢动作")
+new:AddLabel("[+添加 速度调节]")
+new:AddLabel("[+]添加 启动聊天框")
+new:AddLabel("[+]展示 功能区")
+
+
+
+
+
+
+
+local KillerSurvival = Tabs.Main:AddLeftGroupbox("调节功能")
+
+game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+    if _env.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+    end
+end)
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+    game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+        if _env.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+        end
+    end)
+end)
+
+KillerSurvival:AddToggle("NS",{
+    Text = "去除前摇 后摇 缓慢动作",
+    Callback = function(v)
+        _env.NoStun = v
+    end
+})
+
+KillerSurvival:AddDivider()
+
+KillerSurvival:AddSlider("SB",{
+    Text = "速度调节",
+    Min = 0, Max = 3,
+    Default = 1, Compact = true,
+    Rounding = 1,
+    Callback = function(v)
+        _env.SpeedBoostValue = v
+    end
+})
+
+_env.SpeedBoostValue = 1
+
+KillerSurvival:AddToggle("SB",{
+    Text = "启用速度",
+    Callback = function(v)
+        _env.SpeedBoost = v
+        while _env.SpeedBoost do
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _env.SpeedBoostValue
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+            task.wait()
+        end
+    end
+})
+
+KillerSurvival:AddToggle('MyToggle', {
+    Text = '显示聊天框丨需要每局开一次',
+    Default = false,
+    Tooltip = '显示聊天框',
+    Callback = function(state)
+    if state then
+    game.TextChatService.ChatWindowConfiguration.Enabled = true
+    else
+    game.TextChatService.ChatWindowConfiguration.Enabled = false    
+    end
+    end
+})
