@@ -408,6 +408,69 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+Tab:AddButton({
+    Name = "显示玩家信息",
+    Callback = function()
+        mainFrame.Visible = not mainFrame.Visible
+        if mainFrame.Visible then
+            refreshPlayerInfo()
+        end
+    end
+})
+
+Tab:AddTextbox({
+    Name = "指定玩家甩飞",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(name)
+        if name == "" then return end
+        
+        ThrowEvent:FireServer(name)
+        OrionLib:MakeNotification({
+            Name = "甩飞中",
+            Content = "已甩飞 " .. name,
+            Time = 2
+        })
+    end
+})
+
+Tab:AddToggle({
+    Name = "防甩飞",
+    Default = false,
+    Callback = function(value)
+        if value then
+            OrionLib:MakeNotification({
+                Name = "开启",
+                Content = "已启用防甩飞",
+                Time = 2
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "关闭",
+                Content = "已关闭防甩飞",
+                Time = 2
+            })
+        end
+    end
+})
+
+Tab:AddSlider({
+    Name = "甩飞强度",
+    Min = 500,
+    Max = 5000,
+    Default = 1500,
+    Color = Color3.fromRGB(255, 100, 100),
+    Increment = 100,
+    ValueName = "力度",
+    Callback = function(value)
+        OrionLib:MakeNotification({
+            Name = "甩飞设置",
+            Content = "甩飞强度设置为: " .. value,
+            Time = 2
+        })
+    end
+})
+
 local Tab = Window:MakeTab({
     Name = "森林99夜",
 	Icon = "rbxassetid://4483345998",
