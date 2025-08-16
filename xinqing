@@ -418,22 +418,6 @@ Tab:AddButton({
     end
 })
 
-Tab:AddTextbox({
-    Name = "指定玩家甩飞",
-    Default = "",
-    TextDisappear = true,
-    Callback = function(name)
-        if name == "" then return end
-        
-        ThrowEvent:FireServer(name)
-        OrionLib:MakeNotification({
-            Name = "甩飞中",
-            Content = "已甩飞 " .. name,
-            Time = 2
-        })
-    end
-})
-
 Tab:AddButton({
     Name = "开始甩飞",
     Callback = function()
