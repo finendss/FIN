@@ -428,7 +428,7 @@ Tab:AddTextbox({
         ThrowEvent:FireServer(name)
         OrionLib:MakeNotification({
             Name = "甩飞执行",
-            Content = "已尝试甩飞 " .. name,
+            Content = "已甩飞 " .. name,
             Time = 2
         })
     end
@@ -447,7 +447,7 @@ Tab:AddToggle({
         else
             OrionLib:MakeNotification({
                 Name = "关闭",
-                Content = "已关闭防甩飞",
+                Content = "已关闭用防甩飞",
                 Time = 2
             })
         end
@@ -455,7 +455,7 @@ Tab:AddToggle({
 })
 
 Tab:AddSlider({
-    Name = "甩飞强度",
+    Name = "甩飞力度",
     Min = 500,
     Max = 5000,
     Default = 1500,
@@ -465,7 +465,7 @@ Tab:AddSlider({
     Callback = function(value)
         OrionLib:MakeNotification({
             Name = "甩飞设置",
-            Content = "甩飞强度设置为: " .. value,
+            Content = "甩飞力度设置为: " .. value,
             Time = 2
         })
     end
