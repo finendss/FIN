@@ -408,7 +408,7 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
-Tab:AddTextbox({
+Tab:AddDropdown({
     Name = "玩家名称",
     Default = "",
     TextDisappear = true,
@@ -444,57 +444,20 @@ Tab:AddButton({
     end
 })
 
-Tab:AddButton({
-    Name = "强力甩飞",
-    Callback = function()
-        if not selectedPlayer then
-            OrionLib:MakeNotification({
-                Name = "错误",
-                Content = "请先选择玩家",
-                Time = 2
-            })
-            return
-        end
-
-Tab:AddToggle({
-    Name = "甩飞开关",
-    Default = true,
-    Callback = function(value)
-        throwEnabled = value
-        if value then
-            OrionLib:MakeNotification({
-                Name = "开启",
-                Content = "甩飞已启用",
-                Time = 2
-            })
-        else
-            OrionLib:MakeNotification({
-                Name = "关闭",
-                Content = "甩飞已禁用",
-                Time = 2
-            })
-        end
-    end
-})
-
 Tab:AddToggle({
     Name = "防甩飞",
     Default = false,
     Callback = function(value)
-        antiThrowEnabled = value
-        antiThrowForce = 0
-        
         if value then
             OrionLib:MakeNotification({
                 Name = "开启",
                 Content = "已启用防甩飞",
                 Time = 2
             })
-            spawn(antiThrowProtection)
         else
             OrionLib:MakeNotification({
                 Name = "关闭",
-                Content = "已禁用防甩飞",
+                Content = "已关闭防甩飞",
                 Time = 2
             })
         end
@@ -510,46 +473,11 @@ Tab:AddSlider({
     Increment = 100,
     ValueName = "力度",
     Callback = function(value)
-        throwPower = value
         OrionLib:MakeNotification({
             Name = "甩飞设置",
             Content = "甩飞力度设置为: " .. value,
             Time = 2
         })
-    end
-})
-
-Tab:AddButton({
-    Name = "传送到指定玩家",
-    Callback = function()
-        if not selectedPlayer then
-            OrionLib:MakeNotification({
-                Name = "错误",
-                Content = "请先选择玩家",
-                Time = 2
-            })
-            return
-        end
-        
-        local targetChar = game.Players[selectedPlayer.Name].Character
-        if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
-            game.Players.LocalPlayer.Character:MoveTo(targetChar.HumanoidRootPart.Position)
-            OrionLib:MakeNotification({
-                Name = "传送成功",
-                Content = "已传送到 " .. selectedPlayer.Name,
-                Time = 2
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "显示玩家信息",
-    Callback = function()
-        mainFrame.Visible = not mainFrame.Visible
-        if mainFrame.Visible then
-            refreshPlayerInfo()
-        end
     end
 })
 
