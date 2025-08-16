@@ -465,13 +465,13 @@ Tab:AddToggle({
 })
 
 Tab:AddSlider({
-    Name = "甩飞强度",
+    Name = "甩飞力度",
     Min = 500,
     Max = 5000,
     Default = 1500,
     Color = Color3.fromRGB(255, 100, 100),
     Increment = 100,
-    ValueName = "强度",
+    ValueName = "力度",
     Callback = function(value)
         OrionLib:MakeNotification({
             Name = "甩飞设置",
@@ -670,6 +670,239 @@ Tab:AddButton({
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ChinaQY/Scripts/Main/Forsaken"))()
   end
 })
+
+Tab:AddToggle({
+                Name = ("透视对象"),
+                Desc = ("发电机 幸存者 杀手 物品"),
+                Icon = "bird",
+                Type = "Checkbox",
+                Default = false,
+                Callback = function(state) 
+                    espT = state
+                    if state then
+                        setupEsp()
+                    else
+                        cleanup()
+                    end
+                end
+            })
+            
+            game:GetService("Workspace").DescendantAdded:Connect(function(descendant)
+                if descendant.Name == "Map" and espT then
+                    task.wait(2)
+                    if espT then
+                        cleanup()
+                        setupEsp()
+                    end
+                end
+            end)
+  end
+})
+
+Tab:AddSlider({
+                Name = ("最大体力值"),
+                Step = 1,
+                Value = {
+                    Min = 100,
+                    Max = 1000,
+                    Default = 100,
+                },
+                Callback = function(value)
+                    task.spawn(function()
+                        Sprinting.MaxStamina = value
+                    end)
+                end
+            })
+
+            Tab:AddSlider({
+                Name = ("奔跑速度"),
+                Step = 1,
+                Value = {
+                    Min = 26,
+                    Max = 40,
+                    Default = 26,
+                },
+                Callback = function(value)
+                    task.spawn(function()
+                        Sprinting.SprintSpeed = value
+                    end)
+                end
+            })
+
+            Tab:AddSlider({
+                Name = ("冲刺体力消耗(秒)"),
+                Step = 1,
+                Value = {
+                    Min = 0,
+                    Max = 10,
+                    Default = 7,
+                },
+                Callback = function(value)
+                    task.spawn(function()
+                        Sprinting.StaminaLoss = value
+                    end)
+                end
+            })
+
+            Tab:AddSlider({
+                Name = ("停止时恢复体力(秒)"),
+                Step = 1,
+                Value = {
+                    Min = 20,
+                    Max = 1000,
+                    Default = 35,
+                },
+                Callback = function(value)
+                    task.spawn(function()
+                        Sprinting.StaminaGain = value
+                    end)
+                end
+            })
+            Tab:AddToggle({
+               Name = ("自动1x1窗口"),
+                Desc = ("自动做1x1窗口"),
+                Icon = "bird",
+                Type = "Checkbox",
+                Default = false,
+                Callback = function(state) 
+                    autodo1x1T = state
+                    if state then
+                        while autodo1x1T and task.wait(0.1) do
+                            local player = game:GetService("Players").LocalPlayer
+                            local popups = player.PlayerGui.TemporaryUI:GetChildren()
+                            local VIM = game:GetService("VirtualInputManager")
+                            for _, i in ipairs(popups) do
+                                if i.Name == "1x1x1x1Popup" then
+                                    local centerX = i.AbsolutePosition.X + (i.AbsoluteSize.X / 2)
+                                    local centerY = i.AbsolutePosition.Y + (i.AbsoluteSize.Y / 2)
+                                    VIM:SendMouseButtonEvent(
+                                        centerX,
+                                        centerY,
+                                        Enum.UserInputType.MouseButton1.Value,
+                                        true,
+                                        player.PlayerGui,
+                                        1
+                                    )
+                                    VIM:SendMouseButtonEvent(
+                                        centerX,
+                                        centerY,
+                                        Enum.UserInputType.MouseButton1.Value,
+                                        false,
+                                        player.PlayerGui,
+                                        1
+                                    )
+                                end
+                            end
+                        end
+                    end
+                end
+            })
+
+            Tab:AddSlider({
+                Name = ("抛硬币费用"),
+                Step = 1,
+                
+                Value = {
+                    Min = 1,
+                    Max = 3,
+                    Default = 1,
+                },
+                Callback = function(value)
+                    WantedChrges= value
+                end
+            })
+
+            Tab:AddToggle(
+                {
+                    Name = ("自动抛硬币"),
+                    Desc = ("自动抛硬币"),
+                    Icon = "bird",
+                    Type = "Checkbox",
+                    Default = false,
+                    Callback = function(state)
+                        CoinFlipping = state
+                        if state then
+                            while CoinFlipping and task.wait(1) do
+                                if tonumber(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.AbilityContainer.Reroll.Charges.Text) < WantedChrges then
+                                    BlockRemote:FireServer("UseActorAbility", "CoinFlip")
+                                end
+                            end
+                        end
+                    end
+                }
+            )
+
+            Tab:AddSlider({
+                Name = ("修机时间"),
+                Step = 1,
+                Value = {
+                    Min = 1,
+                    Max = 10,
+                    Default = SkibidiWait,
+                },
+                Callback = function(value)
+                    SkibidiWait = value
+                end
+            })
+            
+            local SkibidiCS = 4
+            local Slider = Tab:Slider({
+                Name = ("修机次数"),
+                Step = 1,
+                Value = {
+                    Min = 1,
+                    Max = 4,
+                    Default = SkibidiCS,
+                },
+                Callback = function(value)
+                    SkibidiCS = value
+                end
+            })
+            
+            Tab:AddToggle({
+                Name = ("自动修机"),
+                Desc = ("自动修机"),
+                Icon = "bird",
+                Type = "Checkbox",
+                Default = false,
+                Callback = function(state)
+                    autoxiujiT = state
+                    if state then
+                        while autoxiujiT do
+                            local PuzzleUI = Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("PuzzleUI", 9999)
+                            task.wait(SkibidiWait)
+            
+                            local FartNapFolder = workspace:FindFirstChild("Map") and workspace.Map:FindFirstChild("Ingame") and workspace.Map.Ingame:FindFirstChild("Map")
+                            if FartNapFolder then
+                                local closestGenerator, closestDistance = nil, 15
+                                local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+
+                                for _, g in ipairs(FartNapFolder:GetChildren()) do
+                                    if g.Name == "Generator" and g.Progress.Value < 100 then
+                                        local distance = (g.Main.Position - playerPosition).Magnitude
+                                        if distance <= 15 then
+                                            local repairCount = tonumber(g:GetAttribute("RepairCount")) or 0
+                                            if repairCount < SkibidiCS then
+                                                if distance < closestDistance then
+                                                    closestDistance = distance
+                                                    closestGenerator = g
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                                if closestGenerator then
+                                    closestGenerator.Remotes.RE:FireServer()
+                                    closestGenerator:SetAttribute(
+                                        "RepairCount",
+                                        (tonumber(closestGenerator:GetAttribute("RepairCount")) or 0) + 1
+                                    )
+                                end
+                            end
+                        end
+                    end
+                end
+            })
 
 local Tab = Window:MakeTab({
 	Name = "死铁轨",
