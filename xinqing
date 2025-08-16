@@ -228,7 +228,7 @@ end)
   end
 })
 
-Tab:AddToggle({
+Tab:AddButton({
 	Name = "透视",
 	Default = false,
 	Callback = function()
@@ -287,7 +287,7 @@ end)
 Tab:AddButton({
   Name = "死亡笔记",
   Default = false,
-  Callback = function()
+  Callback = function(Value)
   loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/tt/main/%E6%AD%BB%E4%BA%A1%E7%AC%94%E8%AE%B0%20(1).txt"))()
   end
 })
@@ -295,7 +295,7 @@ Tab:AddButton({
 Tab:AddButton({
    Name = "转起来",
    Default = false,
-   Callback = function()
+   Callback = function(Value)
     loadstring(game:HttpGet('https://pastebin.com/raw/r97d7dS0', true))()
   end
 })
@@ -312,28 +312,28 @@ local Section = Tab:AddSection({
 	Name = "光影与画质"
 })
 
-Tab:AddToggle({
+Tab:AddButton({
   Name = "光影",
   Default = false,
-  Callback = function()
+  Callback = function(Value)
     loadstring(game:HttpGet("https://pastebin.com/raw/arzRCgwS"))()
   end
 })
 
-Tab:AddToggle({
+Tab:AddButton({
   Name = "光影2",
   Default = false,
-  Callback = function()
+  Callback = function(Value)
     loadstring(game:HttpGet("https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"))()
   end
 })
 
-Tab:AddToggle({
+Tab:AddButton({
 	Name = "画质",
 	Default = false,
-	Callback = function()
+	Callback = function(Value)
 loadstring(game:HttpGet("https://pastebin.com/raw/jHBfJYmS"))()
-end
+  end
 })
 
 local Section = Tab:AddSection({
@@ -355,7 +355,7 @@ local Section = Tab:AddSection({
 Tab:AddButton({
     Title = "防甩飞",
     Desc = "false",
-    Callback = function()   
+    Callback = function(Value)   
     
   end
 })
@@ -363,7 +363,7 @@ Tab:AddButton({
 Tab:AddButton({
   Name = "铁拳",
   Default = false,
-  Callback = function()
+  Callback = function(Value)
  loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_rf6iQURzu1fqrytcnLBAvW34C9N55kS9g9G3CKz086rC47M6632sEd4ZZYB0AYgV.lua.txt'))()
   end
 })
