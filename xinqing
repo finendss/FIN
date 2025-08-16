@@ -65,7 +65,7 @@ OrionLib:MakeNotification({
                 })
 Start = tick()
 Heartbeat:Connect(HeartbeatUpdate)
-local Window = OrionLib:MakeWindow({Name = "fin缝合脚本", HidePremium = false, SaveConfig =true,IntroText="加载脚本中", ConfigFolder = "文件存放名"})
+local Window = OrionLib:MakeWindow({Name = "fin脚本", HidePremium = false, SaveConfig =true,IntroText="加载脚本中", ConfigFolder = "文件存放名"})
 local Tab = Window:MakeTab({
 	Name = "主页",
 	Icon = "rbxassetid://4483345998",
@@ -79,9 +79,9 @@ Tab:AddParagraph("禁止倒卖")
 
 
 Tab:AddButton ({--相当于一个按钮
-	Name = "复制作者qq",
+	Name = "复制群q",
 	Callback = function ()
-	 setclipboard("352602248")
+	 setclipboard("155723303")
 	 OrionLib:MakeNotification({
                     Name = "信息",
                     Content = "复制请在粘贴板中查看",
@@ -143,7 +143,7 @@ Tab:AddSlider({
 })
 Tab:AddTextbox({
 
-	Name = "移动速度(推荐调2)",
+	Name = "移动速度",
 
 	Default = "",
 
@@ -206,7 +206,7 @@ Tab:AddToggle({--这是一个开关
 		    game.Lighting.Ambient = Color3.new(0, 0, 0)		    		    
 
 		end
---这里有一个判定
+	
 	end	
 })
 
@@ -233,6 +233,107 @@ end)
   end
 })
 
+Tab:AddToggle({
+	Name = "透视",
+	Callback = function()
+      	local FillColor = Color3.fromRGB(175,25,255)
+local DepthMode = "AlwaysOnTop"
+local FillTransparency = 0.5
+local OutlineColor = Color3.fromRGB(255,255,255)
+local OutlineTransparency = 0
+
+local CoreGui = game:FindService("CoreGui")
+local Players = game:FindService("Players")
+local lp = Players.LocalPlayer
+local connections = {}
+
+local Storage = Instance.new("Folder")
+Storage.Parent = CoreGui
+Storage.Name = "Highlight_Storage"
+
+local function Highlight(plr)
+    local Highlight = Instance.new("Highlight")
+    Highlight.Name = plr.Name
+    Highlight.FillColor = FillColor
+    Highlight.DepthMode = DepthMode
+    Highlight.FillTransparency = FillTransparency
+    Highlight.OutlineColor = OutlineColor
+    Highlight.OutlineTransparency = 0
+    Highlight.Parent = Storage
+    
+    local plrchar = plr.Character
+    if plrchar then
+        Highlight.Adornee = plrchar
+    end
+
+    connections[plr] = plr.CharacterAdded:Connect(function(char)
+        Highlight.Adornee = char
+    end)
+end
+
+Players.PlayerAdded:Connect(Highlight)
+for i,v in next, Players:GetPlayers() do
+    Highlight(v)
+end
+
+Players.PlayerRemoving:Connect(function(plr)
+    local plrname = plr.Name
+    if Storage[plrname] then
+        Storage[plrname]:Destroy()
+    end
+    if connections[plr] then
+        connections[plr]:Disconnect()
+    end
+end)
+  	end
+})
+Tab:AddButton({
+  Name = "死亡笔记",
+  Callback = function()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/tt/main/%E6%AD%BB%E4%BA%A1%E7%AC%94%E8%AE%B0%20(1).txt"))()
+  end
+})
+
+Tab:AddButton({
+  Name = "转起来",
+  Callback = function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/r97d7dS0', true))()
+  end
+})
+
+Tab:AddButton({
+	Name = "踏空",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
+	end
+})
+
+local Section = Tab:AddSection({
+	Name = "光影与画质"
+})
+
+Tab:AddToggle({
+  Name = "光影",
+  Callback = function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/arzRCgwS"))()
+  end
+})
+
+Tab:AddToggle({
+  Name = "光影2",
+  Default = false,
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"))()
+  end
+})
+
+Tab:AddToggle({
+	Name = "画质",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/jHBfJYmS"))()
+end
+})
+
 local Section = Tab:AddSection({
 	Name = "飞行区"
 })
@@ -249,12 +350,19 @@ local Section = Tab:AddSection({
 	Name = "甩飞区"
 })
 
-Tabs.MianTab:Button({
+Tab:AddButton({
     Title = "防甩飞",
     Desc = "false",
-    Callback = function()
-        
-    end
+    Callback = function()   
+    
+  end
+})
+
+Tab:AddButton({
+  Name = "铁拳",
+  Callback = function()
+ loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_rf6iQURzu1fqrytcnLBAvW34C9N55kS9g9G3CKz086rC47M6632sEd4ZZYB0AYgV.lua.txt'))()
+  end
 })
 
 local Tab = Window:MakeTab({
