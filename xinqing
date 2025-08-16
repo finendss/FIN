@@ -61,7 +61,7 @@ OrionLib:MakeNotification({
 Start = tick()
 Heartbeat:Connect(HeartbeatUpdate)
 local Window = OrionLib:MakeWindow({Name = "FIN脚本", HidePremium = false, SaveConfig =true,IntroText="加载脚本中", ConfigFolder = "文件存放名"})
-local Tab = Window:MakeTab({-- T ad相当于一个id
+local Tab = Window:MakeTab({
 	Name = "主页",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
@@ -71,8 +71,9 @@ Tab:AddParagraph("作者","鑫晴")
 Tab:AddParagraph("欢迎使用FIN脚本")
 Tab:AddParagraph("此脚本完全免费")
 Tab:AddParagraph("禁止倒卖")
-Tab:AddParagraph("更新日志","更新被遗弃")
-
+Tab:AddParagraph("更新日志","更新FIN自制被遗弃")
+Tab:AddParagraph("添加一些功能","修复透视功能自动打开bug")
+Tab:AddParagraph("增加撸管功能")
 
 Tab:AddButton ({--这个就相当于一个按钮
 	Name = "复制作者q群",
@@ -90,99 +91,6 @@ local Tab = Window:MakeTab({
 	Name = "通用",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
-})
-Tab:AddSlider({--拉动条
-
-	Name = "速度",
-
-	Min = 16,--最小
-
-	Max = 200,--最大值
-
-	Default = 16,--当兼
-
-	Color = Color3.fromRGB(255,255,255),
-
-	Increment = 1,
-
-	ValueName = "数值",
-
-	Callback = function(Value)
---这里填脚本↓
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-
-	end    
-
-})
-Tab:AddSlider({
-
-	Name = "跳跃高度",
-
-	Min = 50,
-
-	Max = 200,
-
-	Default = 50,
-
-	Color = Color3.fromRGB(255,255,255),
-
-	Increment = 1,
-
-	ValueName = "数值",
-
-	Callback = function(Value)
-
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
-
-	end    
-
-})
-Tab:AddTextbox({
-
-	Name = "移动速度",
-
-	Default = "",
-
-	TextDisappear = true,
-
-	Callback = function(Value)
-
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-		
-		OrionLib:MakeNotification({
-                    Name = "成功设置速度:  "..game.Players.LocalPlayer.Character.Humanoid.WalkSpeed.."   |速度",
-                    Content = "成功",
-                    Time = 3
-                })--也就相当于官方的一种提示框
-	end
-})
-Tab:AddTextbox({
-	Name = "重力",
-	Default = "",
-	TextDisappear = true,
-	Callback = function(Value)
-		game.Workspace.Gravity = Value
-		
-		OrionLib:MakeNotification({
-                    Name = "成功设置重力:  "..game.Workspace.Gravity.."   |重力",
-                    Content = "成功",
-                    Time = 3
-                })
-	end
-})
-Tab:AddTextbox({
-	Name = "跳跃高度",
-	Default = "",
-	TextDisappear = true,
-	Callback = function(Value)
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
-		
-		OrionLib:MakeNotification({
-                    Name = "成功设置跳跃高度:  "..game.Players.LocalPlayer.Character.Humanoid.WalkSpeed.."   |高度",
-                    Content = "成功",
-                    Time = 3
-                })
-	end
 })
 
 local Section = Tab:AddSection({
@@ -210,75 +118,83 @@ Tab:AddToggle({
 	Name = "穿墙",
 	Default = false,--初始值  true  或 false
 	Callback = function(Value)
-      	local FillColor = Color3.fromRGB(175,25,255)
-local DepthMode = "AlwaysOnTop"
-local FillTransparency = 0.5
-local OutlineColor = Color3.fromRGB(255,255,255)
-local OutlineTransparency = 0
-
-local CoreGui = game:FindService("CoreGui")
-local Players = game:FindService("Players")
-local lp = Players.LocalPlayer
-local connections = {}
-
-local Storage = Instance.new("Folder")
-Storage.Parent = CoreGui
-Storage.Name = "Highlight_Storage"
-
-local function Highlight(plr)
-    local Highlight = Instance.new("Highlight")
-    Highlight.Name = plr.Name
-    Highlight.FillColor = FillColor
-    Highlight.DepthMode = DepthMode
-    Highlight.FillTransparency = FillTransparency
-    Highlight.OutlineColor = OutlineColor
-    Highlight.OutlineTransparency = 0
-    Highlight.Parent = Storage
-    
-    local plrchar = plr.Character
-    if plrchar then
-        Highlight.Adornee = plrchar
-    end
-
-    connections[plr] = plr.CharacterAdded:Connect(function(char)
-        Highlight.Adornee = char
-    end)
-end
-
-Players.PlayerAdded:Connect(Highlight)
-for i,v in next, Players:GetPlayers() do
-    Highlight(v)
-end
-
-Players.PlayerRemoving:Connect(function(plr)
-    local plrname = plr.Name
-    if Storage[plrname] then
-        Storage[plrname]:Destroy()
-    end
-    if connections[plr] then
-        connections[plr]:Disconnect()
-    end
-end)
-  	end
+local Workspace = game:GetService("Workspace") local Players = game:GetService("Players") if NC then Clipon = true else Clipon = false end Stepped = game:GetService("RunService").Stepped:Connect(function() if not Clipon == false then for a, b in pairs(Workspace:GetChildren()) do if b.Name == Players.LocalPlayer.Name then for i, v in pairs(Workspace[Players.LocalPlayer.Name]:GetChildren()) do if v:IsA("BasePart") then v.CanCollide = false end end end end else Stepped:Disconnect() end end)
+  end
 })
 
 Tab:AddToggle({
 	Name = "透视",
 	Default = false,
 	Callback = function(Value)
-while wait(1) do
-local players = game.Players:GetPlayers()
-
-for i,v in pairs(players) do
- local esp = Instance.new("Highlight")
- esp.Name = v.Name
- esp.FillTransparency = 0.5
- esp.FillColor = Color3.new(0, 0, 0)
- esp.OutlineColor = Color3.new(255, 255, 255)
- esp.OutlineTransparency = 0
- esp.Parent = v.Character
-end
-end
+_G.FriendColor = Color3.fromRGB(0, 0, 255)
+        local function ApplyESP(v)
+       if v.Character and v.Character:FindFirstChildOfClass'Humanoid' then
+           v.Character.Humanoid.NameDisplayDistance = 9e9
+           v.Character.Humanoid.NameOcclusion = "NoOcclusion"
+           v.Character.Humanoid.HealthDisplayDistance = 9e9
+           v.Character.Humanoid.HealthDisplayType = "AlwaysOn"
+           v.Character.Humanoid.Health = v.Character.Humanoid.Health -- triggers changed
+       end
+    end
+    for i,v in pairs(game.Players:GetPlayers()) do
+       ApplyESP(v)
+       v.CharacterAdded:Connect(function()
+           task.wait(0.33)
+           ApplyESP(v)
+       end)
+    end
+    
+    game.Players.PlayerAdded:Connect(function(v)
+       ApplyESP(v)
+       v.CharacterAdded:Connect(function()
+           task.wait(0.33)
+           ApplyESP(v)
+       end)
+    end)
+    
+        local Players = game:GetService("Players"):GetChildren()
+    local RunService = game:GetService("RunService")
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "Highlight"
+    
+    for i, v in pairs(Players) do
+        repeat wait() until v.Character
+        if not v.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") then
+            local highlightClone = highlight:Clone()
+            highlightClone.Adornee = v.Character
+            highlightClone.Parent = v.Character:FindFirstChild("HumanoidRootPart")
+            highlightClone.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            highlightClone.Name = "Highlight"
+        end
+    end
+    
+    game.Players.PlayerAdded:Connect(function(player)
+        repeat wait() until player.Character
+        if not player.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") then
+            local highlightClone = highlight:Clone()
+            highlightClone.Adornee = player.Character
+            highlightClone.Parent = player.Character:FindFirstChild("HumanoidRootPart")
+            highlightClone.Name = "Highlight"
+        end
+    end)
+    
+    game.Players.PlayerRemoving:Connect(function(playerRemoved)
+        playerRemoved.Character:FindFirstChild("HumanoidRootPart").Highlight:Destroy()
+    end)
+    
+    RunService.Heartbeat:Connect(function()
+        for i, v in pairs(Players) do
+            repeat wait() until v.Character
+            if not v.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") then
+                local highlightClone = highlight:Clone()
+                highlightClone.Adornee = v.Character
+                highlightClone.Parent = v.Character:FindFirstChild("HumanoidRootPart")
+                highlightClone.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+                highlightClone.Name = "Highlight"
+                task.wait()
+            end
+    end
+    end)
   end
 })
 
@@ -296,6 +212,30 @@ Tab:AddButton({
 	Callback = function()
 loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
 	end
+})
+
+Tab:AddButton({
+	Name = "无限跳",
+	Default = false,
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/V5PQy3y0", true))()
+  end
+})
+
+Tab:AddButton({
+	Name = "显示FPS",
+	Default = false,
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/d9j82YJr/raw",true))()
+  end
+})
+
+Tab:AddButton({
+	Name = "玩家进入提示",
+	Default = false,
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))()
+  end
 })
 
 local Section = Tab:AddSection({
@@ -468,6 +408,26 @@ loadstring(game:HttpGet("https://pastebin.com/raw/jHBfJYmS"))()
 })
 
 local Section = Tab:AddSection({
+	Name = "惶惶的"
+})
+
+Tab:AddButton({
+	Name = "撸管R6",
+	Default = false,
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
+  end
+})
+
+Tab:AddButton({
+	Name = "撸管R15",
+	Default = false,
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))()
+  end
+})
+
+local Section = Tab:AddSection({
 	Name = "飞行区"
 })
 
@@ -513,77 +473,12 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
-Tab:AddDropdown({
-    Name = "玩家名称",
-    Default = "",
-    TextDisappear = true,
-    Callback = function(name)
-        if name == "" then return end
-        selectedPlayer = {Name = name}
-        OrionLib:MakeNotification({
-            Name = "玩家选择",
-            Content = "已选择玩家: " .. name,
-            Time = 2
-        })
-    end
-})
-
 Tab:AddButton({
-    Name = "甩飞玩家",
-    Callback = function()
-        if not selectedPlayer then
-            OrionLib:MakeNotification({
-                Name = "错误",
-                Content = "请先选择玩家",
-                Time = 2
-            })
-            return
-        end
-        
-        ThrowEvent:FireServer(selectedPlayer.Name, throwPower)
-        OrionLib:MakeNotification({
-            Name = "甩飞执行",
-            Content = string.format("正在甩飞 %s (力度: %d)", selectedPlayer.Name, throwPower),
-            Time = 3
-        })
-    end
-})
-
-Tab:AddToggle({
-    Name = "防甩飞",
-    Default = false,
-    Callback = function(value)
-        if value then
-            OrionLib:MakeNotification({
-                Name = "开启",
-                Content = "已启用防甩飞",
-                Time = 2
-            })
-        else
-            OrionLib:MakeNotification({
-                Name = "关闭",
-                Content = "已关闭防甩飞",
-                Time = 2
-            })
-        end
-    end
-})
-
-Tab:AddSlider({
-    Name = "甩飞力度",
-    Min = 500,
-    Max = 5000,
-    Default = 1500,
-    Color = Color3.fromRGB(255, 100, 100),
-    Increment = 100,
-    ValueName = "力度",
-    Callback = function(value)
-        OrionLib:MakeNotification({
-            Name = "甩飞设置",
-            Content = "甩飞力度设置为: " .. value,
-            Time = 2
-        })
-    end
+  Name = "指定甩飞(简易版)",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet(('https://pastefy.app/9SmQXduA/raw'),true))()
+  end
 })
 
 Tab:AddButton({
