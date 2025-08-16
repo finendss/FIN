@@ -210,180 +210,112 @@ Tab:AddToggle({
 	Name = "穿墙",
 	Default = false,--初始值  true  或 false
 	Callback = function(Value)
-    if noclipConnection then
-      noclipConnection:Disconnect()
+      	local FillColor = Color3.fromRGB(175,25,255)
+local DepthMode = "AlwaysOnTop"
+local FillTransparency = 0.5
+local OutlineColor = Color3.fromRGB(255,255,255)
+local OutlineTransparency = 0
+
+local CoreGui = game:FindService("CoreGui")
+local Players = game:FindService("Players")
+local lp = Players.LocalPlayer
+local connections = {}
+
+local Storage = Instance.new("Folder")
+Storage.Parent = CoreGui
+Storage.Name = "Highlight_Storage"
+
+local function Highlight(plr)
+    local Highlight = Instance.new("Highlight")
+    Highlight.Name = plr.Name
+    Highlight.FillColor = FillColor
+    Highlight.DepthMode = DepthMode
+    Highlight.FillTransparency = FillTransparency
+    Highlight.OutlineColor = OutlineColor
+    Highlight.OutlineTransparency = 0
+    Highlight.Parent = Storage
+    
+    local plrchar = plr.Character
+    if plrchar then
+        Highlight.Adornee = plrchar
     end
-    if Value then
-      noclipConnection = game:GetService("RunService").Stepped:Connect(function()
-        for _, part in ipairs(player.Character:GetDescendants()) do
-          if part:IsA("BasePart") then
-            part.CanCollide = false
-          end
-        end
-      end)
+
+    connections[plr] = plr.CharacterAdded:Connect(function(char)
+        Highlight.Adornee = char
+    end)
+end
+
+Players.PlayerAdded:Connect(Highlight)
+for i,v in next, Players:GetPlayers() do
+    Highlight(v)
+end
+
+Players.PlayerRemoving:Connect(function(plr)
+    local plrname = plr.Name
+    if Storage[plrname] then
+        Storage[plrname]:Destroy()
     end
-  end
+    if connections[plr] then
+        connections[plr]:Disconnect()
+    end
+end)
+  	end
 })
 
 Tab:AddButton({
    Name = "透视",
    Default = false,
    Callback = function(Value)
-local HighlightSystem = {
-   Enabled = false,
-   Settings = {
-       FillColor = Color3.fromRGB(175, 25, 255),
-       OutlineColor = Color3.fromRGB(255, 255, 255),
-       FillTransparency = 0.5,
-       TeamColor = false, 
-       IgnoreLocalPlayer = true,
-       MaxDistance = 500,
-       UpdateInterval = 1
-   }
-}
+   local FillColor = Color3.fromRGB(175,25,255)
+local DepthMode = "AlwaysOnTop"
+local FillTransparency = 0.5
+local OutlineColor = Color3.fromRGB(255,255,255)
+local OutlineTransparency = 0
 
-local function CreateHighlightSystem()
-   local CoreGui = game:GetService("CoreGui")
-   local Players = game:GetService("Players")
-   local RunService = game:GetService("RunService")
-   local lp = Players.LocalPlayer
-   
-   if HighlightSystem.Storage then
-       HighlightSystem.Storage:Destroy()
-   end
-   
-   HighlightSystem.Storage = Instance.new("Folder")
-   HighlightSystem.Storage.Parent = CoreGui
-   HighlightSystem.Storage.Name = "AdvancedHighlights_"..os.time()
-   
-   local function ApplyHighlight(plr)
-       if not HighlightSystem.Enabled then return end
-       if plr == lp and HighlightSystem.Settings.IgnoreLocalPlayer then return end
-       
-       local character = plr.Character or plr.CharacterAdded:Wait()
-       local humanoid = character:WaitForChild("Humanoid")
-       
-       local highlight = Instance.new("Highlight")
-       highlight.Name = plr.Name
-       highlight.Adornee = character
-       highlight.FillTransparency = HighlightSystem.Settings.FillTransparency
-       highlight.OutlineTransparency = 0
-       highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-       
-       if HighlightSystem.Settings.TeamColor and plr.Team then
-           highlight.FillColor = plr.TeamColor.Color
-       else
-           highlight.FillColor = HighlightSystem.Settings.FillColor
-       end
-       
-       highlight.OutlineColor = HighlightSystem.Settings.OutlineColor
-       highlight.Parent = HighlightSystem.Storage
-       
-       if HighlightSystem.Settings.MaxDistance > 0 then
-           coroutine.wrap(function()
-               while HighlightSystem.Enabled and highlight.Parent do
-                   local distance = (lp.Character and character and
-                       (lp.Character:GetPivot().Position - character:GetPivot().Position).Magnitude)
-                   
-                   highlight.Enabled = distance and distance <= HighlightSystem.Settings.MaxDistance
-                   task.wait(HighlightSystem.Settings.UpdateInterval)
-               end
-           end)()
-       end
-       
-       plr.CharacterAdded:Connect(function(newChar)
-           if highlight.Parent then
-               highlight.Adornee = newChar
-           end
-       end)
-       
-       return highlight
-   end
-   
-   for _, player in ipairs(Players:GetPlayers()) do
-       if player ~= lp or not HighlightSystem.Settings.IgnoreLocalPlayer then
-           coroutine.wrap(ApplyHighlight)(player)
-       end
-   end
-   
-Players.PlayerAdded:Connect(function(player)
-       if HighlightSystem.Enabled then
-           ApplyHighlight(player)
-       end
-   end)
-   
-   Players.PlayerRemoving:Connect(function(player)
-       local highlight = HighlightSystem.Storage:FindFirstChild(player.Name)
-       if highlight then
-           highlight:Destroy()
-       end
-   end)
+local CoreGui = game:FindService("CoreGui")
+local Players = game:FindService("Players")
+local lp = Players.LocalPlayer
+local connections = {}
+
+local Storage = Instance.new("Folder")
+Storage.Parent = CoreGui
+Storage.Name = "Highlight_Storage"
+
+local function Highlight(plr)
+    local Highlight = Instance.new("Highlight")
+    Highlight.Name = plr.Name
+    Highlight.FillColor = FillColor
+    Highlight.DepthMode = DepthMode
+    Highlight.FillTransparency = FillTransparency
+    Highlight.OutlineColor = OutlineColor
+    Highlight.OutlineTransparency = 0
+    Highlight.Parent = Storage
+    
+    local plrchar = plr.Character
+    if plrchar then
+        Highlight.Adornee = plrchar
+    end
+
+    connections[plr] = plr.CharacterAdded:Connect(function(char)
+        Highlight.Adornee = char
+    end)
 end
 
-Tab:AddToggle({
-   Name = "fin高级透视",
-   Default = false,
-   Callback = function(Value)
-       HighlightSystem.Enabled = Value
-       if Value then
-           CreateHighlightSystem()
-           OrionLib:MakeNotification({
-               Name = "fin提示",
-               Content = "透视功能已启用",
-               Time = 2
-           })
-       else
-           if HighlightSystem.Storage then
-               HighlightSystem.Storage:Destroy()
-               HighlightSystem.Storage = nil
-           end
-       end
-   end
-})
+Players.PlayerAdded:Connect(Highlight)
+for i,v in next, Players:GetPlayers() do
+    Highlight(v)
+end
 
-Tab:AddButton({
-   Name = "透视设置",
-   Callback = function()
-       local SettingsWindow = OrionLib:MakeWindow({
-           Name = "透视设置",
-           HidePremium = false,
-           SaveConfig = false
-       })
-       
-       local SettingsTab = SettingsWindow:MakeTab({
-           Name = "参数配置",
-           Icon = "rbxassetid://4483345998"
-       })
-       
-       SettingsTab:AddToggle({
-           Name = "使用队伍颜色",
-           Default = HighlightSystem.Settings.TeamColor,
-           Callback = function(Value)
-               HighlightSystem.Settings.TeamColor = Value
-               if HighlightSystem.Enabled then
-                   CreateHighlightSystem() -- 重新初始化以应用更改
-               end
-           end
-       })
-       
-       SettingsTab:AddToggle({
-           Name = "忽略自己",
-           Default = HighlightSystem.Settings.IgnoreLocalPlayer,
-           Callback = function(Value)
-               HighlightSystem.Settings.IgnoreLocalPlayer = Value
-           end
-       })
-       
-       SettingsTab:AddSlider({
-           Name = "最大距离 ("..HighlightSystem.Settings.MaxDistance..")",
-           Min = 0,
-           Max = 1000,
-           Default = HighlightSystem.Settings.MaxDistance,
-           Callback = function(Value)
-               HighlightSystem.Settings.MaxDistance = Value
-           end
-       })
-   end
+Players.PlayerRemoving:Connect(function(plr)
+    local plrname = plr.Name
+    if Storage[plrname] then
+        Storage[plrname]:Destroy()
+    end
+    if connections[plr] then
+        connections[plr]:Disconnect()
+    end
+end)
+  	end
 })
 
 Tab:AddButton({
@@ -474,153 +406,6 @@ local Tab = Window:MakeTab({
 	Name = "甩飞与传送",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
-})
-
-local flingPlayers = {}
-local flingConnections = {}
-local flingActive = false
-
-local function getNearbyPlayers()
-    local players = {}
-    local localPlayer = game.Players.LocalPlayer
-    local localPosition = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") and localPlayer.Character.HumanoidRootPart.Position
-    
-    if localPosition then
-        for _, player in ipairs(game.Players:GetPlayers()) do
-            if player ~= localPlayer and player.Character then
-                local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
-                if humanoidRootPart then
-                    local distance = (humanoidRootPart.Position - localPosition).Magnitude
-                    if distance < 100 then -- 100米范围内
-                        table.insert(players, player)
-                    end
-                end
-            end
-        end
-    end
-    
-    return players
-end
-
-local function updatePlayerList()
-    local players = getNearbyPlayers()
-    playerDropdown:Refresh(players, true)
-end
-
-local function flingSelectedPlayers()
-    if not flingActive or #flingPlayers == 0 then return end
-    
-    for _, player in ipairs(flingPlayers) do
-        if player.Character then
-            local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
-            if humanoidRootPart then
-                
-                local force = Vector3.new(
-                    math.random(-1000, 1000),
-                    math.random(500, 1500),
-                    math.random(-1000, 1000)
-                )
-                
-                
-                humanoidRootPart.Velocity = force
-                
-                
-                humanoidRootPart.RotVelocity = Vector3.new(
-                    math.random(-20, 20),
-                    math.random(-20, 20),
-                    math.random(-20, 20)
-                )
-            end
-        end
-    end
-end
-
-Tab:AddDropdown({
-    Name = "选择要甩飞的玩家",
-    Default = "",
-    Options = {},
-    Multiple = true, 
-    Callback = function(selected)
-        flingPlayers = {}
-        for _, player in ipairs(selected) do
-            table.insert(flingPlayers, player)
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "刷新附近玩家列表",
-    Callback = function()
-        updatePlayerList()
-        OrionLib:MakeNotification({
-            Name = "玩家列表已刷新",
-            Content = "已更新附近玩家列表",
-            Time = 2
-        })
-    end
-})
-
-
-Tab:AddSlider({
-    Name = "甩飞强度",
-    Min = 100,
-    Max = 2000,
-    Default = 1000,
-    Color = Color3.fromRGB(255, 0, 0),
-    Increment = 50,
-    ValueName = "力度",
-    Callback = function(Value)
-        flingStrength = Value
-    end    
-})
-
-Tab:AddToggle({
-    Name = "开启甩飞",
-    Default = false,
-    Callback = function(Value)
-        flingActive = Value
-        
-        if flingActive then
-            
-            flingConnections.flingLoop = game:GetService("RunService").Heartbeat:Connect(function()
-                flingSelectedPlayers()
-            end)
-            
-            OrionLib:MakeNotification({
-                Name = "甩飞开启",
-                Content = "正在甩选中的玩家",
-                Time = 2
-            })
-        else
-           
-            if flingConnections.flingLoop then
-                flingConnections.flingLoop:Disconnect()
-                flingConnections.flingLoop = nil
-            end
-            
-            OrionLib:MakeNotification({
-                Name = "甩飞停止",
-                Content = "甩飞关闭",
-                Time = 2
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "甩飞所有玩家",
-    Callback = function()
-        flingPlayers = getNearbyPlayers()
-        for i = 1, 5 do
-            flingSelectedPlayers()
-            wait(0.2)
-        end
-        OrionLib:MakeNotification({
-            Name = "甩飞完成",
-            Content = "已甩飞所有玩家",
-            Time = 3
-        })
-    end
 })
 
 local Tab = Window:MakeTab({
