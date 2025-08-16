@@ -262,34 +262,24 @@ end)
   	end
 })
 
-Tab:AddButton({
-   Name = "透视",
-   Default = false,
-   Callback = function(Value)
-local Players = game:GetService("Players")
+Tab:AddToggle({
+	Name = "透视",
+	Default = false,
+	Callback = function(Value)
+while wait(1) do
+local players = game.Players:GetPlayers()
 
--- Function to add a highlight effect to a player's character
-local function addHighlight(character)
-    local highlight = Instance.new("Highlight")
-    highlight.Parent = character
-    highlight.FillColor = Color3.new(1, 0, 0) -- Red glow
-    highlight.OutlineColor = Color3.new(1, 1, 1) -- White outline
+for i,v in pairs(players) do
+ local esp = Instance.new("Highlight")
+ esp.Name = v.Name
+ esp.FillTransparency = 0.5
+ esp.FillColor = Color3.new(0, 0, 0)
+ esp.OutlineColor = Color3.new(255, 255, 255)
+ esp.OutlineTransparency = 0
+ esp.Parent = v.Character
 end
-
--- Add highlight when a player spawns
-Players.PlayerAdded:Connect(function(player)
-    player.CharacterAdded:Connect(function(character)
-        addHighlight(character)
-    end)
-end)
-
--- Add highlight to already existing players
-for _, player in ipairs(Players:GetPlayers()) do
-    if player.Character then
-        addHighlight(player.Character)
-    end
 end
-  	end
+  end
 })
 
 Tab:AddButton({
