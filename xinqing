@@ -60,7 +60,7 @@ OrionLib:MakeNotification({
                 })
 Start = tick()
 Heartbeat:Connect(HeartbeatUpdate)
-local Window = OrionLib:MakeWindow({Name = "fine脚本", HidePremium = false, SaveConfig =true,IntroText="加载脚本中", ConfigFolder = "文件存放名"})
+local Window = OrionLib:MakeWindow({Name = "FIN脚本", HidePremium = false, SaveConfig =true,IntroText="加载脚本中", ConfigFolder = "文件存放名"})
 local Tab = Window:MakeTab({-- T ad相当于一个id
 	Name = "主页",
 	Icon = "rbxassetid://4483345998",
@@ -68,10 +68,10 @@ local Tab = Window:MakeTab({-- T ad相当于一个id
 })
 
 Tab:AddParagraph("作者","鑫晴")
-Tab:AddParagraph("欢迎使用fin脚本")
+Tab:AddParagraph("欢迎使用FIN脚本")
 Tab:AddParagraph("此脚本完全免费")
 Tab:AddParagraph("禁止倒卖")
-Tab:AddParagraph("更新日志","更新甩飞与反甩飞")
+Tab:AddParagraph("更新日志","更新被遗弃")
 
 
 Tab:AddButton ({--这个就相当于一个按钮
@@ -266,55 +266,29 @@ Tab:AddButton({
    Name = "透视",
    Default = false,
    Callback = function(Value)
-local FillColor = Color3.fromRGB(175,25,255)
-local DepthMode = "AlwaysOnTop"
-local FillTransparency = 0.5
-local OutlineColor = Color3.fromRGB(255,255,255)
-local OutlineTransparency = 0
+local Players = game:GetService("Players")
 
-local CoreGui = game:FindService("CoreGui")
-local Players = game:FindService("Players")
-local lp = Players.LocalPlayer
-local connections = {}
+-- Function to add a highlight effect to a player's character
+local function addHighlight(character)
+    local highlight = Instance.new("Highlight")
+    highlight.Parent = character
+    highlight.FillColor = Color3.new(1, 0, 0) -- Red glow
+    highlight.OutlineColor = Color3.new(1, 1, 1) -- White outline
+end
 
-local Storage = Instance.new("Folder")
-Storage.Parent = CoreGui
-Storage.Name = "Highlight_Storage"
-
-local function Highlight(plr)
-    local Highlight = Instance.new("Highlight")
-    Highlight.Name = plr.Name
-    Highlight.FillColor = FillColor
-    Highlight.DepthMode = DepthMode
-    Highlight.FillTransparency = FillTransparency
-    Highlight.OutlineColor = OutlineColor
-    Highlight.OutlineTransparency = 0
-    Highlight.Parent = Storage
-    
-    local plrchar = plr.Character
-    if plrchar then
-        Highlight.Adornee = plrchar
-    end
-
-    connections[plr] = plr.CharacterAdded:Connect(function(char)
-        Highlight.Adornee = char
+-- Add highlight when a player spawns
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(character)
+        addHighlight(character)
     end)
-end
-
-Players.PlayerAdded:Connect(Highlight)
-for i,v in next, Players:GetPlayers() do
-    Highlight(v)
-end
-
-Players.PlayerRemoving:Connect(function(plr)
-    local plrname = plr.Name
-    if Storage[plrname] then
-        Storage[plrname]:Destroy()
-    end
-    if connections[plr] then
-        connections[plr]:Disconnect()
-    end
 end)
+
+-- Add highlight to already existing players
+for _, player in ipairs(Players:GetPlayers()) do
+    if player.Character then
+        addHighlight(player.Character)
+    end
+end
   	end
 })
 
@@ -350,7 +324,148 @@ Tab:AddButton({
   Name = "光影2",
   Default = false,
   Callback = function(Value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"))()
+-- Roblox Graphics Enhancher
+local light = game.Lighting
+for i, v in pairs(light:GetChildren()) do
+	v:Destroy()
+end
+
+local ter = workspace.Terrain
+local color = Instance.new("ColorCorrectionEffect")
+local bloom = Instance.new("BloomEffect")
+local sun = Instance.new("SunRaysEffect")
+local blur = Instance.new("BlurEffect")
+
+color.Parent = light
+bloom.Parent = light
+sun.Parent = light
+blur.Parent = light
+
+-- enable or disable shit
+
+local config = {
+
+	Terrain = true;
+	ColorCorrection = true;
+	Sun = true;
+	Lighting = true;
+	BloomEffect = true;
+	
+}
+
+-- settings {
+
+color.Enabled = false
+color.Contrast = 0.15
+color.Brightness = 0.1
+color.Saturation = 0.25
+color.TintColor = Color3.fromRGB(255, 222, 211)
+
+bloom.Enabled = false
+bloom.Intensity = 0.1
+
+sun.Enabled = false
+sun.Intensity = 0.2
+sun.Spread = 1
+
+bloom.Enabled = false
+bloom.Intensity = 0.05
+bloom.Size = 32
+bloom.Threshold = 1
+
+blur.Enabled = false
+blur.Size = 6
+
+-- settings }
+
+
+if config.ColorCorrection then
+	color.Enabled = true
+end
+
+
+if config.Sun then
+	sun.Enabled = true
+end
+
+
+if config.Terrain then
+	-- settings {
+	ter.WaterWaveSize = 0.1
+	ter.WaterWaveSpeed = 22
+	ter.WaterTransparency = 0.9
+	ter.WaterReflectance = 0.05
+	-- settings }
+end
+if config.Lighting then
+	-- settings {
+	light.Ambient = Color3.fromRGB(0, 0, 0)
+	light.Brightness = 4
+	light.ColorShift_Bottom = Color3.fromRGB(0, 0, 0)
+	light.ColorShift_Top = Color3.fromRGB(0, 0, 0)
+	light.ExposureCompensation = 0
+	light.FogColor = Color3.fromRGB(132, 132, 132)
+	light.GlobalShadows = true
+	light.OutdoorAmbient = Color3.fromRGB(112, 117, 128)
+	light.Outlines = false
+	-- settings }
+end
+local a = game.Lighting
+a.Ambient = Color3.fromRGB(33, 33, 33)
+a.Brightness = 5.69
+a.ColorShift_Bottom = Color3.fromRGB(0, 0, 0)
+a.ColorShift_Top = Color3.fromRGB(255, 247, 237)
+a.EnvironmentDiffuseScale = 0.105
+a.EnvironmentSpecularScale = 0.522
+a.GlobalShadows = true
+a.OutdoorAmbient = Color3.fromRGB(51, 54, 67)
+a.ShadowSoftness = 0.18
+a.GeographicLatitude = -15.525
+a.ExposureCompensation = 0.75
+b.Enabled = true
+b.Intensity = 0.99
+b.Size = 9999 
+b.Threshold = 0
+local c = Instance.new("ColorCorrectionEffect", a)
+c.Brightness = 0.015
+c.Contrast = 0.25
+c.Enabled = true
+c.Saturation = 0.2
+c.TintColor = Color3.fromRGB(217, 145, 57)
+if getgenv().mode == "Summer" then
+   c.TintColor = Color3.fromRGB(255, 220, 148)
+elseif getgenv().mode == "Autumn" then
+   c.TintColor = Color3.fromRGB(217, 145, 57)
+else
+   warn("No mode selected!")
+   print("Please select a mode")
+   b:Destroy()
+   c:Destroy()
+end
+local d = Instance.new("DepthOfFieldEffect", a)
+d.Enabled = true
+d.FarIntensity = 0.077
+d.FocusDistance = 21.54
+d.InFocusRadius = 20.77
+d.NearIntensity = 0.277
+local e = Instance.new("ColorCorrectionEffect", a)
+e.Brightness = 0
+e.Contrast = -0.07
+e.Saturation = 0
+e.Enabled = true
+e.TintColor = Color3.fromRGB(255, 247, 239)
+local e2 = Instance.new("ColorCorrectionEffect", a)
+e2.Brightness = 0.2
+e2.Contrast = 0.45
+e2.Saturation = -0.1
+e2.Enabled = true
+e2.TintColor = Color3.fromRGB(255, 255, 255)
+local s = Instance.new("SunRaysEffect", a)
+s.Enabled = true
+s.Intensity = 0.01
+s.Spread = 0.146
+
+print("RTX Graphics loaded! Created by BrickoIcko")
   end
 })
 
@@ -671,239 +786,17 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ChinaQY/Scripts/Main/
   end
 })
 
-Tab:AddToggle({
-                Name = ("透视对象"),
-                Desc = ("发电机 幸存者 杀手 物品"),
-                Icon = "bird",
-                Type = "Checkbox",
-                Default = false,
-                Callback = function(state) 
-                    espT = state
-                    if state then
-                        setupEsp()
-                    else
-                        cleanup()
-                    end
-                end
-            })
-            
-            game:GetService("Workspace").DescendantAdded:Connect(function(descendant)
-                if descendant.Name == "Map" and espT then
-                    task.wait(2)
-                    if espT then
-                        cleanup()
-                        setupEsp()
-                    end
-                end
-            end)
-  end
+local Section = Tab:AddSection({
+	Name = "FIN被遗弃(自制 模仿了一个被遗弃脚本)"
 })
 
-Tab:AddSlider({
-                Name = ("最大体力值"),
-                Step = 1,
-                Value = {
-                    Min = 100,
-                    Max = 1000,
-                    Default = 100,
-                },
-                Callback = function(value)
-                    task.spawn(function()
-                        Sprinting.MaxStamina = value
-                    end)
-                end
-            })
-
-            Tab:AddSlider({
-                Name = ("奔跑速度"),
-                Step = 1,
-                Value = {
-                    Min = 26,
-                    Max = 40,
-                    Default = 26,
-                },
-                Callback = function(value)
-                    task.spawn(function()
-                        Sprinting.SprintSpeed = value
-                    end)
-                end
-            })
-
-            Tab:AddSlider({
-                Name = ("冲刺体力消耗(秒)"),
-                Step = 1,
-                Value = {
-                    Min = 0,
-                    Max = 10,
-                    Default = 7,
-                },
-                Callback = function(value)
-                    task.spawn(function()
-                        Sprinting.StaminaLoss = value
-                    end)
-                end
-            })
-
-            Tab:AddSlider({
-                Name = ("停止时恢复体力(秒)"),
-                Step = 1,
-                Value = {
-                    Min = 20,
-                    Max = 1000,
-                    Default = 35,
-                },
-                Callback = function(value)
-                    task.spawn(function()
-                        Sprinting.StaminaGain = value
-                    end)
-                end
-            })
-            Tab:AddToggle({
-               Name = ("自动1x1窗口"),
-                Desc = ("自动做1x1窗口"),
-                Icon = "bird",
-                Type = "Checkbox",
-                Default = false,
-                Callback = function(state) 
-                    autodo1x1T = state
-                    if state then
-                        while autodo1x1T and task.wait(0.1) do
-                            local player = game:GetService("Players").LocalPlayer
-                            local popups = player.PlayerGui.TemporaryUI:GetChildren()
-                            local VIM = game:GetService("VirtualInputManager")
-                            for _, i in ipairs(popups) do
-                                if i.Name == "1x1x1x1Popup" then
-                                    local centerX = i.AbsolutePosition.X + (i.AbsoluteSize.X / 2)
-                                    local centerY = i.AbsolutePosition.Y + (i.AbsoluteSize.Y / 2)
-                                    VIM:SendMouseButtonEvent(
-                                        centerX,
-                                        centerY,
-                                        Enum.UserInputType.MouseButton1.Value,
-                                        true,
-                                        player.PlayerGui,
-                                        1
-                                    )
-                                    VIM:SendMouseButtonEvent(
-                                        centerX,
-                                        centerY,
-                                        Enum.UserInputType.MouseButton1.Value,
-                                        false,
-                                        player.PlayerGui,
-                                        1
-                                    )
-                                end
-                            end
-                        end
-                    end
-                end
-            })
-
-            Tab:AddSlider({
-                Name = ("抛硬币费用"),
-                Step = 1,
-                
-                Value = {
-                    Min = 1,
-                    Max = 3,
-                    Default = 1,
-                },
-                Callback = function(value)
-                    WantedChrges= value
-                end
-            })
-
-            Tab:AddToggle(
-                {
-                    Name = ("自动抛硬币"),
-                    Desc = ("自动抛硬币"),
-                    Icon = "bird",
-                    Type = "Checkbox",
-                    Default = false,
-                    Callback = function(state)
-                        CoinFlipping = state
-                        if state then
-                            while CoinFlipping and task.wait(1) do
-                                if tonumber(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.AbilityContainer.Reroll.Charges.Text) < WantedChrges then
-                                    BlockRemote:FireServer("UseActorAbility", "CoinFlip")
-                                end
-                            end
-                        end
-                    end
-                }
-            )
-
-            Tab:AddSlider({
-                Name = ("修机时间"),
-                Step = 1,
-                Value = {
-                    Min = 1,
-                    Max = 10,
-                    Default = SkibidiWait,
-                },
-                Callback = function(value)
-                    SkibidiWait = value
-                end
-            })
-            
-            local SkibidiCS = 4
-            local Slider = Tab:Slider({
-                Name = ("修机次数"),
-                Step = 1,
-                Value = {
-                    Min = 1,
-                    Max = 4,
-                    Default = SkibidiCS,
-                },
-                Callback = function(value)
-                    SkibidiCS = value
-                end
-            })
-            
-            Tab:AddToggle({
-                Name = ("自动修机"),
-                Desc = ("自动修机"),
-                Icon = "bird",
-                Type = "Checkbox",
-                Default = false,
-                Callback = function(state)
-                    autoxiujiT = state
-                    if state then
-                        while autoxiujiT do
-                            local PuzzleUI = Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("PuzzleUI", 9999)
-                            task.wait(SkibidiWait)
-            
-                            local FartNapFolder = workspace:FindFirstChild("Map") and workspace.Map:FindFirstChild("Ingame") and workspace.Map.Ingame:FindFirstChild("Map")
-                            if FartNapFolder then
-                                local closestGenerator, closestDistance = nil, 15
-                                local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-
-                                for _, g in ipairs(FartNapFolder:GetChildren()) do
-                                    if g.Name == "Generator" and g.Progress.Value < 100 then
-                                        local distance = (g.Main.Position - playerPosition).Magnitude
-                                        if distance <= 15 then
-                                            local repairCount = tonumber(g:GetAttribute("RepairCount")) or 0
-                                            if repairCount < SkibidiCS then
-                                                if distance < closestDistance then
-                                                    closestDistance = distance
-                                                    closestGenerator = g
-                                                end
-                                            end
-                                        end
-                                    end
-                                end
-                                if closestGenerator then
-                                    closestGenerator.Remotes.RE:FireServer()
-                                    closestGenerator:SetAttribute(
-                                        "RepairCount",
-                                        (tonumber(closestGenerator:GetAttribute("RepairCount")) or 0) + 1
-                                    )
-                                end
-                            end
-                        end
-                    end
-                end
-            })
-
+Tab:AddButton({
+  Name = "FIN被遗弃",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/qq-352602248/refs/heads/main/FinSend"))()
+  end
+})
 local Tab = Window:MakeTab({
 	Name = "死铁轨",
 	Icon = "rbxassetid://4483345998",
@@ -929,7 +822,7 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddButton({
-  Name = "doors超好用",
+  Name = "doors(很好用)",
   Default = false,
   Callback = function(Value)
 loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105\110\46\99\111\109\47\114\97\119\47\54\53\84\119\84\56\106\97"))()
