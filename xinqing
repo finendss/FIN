@@ -418,38 +418,21 @@ Tab:AddButton({
     end
 })
 
-Tab:AddButton({
-    Name = "开始甩飞",
-    Callback = function()
-        if not selectedPlayer then
-            OrionLib:MakeNotification({
-                Name = "错误",
-                Content = "请先选择玩家",
-                Time = 2
-            })
-            return
-        end
+Tab:AddTextbox({
+    Name = "指定玩家甩飞",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(name)
+        if name == "" then return end
         
-        ThrowEvent:FireServer(selectedPlayer.Name, throwPower)
+        ThrowEvent:FireServer(name)
         OrionLib:MakeNotification({
             Name = "甩飞执行",
-            Content = string.format("正在甩飞 %s (力度: %d)", selectedPlayer.Name, throwPower),
-            Time = 3
+            Content = "已尝试甩飞 " .. name,
+            Time = 2
         })
     end
 })
-
-Tab:AddButton({
-    Name = "快速甩飞",
-    Callback = function()
-        if not selectedPlayer then
-            OrionLib:MakeNotification({
-                Name = "错误",
-                Content = "请先选择玩家",
-                Time = 2
-            })
-            return
-        end
 
 Tab:AddToggle({
     Name = "防甩飞",
