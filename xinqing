@@ -399,6 +399,52 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/gycgchgyfytdttr/shenq
 })
 
 local Tab = Window:MakeTab({
+	Name = "巴掌模拟器",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+    Name = "巴掌大战1",
+    Default = false,
+    Callback = function(Value)
+    loadstring(game:HttpGet(("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Slap%20Battles")))()
+    end
+})
+
+Tab:AddButton({
+  Name = "巴掌模拟器，作者龙叔",
+  Default = false,
+  Callback = function(Value)
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/longshulol/long/main/longshu/bazhang"))()
+  end
+})
+
+Tab:AddLabel("指令如下（聊天框输入）")
+Tab:AddLabel("透视")
+Tab:AddLabel("自动击打")
+Tab:AddLabel("击打光环")
+Tab:AddLabel("防死神速度")
+Tab:AddLabel("防推飞")
+Tab:AddLabel("防击飞")
+Tab:AddLabel("踏空")
+
+Tab:AddButton({
+    Name = "指令脚本",
+    Default = false,
+    Callback = function(Value)
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/longshulol/long/main/longshu/bazhang"))()
+    end
+})
+
+Tab:AddLabel("指令如下（聊天框输入）")
+Tab:AddLabel("透视-自动击打-击打光环-踏空")
+Tab:AddLabel("防击飞-防推飞-防死神-速度")
+Tab:AddLabel("关-无敌开-无敌关-全开-全关")
+Tab:AddLabel("全开功能有:防编辑，防毒液，防黑洞，防死神")
+Tab:AddLabel("防雷神，防rob，防秒杀手套，管理员预警，防踢")
+
+local Tab = Window:MakeTab({
 	Name = "动感星期五",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
