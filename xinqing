@@ -365,7 +365,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/
 Tab:AddButton({
 	Name = "飞车",
 	Callback = function()
-loadstring(game:HttpGet("https://pastebin.com/raw/G3GnBCyC", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/vb/main/%E9%A3%9E%E8%BD%A6.lua"))()
   end
 })
 
