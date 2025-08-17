@@ -692,7 +692,7 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddButton({
-  Name = "墨水外国脚本1",
+  Name = "墨水脚本1(全英文)",
   Default = false,
   Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua"))()
@@ -700,7 +700,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames
 })
 
 Tab:AddButton({
-  Name = "墨水外国脚本2(要卡密)",
+  Name = "墨水脚本2(要卡密且全英文)",
   Default = false,
   Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/TuffGuys/TuffGuys/refs/heads/main/Loader"))()
@@ -708,10 +708,18 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/TuffGuys/TuffGuys/ref
 })
 
 Tab:AddButton({
-  Name = "墨水汉化脚本",
+  Name = "墨水脚本3(汉化版)",
   Default = false,
   Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Xingtaiduan/Script/refs/heads/main/Games/墨水游戏.lua"))()
+  end
+})
+
+Tab:AddButton({
+  Name = "RINGTA(全英文)",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua"))()
   end
 })
 
