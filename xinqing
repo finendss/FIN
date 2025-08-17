@@ -145,13 +145,9 @@ local Section = Tab:AddSection({
 })
 
 Tab:AddToggle({
-
 	Name = "穿墙",
-
 	Default = false,
-
 	Callback = function(Value)
-
 		if Value then
 
 		    Noclip = true
@@ -191,9 +187,7 @@ Tab:AddToggle({
 		    Noclip = false
 
 	    end
-
-	end
-
+end
 })
 
 Tab:AddToggle({--这是一个开关
