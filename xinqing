@@ -604,7 +604,7 @@ local Section = Tab:AddSection({
 })
 
 Tab:AddButton({
-  Name = "自动刷向导",
+  Name = "自动刷向导(G爹代打)",
   Default = false,
   Callback = function(Value)
   loadstring(game:HttpGet(("https://raw.githubusercontent.com/Dusty1234567890/Guide/main/Guide")))()
