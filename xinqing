@@ -68,8 +68,8 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddParagraph("作者","鑫晴")
-Tab:AddParagraph("欢迎使用FIN脚本")
-Tab:AddParagraph("此脚本完全免费")
+Tab:AddParagraph("欢迎使用FIN脚本","脚本将持续云更新")
+Tab:AddParagraph("此脚本完全免费","永不会跑路")
 Tab:AddParagraph("禁止倒卖")
 Tab:AddParagraph("更新日志","FIN被遗弃更新")
 Tab:AddParagraph("添加一些新功能","更新巴掌模拟器")
