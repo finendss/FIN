@@ -60,9 +60,9 @@ local _hrp = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
 local new = Tabs.new:AddRightGroupbox('V1.0.0版本更新内容')
 
-new:AddLabel("[+]添加 去除前摇 后摇 缓慢动作")
-new:AddLabel("[+添加 速度调节]")
-new:AddLabel("[+]添加 启动聊天框")
+new:AddLabel("[+]添加 无]")
+new:AddLabel("[+添加 自动拾取物品]")
+new:AddLabel("[+]添加 亮度调节")
 new:AddLabel("[+]展示 功能区")
 
 
@@ -130,5 +130,251 @@ KillerSurvival:AddToggle('MyToggle', {
     else
     game.TextChatService.ChatWindowConfiguration.Enabled = false    
     end
+    end
+})
+
+
+local MainTabbox = Tabs.Main:AddRightTabbox()
+local Lighting = MainTabbox:AddTab("亮度调节")
+
+Lighting:AddSlider("B",{
+    Text = "亮度数值",
+    Min = 0,
+    Default = 0,
+    Max = 3,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+        _env.Brightness = v
+    end
+})
+
+Lighting:AddToggle("无阴影",{
+    Text = "无阴影",
+    Default = false,
+    Callback = function(v)
+        _env.GlobalShadows = v
+    end
+})
+
+Lighting:AddToggle("除雾",{
+    Text = "除雾",
+    Default = false,
+    Callback = function(v)
+        _env.NoFog = v
+    end
+})
+
+Lighting:AddDivider()
+
+Lighting:AddToggle("启用功能",{
+    Text = "启用",
+    Default = false,
+    Callback = function(v)
+        _env.Fullbright = v
+        game:GetService("RunService").RenderStepped:Connect(function()
+            if not game.Lighting:GetAttribute("FogStart") then 
+                game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) 
+            end
+            if not game.Lighting:GetAttribute("FogEnd") then 
+                game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) 
+            end
+            game.Lighting.FogStart = _env.NoFog and 0 or game.Lighting:GetAttribute("FogStart")
+            game.Lighting.FogEnd = _env.NoFog and math.huge or game.Lighting:GetAttribute("FogEnd")
+            
+            local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
+            if fog then
+                if not fog:GetAttribute("Density") then 
+                    fog:SetAttribute("Density", fog.Density) 
+                end
+                fog.Density = _env.NoFog and 0 or fog:GetAttribute("Density")
+            end
+            
+            if _env.Fullbright then
+                game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
+                game.Lighting.Brightness = _env.Brightness or 0
+                game.Lighting.GlobalShadows = not _env.GlobalShadows
+            else
+                game.Lighting.OutdoorAmbient = Color3.fromRGB(55,55,55)
+                game.Lighting.Brightness = 0
+                game.Lighting.GlobalShadows = true
+            end
+        end)
+    end
+    
+})
+
+
+
+local ZZ = Tabs.Main:AddRightGroupbox('自动拾取物品')
+
+
+ZZ:AddToggle('医疗包传送并拾取', {
+    Text = '医疗包传送并互动',
+    Default = false,
+    Tooltip = '自动将医疗包传送到自己位置并互动',
+    
+    Callback = function(state)
+        autoTeleportMedkitEnabled = state
+        
+        if autoTeleportMedkitEnabled then
+            teleportMedkitThread = task.spawn(function()
+                while autoTeleportMedkitEnabled and task.wait(0.5) do
+                  
+                    local character = game.Players.LocalPlayer.Character
+                    if character and character:FindFirstChild("HumanoidRootPart") then
+                        local humanoidRootPart = character.HumanoidRootPart
+                        
+                      
+                        local medkit = workspace:FindFirstChild("Map", true)
+                        if medkit then
+                            medkit = medkit:FindFirstChild("Ingame", true)
+                            if medkit then
+                                medkit = medkit:FindFirstChild("Medkit", true)
+                                if medkit then
+                                    local itemRoot = medkit:FindFirstChild("ItemRoot", true)
+                                    if itemRoot then
+                                       
+                                        itemRoot.CFrame = humanoidRootPart.CFrame + humanoidRootPart.CFrame.LookVector * 3
+                                        
+                                       
+                                        local prompt = itemRoot:FindFirstChild("ProximityPrompt", true)
+                                        if prompt then
+                                            fireproximityprompt(prompt)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        elseif teleportMedkitThread then
+            task.cancel(teleportMedkitThread)
+            teleportMedkitThread = nil
+        end
+    end
+})
+
+
+ZZ:AddToggle('可乐传送并拾取', {
+    Text = '可乐传送并互动',
+    Default = false,
+    Tooltip = '自动将可乐传送到自己位置并互动',
+    
+    Callback = function(state)
+        autoTeleportColaEnabled = state
+        
+        if autoTeleportColaEnabled then
+            teleportColaThread = task.spawn(function()
+                while autoTeleportColaEnabled and task.wait(0.5) do
+                    -- 获取玩家角色
+                    local character = game.Players.LocalPlayer.Character
+                    if character and character:FindFirstChild("HumanoidRootPart") then
+                        local humanoidRootPart = character.HumanoidRootPart
+                        
+                        -- 查找可乐
+                        local cola = workspace:FindFirstChild("Map", true)
+                        if cola then
+                            cola = cola:FindFirstChild("Ingame", true)
+                            if cola then
+                                cola = cola:FindFirstChild("BloxyCola", true)
+                                if cola then
+                                    local itemRoot = cola:FindFirstChild("ItemRoot", true)
+                                    if itemRoot then
+                                        -- 将可乐传送到玩家前方3个单位的位置
+                                        itemRoot.CFrame = humanoidRootPart.CFrame + humanoidRootPart.CFrame.LookVector * 3
+                                        
+                                        -- 查找互动提示并触发
+                                        local prompt = itemRoot:FindFirstChild("ProximityPrompt", true)
+                                        if prompt then
+                                            fireproximityprompt(prompt)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        elseif teleportColaThread then
+            task.cancel(teleportColaThread)
+            teleportColaThread = nil
+        end
+    end
+})
+
+
+
+ZZ:AddToggle('自动拾取医疗包', {
+    Text = '自动互动医疗包',
+    Default = false,
+    Tooltip = '自动与医疗包互动',
+    
+    Callback = function(state)
+        autoMedkitEnabled = state
+        
+        if autoMedkitEnabled then
+            medkitThread = task.spawn(function()
+                while autoMedkitEnabled and task.wait(0.5) do
+                    local medkit = workspace:FindFirstChild("Map", true)
+                    if medkit then
+                        medkit = medkit:FindFirstChild("Ingame", true)
+                        if medkit then
+                            medkit = medkit:FindFirstChild("Medkit", true)
+                            if medkit then
+                                local itemRoot = medkit:FindFirstChild("ItemRoot", true)
+                                if itemRoot then
+                                    local prompt = itemRoot:FindFirstChild("ProximityPrompt", true)
+                                    if prompt then
+                                        fireproximityprompt(prompt)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        elseif medkitThread then
+            task.cancel(medkitThread)
+            medkitThread = nil
+        end
+    end
+})
+
+
+ZZ:AddToggle('自动拾取可乐', {
+    Text = '自动互动可乐',
+    Default = false,
+    Tooltip = '自动与可乐互动',
+    
+    Callback = function(state)
+        autoColaEnabled = state
+        
+        if autoColaEnabled then
+            colaThread = task.spawn(function()
+                while autoColaEnabled and task.wait(0.5) do
+                    local cola = workspace:FindFirstChild("Map", true)
+                    if cola then
+                        cola = cola:FindFirstChild("Ingame", true)
+                        if cola then
+                            cola = cola:FindFirstChild("BloxyCola", true)
+                            if cola then
+                                local itemRoot = cola:FindFirstChild("ItemRoot", true)
+                                if itemRoot then
+                                    local prompt = itemRoot:FindFirstChild("ProximityPrompt", true)
+                                    if prompt then
+                                        fireproximityprompt(prompt)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        elseif colaThread then
+            task.cancel(colaThread)
+            colaThread = nil
+        end
     end
 })
