@@ -362,6 +362,13 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/
   end
 })
 
+Tab:AddButton({
+	Name = "飞车",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/MHE1cbWF"))()
+	end
+})
+
 local Section = Tab:AddSection({
 	Name = "甩飞区"
 })
