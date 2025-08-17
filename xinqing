@@ -215,6 +215,18 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/m
   end
 })
 
+Tab:AddButton({
+
+	Name = "电脑键盘",
+
+	Callback = function()
+
+     loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
+
+  	end    
+
+})
+
 local Section = Tab:AddSection({
 	Name = "光影与画质"
 })
