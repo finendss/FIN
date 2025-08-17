@@ -674,7 +674,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/TSB/refs/he
 })
 
 local Section = Tab:AddSection({
-	Name = "也是一个自制 但模仿了一个脚本"
+	Name = "自制TSB脚本"
 })
 
 Tab:AddButton({
@@ -730,7 +730,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ChinaQY/Scripts/Main/
 })
 
 local Section = Tab:AddSection({
-	Name = "FIN被遗弃(自制 模仿了一个被遗弃脚本)"
+	Name = "自制FIN被遗弃脚本"
 })
 
 Tab:AddButton({
@@ -761,6 +761,10 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local Section = Tab:AddSection({
+	Name = "刷卷区"
+})
+
 Tab:AddButton({
   Name = "TX自动刷卷",
   Default = false,
@@ -770,6 +774,28 @@ QUN = "160369111"
 TX = "死铁轨刷债券V3"
 script = "死铁轨免费刷债券"
 loadstring(game:HttpGet("https://raw.githubusercontent.com/JsYb666/Item/refs/heads/main/刷债券"))()
+  end
+})
+
+Tab:AddButton({
+  Name = "外国刷卷(执行后点一下屏幕哦)",
+  Default = false,
+  Callback = function(Value)
+
+getgenv().BondFarmSetting = {
+	Fast_Auto_Execute = true, -- Use queue_on_teleport to execute faster than your executor itself 
+	Number_Of_Bonds_Targeted = 9e9, -- When your bonds reached the number you wanted, the will script automatically be stopped
+	Tween_Duration = 23, -- The smaller number, the faster it goes (best is 23)
+	Webhook_Url = "none",
+	Main_Auto_SHOP_Delay = 70, -- auto server hop after time ended in main game
+	Lobby_Auto_SHOP_Delay = 25, -- auto server hop after time ended in lobby
+	Goto_Party_By_Walking_Only = false, -- if you set to false, it instantly teleport you to party creator, else it make you walk to party creator 
+	Blackscreen_Save_Battery = true,
+	Show_Bonds_Collected_On_Blackscreen = false
+}
+SaveNewSettings = true 
+script_key = "DonjoSx_Was_Not_Here" -- Script key, don't remove this
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Umbrella-Scripter/Deadrails-Script/refs/heads/main/average-bond-farm.lua"))()
   end
 })
 
