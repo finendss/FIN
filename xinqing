@@ -116,7 +116,6 @@ Tab:AddSlider({
 	end    
 
 })
-
 Tab:AddSlider({
 
 	Name = "跳跃高度",
@@ -140,7 +139,6 @@ Tab:AddSlider({
 	end    
 
 })
-
 Tab:AddTextbox({
 
 	Name = "跳跃高度设置",
