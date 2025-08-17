@@ -97,6 +97,13 @@ local Section = Tab:AddSection({
 	Name = "通用功能"
 })
 
+Tab:AddButton({
+	Name = "速度更改",
+	Callback = function()
+     loadstring(game:HttpGet("https://pastebin.com/raw/Zuw5T7DP",true))()
+	end    
+})
+
 Tab:AddToggle({--这是一个开关
 	Name = "夜视",
 	Default = false,
