@@ -139,21 +139,6 @@ Tab:AddSlider({
 	end    
 
 })
-Tab:AddTextbox({
-
-	Name = "跳跃高度设置",
-
-	Default = "",
-
-	TextDisappear = true,
-
-	Callback = function(Value)
-
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
-
-	end
-
-})
 
 local Section = Tab:AddSection({
 	Name = "通用功能"
