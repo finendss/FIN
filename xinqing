@@ -73,7 +73,7 @@ Tab:AddParagraph("此脚本完全免费")
 Tab:AddParagraph("禁止倒卖")
 Tab:AddParagraph("更新日志","更新FIN自制被遗弃")
 Tab:AddParagraph("添加一些功能","修复透视功能自动打开bug")
-Tab:AddParagraph("增加撸管功能")
+Tab:AddParagraph("增加撸管功能","更新ohio破解脚本")
 
 Tab:AddButton ({--这个就相当于一个按钮
 	Name = "复制作者q群",
@@ -682,6 +682,21 @@ Tab:AddButton({
 loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/qq-352602248/refs/heads/main/FinSend"))()
   end
 })
+
+local Tab = Window:MakeTab({
+	Name = "ohio",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "宿魔ohio脚本(破解版)",
+	Default = false,
+	Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/XiProDev/XiPro/refs/heads/main/Free/宿傩Ohio破解版.lua"))()
+  end
+})
+
 local Tab = Window:MakeTab({
 	Name = "死铁轨",
 	Icon = "rbxassetid://4483345998",
