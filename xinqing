@@ -101,6 +101,23 @@ Tab:AddTextbox({
 		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
 	end
 })
+Tab:AddTextbox({
+	Name = "跳跃高度",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+	end
+})
+
+Tab:AddTextbox({
+	Name = "重力设置",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Workspace.Gravity = Value
+	end
+})
 
 local Section = Tab:AddSection({
 	Name = "通用功能"
