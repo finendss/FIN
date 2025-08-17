@@ -71,9 +71,9 @@ Tab:AddParagraph("作者","鑫晴")
 Tab:AddParagraph("欢迎使用FIN脚本")
 Tab:AddParagraph("此脚本完全免费")
 Tab:AddParagraph("禁止倒卖")
-Tab:AddParagraph("更新日志","更新FIN自制被遗弃")
-Tab:AddParagraph("添加一些功能","更新FIN自制最强战场")
-Tab:AddParagraph("增加撸管功能","更新ohio破解脚本")
+Tab:AddParagraph("更新日志","FIN被遗弃更新")
+Tab:AddParagraph("添加一些新功能","更新巴掌模拟器")
+Tab:AddParagraph("重新添加透视 穿墙功能","更新飞车")
 
 Tab:AddButton ({--这个就相当于一个按钮
 	Name = "复制作者q群",
@@ -236,13 +236,6 @@ Tab:AddToggle({--这是一个开关
 		end
 --这里有一个判定
 	end	
-})
-
-Tab:AddButton({
-	Name = "绘制透视名字显示",	
-Callback = function()	
-loadstring(game:HttpGet("https://raw.githubusercontent.com/cbhlyy/lyycbh/main/tou"))()  
-  end
 })
 
 Tab:AddButton({
@@ -606,37 +599,17 @@ Tab:AddButton({
     end
 })
 
+local Section = Tab:AddSection({
+	Name = "感谢lkun775给的脚本"
+})
+
 Tab:AddButton({
-  Name = "巴掌模拟器，作者龙叔",
+  Name = "自动刷向导",
   Default = false,
   Callback = function(Value)
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/longshulol/long/main/longshu/bazhang"))()
+  loadstring(game:HttpGet(("https://raw.githubusercontent.com/Dusty1234567890/Guide/main/Guide")))()
   end
 })
-
-Tab:AddLabel("指令如下（聊天框输入）")
-Tab:AddLabel("透视")
-Tab:AddLabel("自动击打")
-Tab:AddLabel("击打光环")
-Tab:AddLabel("防死神速度")
-Tab:AddLabel("防推飞")
-Tab:AddLabel("防击飞")
-Tab:AddLabel("踏空")
-
-Tab:AddButton({
-    Name = "指令脚本",
-    Default = false,
-    Callback = function(Value)
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/longshulol/long/main/longshu/bazhang"))()
-    end
-})
-
-Tab:AddLabel("指令如下（聊天框输入）")
-Tab:AddLabel("透视-自动击打-击打光环-踏空")
-Tab:AddLabel("防击飞-防推飞-防死神-速度")
-Tab:AddLabel("关-无敌开-无敌关-全开-全关")
-Tab:AddLabel("全开功能有:防编辑，防毒液，防黑洞，防死神")
-Tab:AddLabel("防雷神，防rob，防秒杀手套，管理员预警，防踢")
 
 local Tab = Window:MakeTab({
 	Name = "动感星期五",
