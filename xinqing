@@ -118,7 +118,7 @@ Tab:AddButton({
 	Name = "速度更改",
 	Callback = function()
      loadstring(game:HttpGet("https://pastebin.com/raw/Zuw5T7DP",true))()
-	end    
+  end    
 })
 
 Tab:AddButton({
@@ -366,7 +366,7 @@ Tab:AddButton({
 	Name = "飞车",
 	Callback = function()
 loadstring(game:HttpGet("https://pastebin.com/raw/MHE1cbWF"))()
-	end
+  end
 })
 
 local Section = Tab:AddSection({
