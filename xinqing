@@ -73,7 +73,8 @@ Tab:AddParagraph("此脚本完全免费","永不会跑路")
 Tab:AddParagraph("禁止倒卖")
 Tab:AddParagraph("更新日志","FIN被遗弃更新")
 Tab:AddParagraph("更新doors汉化脚本","更新MEG修改钱数")
-Tab:AddParagraph("","无")
+Tab:AddParagraph("无","无")
+
 
 Tab:AddButton ({--这个就相当于一个按钮
 	Name = "复制作者q群",
