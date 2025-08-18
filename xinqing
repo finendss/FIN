@@ -733,14 +733,6 @@ loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105
   end
 })
 
-Tab:AddButton({
-  Name = "doors(FIN汉化)",
-  Default = false,
-  Callback = function(Value)
-loadstring(game:HttpGet(https://raw.githubusercontent.com/finendss/qq-352602248/refs/heads/main/doors"))()
-  end
-})
-
 local Tab = Window:MakeTab({
 	Name = "M.E.G",
 	Icon = "rbxassetid://4483345998",
