@@ -1,6 +1,6 @@
 "local name = {
 ["BlackKing : Loading Gui"] = "BlackKing : 加载Gui中",
-["Functions"] = "FIN汉化 功能",
+["Functions"] = "功能(FIN汉化)",
 ["LocalPlayer"] = "本地玩家",
 ["Select SpeedBoost"] = "选择速度提升",
 ["Select a SpeedBoost"] = "选择一个速度提升",
