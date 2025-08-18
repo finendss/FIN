@@ -28,7 +28,7 @@ Library.NotifySide = "Right"
 
 local Window = Library:CreateWindow({
     Title = ' 被遗弃｜FIN',
-    Footer = "正式版 V1.0.0",
+    Footer = "正式版 V1.1.2",
     Icon = 106397684977541,
     Center = true,
     AutoShow = true,
@@ -43,15 +43,6 @@ local Tabs = {
     new = Window:AddTab('公告', 'user'),
     Main = Window:AddTab('快捷功能区','house'),
     Aimbot = Window:AddTab('自瞄区','earth'),
-    Esp = Window:AddTab('绘制区','eye'),
-    tzq = Window:AddTab('通知提示','eye'),
-    ani = Window:AddTab('反效果区','file'),
-    Max = Window:AddTab('动作区','file'),
-    Sat = Window:AddTab('体力区','moon'),
-    zdg = Window:AddTab('自动格挡','file'),
-    zdx = Window:AddTab('自动修机','moon'),
-    lol = Window:AddTab('披萨区','earth'),
-    tfz = Window:AddTab('塔夫炸弹','moon'),
     ["UI Settings"] = Window:AddTab('UI调试', 'settings')
 }
 
@@ -60,10 +51,10 @@ local _hrp = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
 local new = Tabs.new:AddRightGroupbox('V1.0.0版本更新内容')
 
-new:AddLabel("[+]添加 无]")
-new:AddLabel("[+添加 自动拾取物品]")
-new:AddLabel("[+]添加 亮度调节")
-new:AddLabel("[+]展示 功能区")
+new:AddLabel("[+]添加 ")
+new:AddLabel("[+添加 ")
+new:AddLabel("[+]添加 ")
+new:AddLabel("[+]添加 ")
 
 
 
