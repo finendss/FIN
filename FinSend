@@ -29,7 +29,7 @@ Library.NotifySide = "Right"
 local Window = Library:CreateWindow({
     Title = ' 被遗弃｜FIN',
     Footer = "正式版 V1.1.2",
-    Icon = 106397684977541,
+    Icon = 108646851620147,
     Center = true,
     AutoShow = true,
     Resizable = true,
@@ -41,7 +41,7 @@ local Window = Library:CreateWindow({
 
 local Tabs = {
     new = Window:AddTab('公告', 'user'),
-    Main = Window:AddTab('快捷功能区','house'),
+    Main = Window:AddTab('功能区','house'),
     Aimbot = Window:AddTab('自瞄区','earth'),
     ["UI Settings"] = Window:AddTab('UI调试', 'settings')
 }
@@ -51,7 +51,7 @@ local _hrp = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
 local new = Tabs.new:AddRightGroupbox('V1.0.0版本更新内容')
 
-new:AddLabel("[+]添加 ")
+new:AddLabel("[+]添加 自喵区")
 new:AddLabel("[+添加 ")
 new:AddLabel("[+]添加 ")
 new:AddLabel("[+]添加 ")
