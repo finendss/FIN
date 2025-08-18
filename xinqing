@@ -73,7 +73,7 @@ Tab:AddParagraph("此脚本完全免费","永不会跑路")
 Tab:AddParagraph("禁止倒卖")
 Tab:AddParagraph("更新日志","FIN被遗弃更新")
 Tab:AddParagraph("添加一些新功能","更新巴掌模拟器")
-Tab:AddParagraph("重新添加透视 穿墙功能","更新飞车")
+Tab:AddParagraph("重新添加透视功能","更新飞车")
 
 Tab:AddButton ({--这个就相当于一个按钮
 	Name = "复制作者q群",
@@ -191,33 +191,6 @@ RunService.Heartbeat:Connect(function()
         end
 end
 end)
-  end
-})
-
-Tab:AddToggle({
-	Name = "SEEK穿墙",
-	Default = false,
-	Callback = function(Value)
-		if Value then
-		    Noclip = true
-		    Stepped = game.RunService.Stepped:Connect(function()
-			    if Noclip == true then
-				    for a, b in pairs(game.Workspace:GetChildren()) do
-                        if b.Name == game.Players.LocalPlayer.Name then
-                            for i, v in pairs(game.Workspace[game.Players.LocalPlayer.Name]:GetChildren()) do
-                                if v:IsA("BasePart") then
-                                    v.CanCollide = false
-                                end
-                            end
-                        end
-                    end
-			    else
-				    Stepped:Disconnect()
-			    end
-		    end)
-	    else
-		    Noclip = false
-	    end
   end
 })
 
