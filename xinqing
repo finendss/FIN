@@ -73,7 +73,7 @@ Tab:AddParagraph("此脚本完全免费","永不会跑路")
 Tab:AddParagraph("禁止倒卖")
 Tab:AddParagraph("更新日志","FIN被遗弃更新")
 Tab:AddParagraph("更新doors汉化脚本","更新MEG修改钱数")
-Tab:AddParagraph("无","无")
+Tab:AddParagraph("更新最强战场垃圾桶战神","无")
 
 
 Tab:AddButton ({--这个就相当于一个按钮
@@ -594,6 +594,14 @@ Tab:AddButton({
   Default = false,
   Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/TSB/refs/heads/main/CombatGui"))()
+  end
+})
+
+Tab:AddButton({
+  Name = "垃圾桶战神",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", true))()
   end
 })
 
