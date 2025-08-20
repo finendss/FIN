@@ -1,1 +1,142 @@
-([[This file was protected with MoonSec V3]]):gsub('.+', (function(a) __yjOJUHTSuKf = a; end)); GIFhjrhobywTocPQ=_ENV;eYCFJApboWcouFH='Fr{z7l#yvBZic}+9Z}}#7rZcrvvy+}lvcz{c#v+#l}cJ7#c2riv#9rlZvBX7yv+r#7}t{7B9A}l{ci7zBrzr#9P}v#+{7}iv{rlv+rlzi9{}vi}vyr}sriZiriyv9{#B}}z+ZBr7y}ii7{Z{{lyc97z7c}{cZ+r+vz++lBzyZz_c#+}+7{7yiBrcvy9{liBB{ovVYzlZ}{z+iv{ovi9##rccyyhy7}yB+}7+iB{7v}i9lvi{{zv+9zl9}7zvi+{+Bz9+#B}{z6B}99#9+oly}{{cByb{#iZ+zyB71c7+}+7iii{l#9+c#7}zzrB#*zvZ9zl9}rz7B9mZyzZ7ziZlr=y{}ilyc+7zZzj+yB+{{7Zer+vli9l#i+{cBZc#y++clzi+{BTvyv}ZzZ7zZir#vr+clyc{{}}vH7yy}B77Z9rvl#+*79iX{#v#9y#r}+lrizr+vB9{z7i.{+Bl}9#I}cz{ivzcv}9v#zcc<yB799#BiBz#B9s##l9rlZic{cBMYy7y}zzBZ7r=v7c{#uciz7Z}z9v{+}lvcr,zv{++#zyi{cBZjv#cB{l7ZB{#z+9B##c+z+BZfzy9}i7l#c{+vitr#=vzriZvrzy}c}7Ziz}iycc7yc9vlric{yBKcilvcBz{v9}yyl}97Zi rZ7vcllBcr{#BBrBvy++lBc7{}vB+i#v}+7#irrcvy9{l}b+yzB9ryy7}97ZizY*#i9=7cBcf{yv}#7}iy77vl>iB8)l#l}PziZ7}B#c}cziB9r#l#++l#iB7niBrlvM+il7B#rcy9+ZlZi+rrB+0v#Z+B{{iirZBcrzyr}c7yiU9{vb}B77ivWvvl9}#ccZ{9Bc{{BB9y#{c}z##y9+#c}zzlZ}9vy{+Hl5cyzfZZr{y}+vlzi+{Bcvz9#i+ 7GZir#y9crz}ii{{li9B#zc+z7B+r}vl9/lic#zrBcz}i{}+7cizr+vBl#}vz+BZZrr7y#+r7cil9vlyiclzcr{vvZ&{yi+Zl-ii{#;ll}cBz+Z{ZBr+y++Bl7i}9{yi9lz9icz7Zz r##}zlBci{+BBx7#}crzvZ5wBlBiBr9cvzvB},vyz}cryZ75+y_+9#r}2z#Zr)cylcZ{9Z#_Bv9-N#7c9zZKiy9+}7ii{r9v9Bz?}#v}zz+Zy}#yl}97lvz{rvi9#lcc#D#B}?lyz+rlZcB{9BZ)l#+Z9zCZcW{vv9Bl}cvzzBcyyBlr+iv+Zz{vc99#rcczyZ, {#v}y7zZcT+y++{##}yziZ#rryZZBz#i{r{vZ+7#Z}iz9ZZrly+iczvi7r{v#9y#+}i7zZ+rB9y#7iccvzmBi(#yr}c{y{rl}vBL7l+cBz7B}c}lyc7zyB+r7yc+}lri{9cBz9i#B}yXzic{#Bz9i##}rzcZyr{#}{yl#i+{BB799#Z}lBo#iryv}+clyc{{ivl+Bl-i+{ZZ{_+yZ}{l:iZz{ZBoyy{}}7#viJHyz+B{#iZ{v#797#>c+zriZ{{v}9v#zc+zBZ7=9yi9{l.ii{#v9c97}c#{zB}+z#}i}7lZr{{v7)ry:}#7rZcrllvi{7{ir{9Zl*7#9}Z7zy}Ti#Z}z7BBvr9y9I{lB}r7Zi+r9vZ9ll+B9rZB79{l}}rrlZ+V}v99}#7c9zZuvyv}clvl7ic{yB{9}#vBzB}+Brlv++ZllcDyvrY7#c+{cvBrZv{}}l9cBrcvB+i7#yr+_7#irrcvliB7}iy{vB92+y7}97Ziz9lyr+9l#c}z}Z{b}yv+r{7y+C+y}Z}##}BziZ#rryZir7rirr}yl+}7}iZ7hZ9rlv!+il7vyriv}9e#+}97zZ+rBv{iz7Zi{{mv+iZyryB7yi{r}BZyyl+cBz7}i.Zyl+ lrcv{rvc9yBrc}zBZzL+yB+vlliZ{lB:{Z##}{zcZyB{y}+vlzi+{BB799#Z+c7hZcr#vr+clyc{{}ZzDz#+}B77Z9rivlrdy#c#zrBc-yy{;+7vcl7}vB9ll999zlZt-ivv+#7ciB{{cB9v#zc+z9icV9y}+llrii{yBr9}#y}{#zZvrzy++Zl7i9{ZBlyv#i}v7rZ+ryvz+}#Zc7{+Bia7y}}Z7li8{}Zr9rl9cyzyB}Avyz9+l9i7{{vZ9v#-9vz#izr9yy+#7}}B{zv+9Bv7}BzZZBrCy9+#yyiczBZ{9}#}}z7zZBr7y9>Zy_c^z:B#T##crr7{i9y7vz97lBcB{9BZslBf}c7#iyrcv}9{yccvzzZl^Byi}97Zil{nvi/v#7ccz9Z{7{yv+z7+ciz{v9Sz#l9+ziZ#rrv++Zl{cy{vc79+#B}77zi=rlvv+iy#cr{}Byk{y+}v79Z+r+v7+9lZclyiBirzyr+y7yi{r}vv9yl+}lz7ZrSZyy+p7i}3{rBz9y#}c}77Zzu+v}+7l#iZzrBX<###}llsZyrZy};{lzi9{BB7{##Z}}7Gizr#vr+cl}}Z{}ZnDz#+}B7lZ9{Jvl9Pvrc#zrBcPBy{}}7viz77vB97l9c+zlZd.iy#ey7ciy{{Bl9v#zc+zBcZS9yZ+llzii{#Br9cv}}{z}ZvrZy++Bl7i9lWBlY0#i}y7rZcryv{l9lvcc{+Zrb7#9}Z7lirriB-9rlccyz{B}mvBE}+l{i7{rvZ9y#IcilzZrVcyy+i7}iv{zv+gB#7c9zZZyroyi+#lr}z{yB{9}#v}zz+ZBrvBv+Zllc*cyB#&{#c+Bi{Z}rvvz9ClBc7{9iZzyy1}i7#irrciv9{#9}czzB+^BB+}97Zilz{v99##rcczBZ{K}yvVz#iiB{7v99Z#l}9ziivrvyc+yl{c#{vBz9+#B+Az9ZZrlvr+il#crz+Zzw{#}}vllZ+rBv7TrcZclz_Bir}yr}c7y}vB{vv9zl+H7z7ZVsZvv+O79ic{rvc9yB}c}zBZzt++9+779iZ{#BQ9i##+zZcZyr{y}<}lzi+{Bi7zi#Z}l7&Zir#Zz+c#Bcy{}BZ;zy7}B77Z9rZvc9(lic#zzBcpBy{+9lrizr9vBrBl9cZzlcukcy#+{7civ{{Z99vyl}czBZyQ9B7+llpii{#B+9c#v}{7fZvrly+9ic7i9{cBl{l#i}#7rcc7vv{+9lvcl{+iia7vr9l7li7riBC9rlccyz{ZB^vyl}+7}i7{rvZrlyycizBZrecyyrZ7}}vzcv+9}#7}{zZ}Brjv}3&lrc{{ycl9}#v}zz+ivr7vz+ZlicM{}B#{r}9}y7yZ}rcvz{{lB}#vBBZJcy.997#irrcvyLrl}c}zzZl^By#}9lccl{:Br9#ZrcczyZ{{}vv+zl7iB{Zv9S9#l+{lrZ#rvyc{sl{i}{vBzrr#B}Zz9Zcrlv{+iv#}7{cB}1{#+}vlcZ+7B9{+9#tcl##BirryrVcyzi{{zvv9#l+9Bz7i9r*yl+y7iiB{rca9yy7}#zvZc2+y}+779iZ{lB99i#}}r7lZyr7y}9vlvi+{9B7{i#Z}c7ni}zrvr9zlyp{{}Bv1zv++#77i#rZvc9Jy-c#7zf}nyyZ}}#lizr+vB97+7cZzcZVS}y#+z7ccB{9v}TA#zK}zBZ7g9BZb{l:cz{#BB9cyc}{79cnrzvy+BvBi9{ZBlr{v7}#7iZc{}v{+}lv}l7{BBd9#9U97liLriBv*ylc}zz{izDvyz}+7Brvr9B{9l#ccizvZrrc+i+{l7iv7iv+,r#7+rl#Zlrvyi{llric{yi{rv#v}iz+irr7B7+Z#yc7{iB9jrZr}y7{Z}{ZB=++#zc77iBZtly(+}7+ir{yvy{zl}cvzzibrBy7+i7Z+y{Pvi9##rzozyZZ0}v7+zlLiBz7Z{9Z#c}I7iZ#rByc9B#7i}z*Bz7j#B}7z9cZriv,9zl#cB{ciZT{y9+}7ziyrBiB+9lZcl7{i#?#yi}c7+i{r}vvGl#vcBz9B97lyl+b7ii#zZvc99#{}vzvZl^+vB+v79cr{li99i#+}r#c{Zr{v7+vBri+l{B7rryc}l7vZilyvr+cly+{ziBvRi#++r77+crZZl9+lic+zrZ71yvZ}}lvcBr+B,97BccZz}ZUziv}+rlziyzzv}r##z+>lzZ7ryyZ{ylkii{#irry#y}Zz}iMrzZr+B##}c{ZB+fbBB}#7rZc{BB++}#{czlcBBX7#9+cl}i_{#v#r9lccyz{B}{ryz+#7Bi9r9vc9lyp}cz#Zvncv7+{llivlzZi9B#ic9#rZlriyir##{ic{+B{{v#vEzz+}Bv{y99rllcv{ic#Eryc997{i7rvZ9++l9c77rZ#Elyv}iv#irrcvyr{yBcvziB+rry7977Zcyz}vi99#r+czyZ{;}yv+B7+cz{7B#9Z#l}uzii}rrv7+ylci}{ZBzrWyl}77vZZ7cv3+il#+r7yBy<i#}+r7zczrBB#lrlZc9z=ccI#yr}clBc7r}Bz9zBzcBz7B9DZv{+>l7i#{cvc9B#{}}7{Zzr#yB9979cz{lB#rz##}BzcZZr{y++vlyi+{BiZ99#Z}l7zZir#vr+cy}c{{}Bvwl#+}B77Z97Xvl92licizrBcQyy{Oz7vizr+vZ97l9cZll}BAiy9+rlziyz#v}rv##c+7{Z7rvyZ9rlMcrz+Brqy#y}7z}ZBrzv^+Bl7+l{ZBlYG#+}#7rZcryZv+}lvczz#BB07#9}ZyZi!{7v#9clccvz{B}rByz}+7Bi7r9vZ9l#,7rz#Zr,cyv+{7}iv{yv+9B#7}#zZZlrqyc+ylric{yB5tL#v}zz+ZBr7y9lZBlcz{iB#er#c}y7{Z}lvv#++lBc7{9BZxl#wrZ7yirrcvy9{l+c}zzB+YB+v7(Zc{rvlvc9c#rcczyrlvr+Z7cic{L{lcz9Z#l}UzicZrry}+yl{i}{vBz9+yZ}77rZZrlvJ+il#crycByoz#}}Z7zidrBZZ##lZc#z)ZyH#y{}c7}i{{rv+9zl+cB7PB9biyl+J#9i#{{vc9v#{c}zvZzr9yB+#79iZ{lB^9i#c+BzcZZr{y}+vl7i+{iB799BJ}l7CZir#vr+clyc{{}Bv-z#+}i77Z9rZvlzvlicyzrB9)yyz}}7ciBr+vB97BrcZz#Z1tiBZ+r7}iy{{v}9v#zc+7ZZ7rryZ+ll5ii{#Br7c#y}zz}ZZrzvG+ByZz#{ZB#:)B}}#7{Zcr+v{9rl+cz{+BBz##9}i7liW{vv#9{lccyz{B}kvvrrl7Bivr9B99l#rcizyZrrky}+{7}ivzvv+9Z#7}z7TZlr.yirvlri}{yB{{r#v}7z+Zcr7y9+Zllcl{iBv=r#c}y7{Z}{ZBZ++lcc7zzBZVly:+}7+ir{Tvy9#l}cvzzB+rZy7+H7ZiB{0v}9#vy}}zyZzu}Bl+z79iB{lv99+#i}pziZ#{+yc+vl{cr{+Bz9+#B_#z9ZirlB{lcl#c{{cBc2{#}}vllr9rBv#+9l}clz4BiO#y+}c7Zi{r}vv9zl+}iZlB9)+yl+77ii#{rB<zr#{c9zv}7-+yZ+779ci{lB#9i#y}rzcZyr{i}+vlZi+{}B799#Z}llvZir+vr94lyc{{}Bvrz#++{77i{rZvl9Cli}ozrZ#oyy{}}7vizr+vc97#ZcZzZZmTiy#+r#yiy{+v}9}#zc+zBZ7{ByZ++lpcy{#Bz9c#yr+z}iarzv#+Bl}i9{ZO7;gy7}#7#Zcryv{+}lBczz#BBLc#9+z7l}Or9v#9Blcc9z{B9 vyz+#7Biir9Br9l#vciz#iZqcyv+{lziv{Zv+9}yvc9zcZlz{yi+ylric#+B{9+#v}lz+ZBr7y9zrllch{iBvbr#c}y7{{zrvvz++lZc7{9BZ?#yn}i7#irrcvy9{l9c+zzB+ By7lZ7Ziy{>vi9##rcczyi9J}yi+z79iB{7v99Zyv}*z9Z#r{yc+yl{i}{9Bz r#B}#z9Zcrlv!9{l#cz{cBym{yT}v7zczrBv7+9liclz0Bi/#yr}c7yi{r}vv9zl9ciz7B9:Zyl9+7ii#{rvc9y#{c}zvrBX+yB+7ljiZ{lBV9i##}rzcZir{y}+vl7cv{BB799#vZ#{}v}r6#y}9r9ivryBBr{#+}B77Z}+r#9}97^v}riv99i#yZrzrB}!i#+9l#ycZzlZ22Bzicy74Zcrly}9{#7}}zBZ7U9yviz7AZZncvicTlUi7{cBs9Byri9r+i9zyBlYV#i}#vkZcryv{+}lvcz{+iBrz#9}Z7li?rivy9rycciz{B}%vyz}+7ii7zrB#9l#{cizZZr_cyy+{#{iv{zv+9i#7}rzZZirryi+#lrc#{yBz9}#v}z7{Z9r7y9+Zl9c%{cB#{r}9}y7zZ}rvvz9rlBc7ZiBZY#y<}}7#i{rcvi9vl}cvzzZZ;Byl}97Z}B{Ovc9##{cczyZ{^}cl+z79iB{lv99i#l}oirZ#rryc+vl{i}{vBz9+#B}7B{ZZrlvR+cl}cr{cBy00}7++y7r7rZcr9{lZclzoBiP#yrccv#iz{#vv9zl+cy9+v+9+#Zc{zZBZKyv}x7#{c}zvZr}{#B}yz+Z1rv#z}}7iiiz{Birzv7+vlzi+{ylc+9l9i+{{BBrBvr+clyc{{}Bv+zZ}}Z7BZ9rZvl++{9i_{cv{WBy{}+l7izr+vB9{{riBrBvB9i#Bi{zcZrrrv{9Bylc+zBZ7k}7v}l7#Z9mcl79{lccy{}Bycl7{}#z+Zzr#B#kv#i}#7rZZ+}7ccrzcZlriy9sly+}Z7liCrBli}yllic*il99ll}c#zvZ{blyB+Z#r}7z#ZrKcyliyzzirrv#{+zl9ilz}Zlrqyi+#lricly}{EV#v}zz+ZBr7y9f+rlcrz{B#Nr#c}lj#B}glyz+r1}clzyBZjly-}B%ZZr!iy#}v7ri}z7ZzqBy7}97vvZg#v7+i#{}#zyZ{;}y#iyz{Zc)Zyl+B{}c#{lZyrcyc+yl{ii9Dvz9zl{i#{}#}4l#}}Ulycc{cByT{#iZ}{BZy)+7y+l79iZ{*vZwyy}}c7yi{rill}llviB{ZB7}Z#vclzrZB{{BB9y#{c}z#yB}v7#c+7zZ99{y{9ll#cyzrZvrcy}+vlzic++vy+rl{i}{{v+dz#y+}lcc{{}BvDrzii9{iZ7riB{9glic#{9#}+Blyc{z{Z{ #lc}+7yiz{ZZrr#y#+r7cil9z#9}}7viv{vvc+7#Z}#lrcc{#Br9c#lBlr9vc99##}c77ilrByZc7liczzrB9civl+}lvcz{+BBn7ZzrZ7v7Zi7r9vZ9l#J{z}cWByv}+7Bi7r}l8+7l#iBzyZvJcyy+{7iyZJyvz+zliilziZBrRyi+#79Zim}vZbP#v}zz+ZBr7y9lvBlcrzzB#er#c}l{BZs^vyrcr{rvyz{BZ<lyI}i7#irl+cy9z#}cvzzB+sy7lcc{cBBY#y7+#7+irr}Bl+{l+}c7zic{7v99Z#l}jzi}+lry9+yl{i}{vBz9+#B}778iirlvd+il7vlrBy}+7#:Z}{BZyQ+l7}+{rilr7Br9Zy{+#7yi{r}v#c77iZi{+vl9}z}}#zliB{rvc9y#{c}zvcz7+yZ+i79iZ{lv+cc7vc7{{B#myy+9{lzi+{BB{}lz7Z#{{BM9i#i}iz9czzlBvDz#+}yriBl9+yZ+E7+yBz{Z>Myy{}}7#r#ziZj9l#vcZzlZfmB7cZirVZyrlyc}+l#c97#Z7E9yZ+z{zZrrZyy9rzycrrrBB9ly#}vllcl{ZBlj>#BB}z7v+Yl#v++#ycz{+BB){zBc{z7Z^k+#ciBl{ir9cvc9clB}z7Zi7r9vZ9l#r}7z#Zrucylizz}ZcN}vz+zl7i+z}Zlr-yi+#lricvi}{Ss#v}zz+ZBr7y9r#BlcrzZB#Tr#c}lr!B}My#B+vr}Z}rrvB+}l#c+rcyir}i{9{l}cvzr#l}z7zvPZ99l799{biBiz#z9i7yyvirl9yr+l+cHl9B+}rZ{}zzz+{9v#r{z{9Zr##B#VrZ7+zr#+yrvyv#i{}Z#3{#}}v7rylOzyz}7{rZ9{zv99izlclzrB9;{vB9il+cBz7B}}ilyclz1Z:ruy79v#+c}zvZzNc7Zc#z7B9I9y9+zzziy{zBcrly}+vlzi+{Br7#lZZ}y7rZcr}vr+clycwBzZBzz}7+7#}i{rZvl9Clic#zr9Z7yyl}}7vizr+vB97vz_Zz#Z#eiy#+r7Zvi5##9+l7Bc97zZ7w9yZ+z{lZrr9v#cB7Bil{zBlr7vz+Bl7i9{v#iclllc77{irryv{+}l#vZr+vv9ByU}97li-riv7cLz+ilrvB+r{yz}+7Bi{9zyZ+vllBi{Bv#9{#Z+zlliv{zv+9yzBilzzBZ}z#i}9l7ic{yB{9}#v}z##+Bryy9+Zllc1{iB#7{Zc}vl2Z}rvvz+c{ZZ#r7y9+9l9czUBZrrryc+{7icBzBB+NBy7}}{1yZ<ZyBZB#7cczyZ{D}yv+zvZ9B{yv99Z#l}6ziZ#rric+Zl{i}{vBz9+#B+cy9Z}rlv^+il#cr{c+57{yg}v7zZ+rBv7c9cB=lzrZ#_#yr}c7lvyQzvr+v{{iB{rv99}{B+rlvi#{rvc9lzyi}{+vy9yz9}zzrB}r{y#+n#y+vzcZyr{yiZizlZ{rlyc9{lZci{9BX+iy7c+7#i#r+yZ9#l7cv{vZBrZcl9rlic#zr{iDyy{}}7vizr+vBr7yxcZzlZuTiy#pZ7c}y{9v}9v#zc+zB}}.9vc9#lfi}{#cv9c#y}{z}ZBrzy++Bl#i9{cBlw##}}#7rZcr9v{++lvc7{+B}gZ#9}Z7livrivy9r#5c}z{B}Pvyc}+7Zi7r9:_9l#KcizyZrucyy97i}iv{zv+9c#7c9zZclB}yi+#lric{yiz9}yZ}9z+ZZr7B{+Zllc;{iZZ_r#c}y77Z}rZvzr+l}c7{9BZ7Zytr{7#+r{vvy9{l}9vzzZ#OBZ79v7Zil{si}9#B+cczyZz6}yB+z7+iB{7v9rZv;}2zcZ#r{ycrHl{c}irBz9+#B99z9ZirlB{nvl#c{{cBZ.{#}}v#ziirBvl+9licllrBirvy{}c7Bi{{vvv9zl+cB7vB9oiyl+{7iiv{rvcrr#{c9zvZ78+yB+7#9c}{lB{9i#v}rv+Zyrv}z+vlli+7yB7RX#Z}l7WZ9rcvr+cly+g{}BBnzvO7Z77irrZvy9Ylic#zy/Bsyy7}}#yizr9vB9ll9c+ziZRxiy#5!7civ{{B9#B#z}bzBc{E9yZ+l#.i9{#B{9cZv}{z9Zv{zQc+Blli9llBlAn#i+v7ZZcrBv{9klvcz{+iBr9#9}c7li{riZy9r#+}zz{Z*fvZ7}+7Bi7r9BZ9l#{cizvZr;+yy97lciv{#v+77#7c9zZclrlyi+Blri9{yiz9}yZ77z+Z}r7Z#+ZllcJz}{#-ryr}y#7Z}rvvz3Klcc7zlBZ{cyS}i7#cz{dvy9Bl}G7zzB+5By7+z7Ziv{gB{9##zcc7yZ}!}yZ+zlliB{yv9ucy+}Nz+Z#lcyc+yl{}}{iBzSr#B}yz9cirlB{lcl#cl{cB}C{#}}vllz+rBvB+9vrclzhBirvy{}c7}i{{zvv9zl+}izvB9rrylDy7ii#{rvcrz#{}kzvZZ5+yi+7l9}{{lB{9iBZ}rz9Zy{7vi+vl#i+l#B799#Z9l7#ZirBvr+9ly+z{}ZZyc#+}}77ilrZvl9n#}c}zrZrCyyv}}7vizr+B997#{cZzZZR(}y#9rl+iy{7v}Er#z}rzBi#rlyZ+vlJci{#Br9cvy}#z}Zirzvr+Byyi9zcZB!J#9}##lZcryv{99iZczzzBB{v#9}Z7lc{z7v#9ylc+iz{B}6vyz9Z7Biyr9Bu9l#{ci7#i}_cyB+{#Biv{#v+{B}{c9zcZlzJyi{zlr+cBlB{99#v+iz++#r7v
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+ 
+local player = Players.LocalPlayer
+local leaderstats = player:WaitForChild("leaderstats")
+local moneyStat = leaderstats:WaitForChild("Money")
+ 
+local toggleGui = Instance.new("ScreenGui")
+toggleGui.Name = "ToggleMoneyGui"
+toggleGui.ResetOnSpawn = false
+toggleGui.IgnoreGuiInset = true
+toggleGui.Parent = player:WaitForChild("PlayerGui")
+ 
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 44, 0, 44)
+button.Position = UDim2.new(0, 20, 1, -64)
+button.BackgroundColor3 = Color3.fromRGB(0, 170, 127)
+button.Text = "🤑"
+button.Font = Enum.Font.GothamBold
+button.TextSize = 22
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.AutoButtonColor = false
+button.Active = true
+button.Draggable = true
+button.Parent = toggleGui
+Instance.new("UICorner", button).CornerRadius = UDim.new(1, 0)
+ 
+local function createMoneyGui()
+	if player.PlayerGui:FindFirstChild("MoneyChangerUI") then return end
+ 
+	local gui = Instance.new("ScreenGui")
+	gui.Name = "MoneyChangerUI"
+	gui.ResetOnSpawn = false
+	gui.IgnoreGuiInset = true
+	gui.Parent = player.PlayerGui
+ 
+	local scale = Instance.new("UIScale")
+	scale.Scale = UserInputService.TouchEnabled and 1 or 1.1
+	scale.Parent = gui
+ 
+	local frame = Instance.new("Frame")
+	frame.Size = UDim2.new(0, 240, 0, 180)
+	frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	frame.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+	frame.Active = true
+	frame.Draggable = true
+	frame.Parent = gui
+	Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
+ 
+	local layout = Instance.new("UIListLayout", frame)
+	layout.SortOrder = Enum.SortOrder.LayoutOrder
+	layout.Padding = UDim.new(0, 6)
+ 
+	local padding = Instance.new("UIPadding", frame)
+	padding.PaddingTop = UDim.new(0, 8)
+	padding.PaddingBottom = UDim.new(0, 8)
+	padding.PaddingLeft = UDim.new(0, 12)
+	padding.PaddingRight = UDim.new(0, 12)
+ 
+	local title = Instance.new("TextLabel")
+	title.Size = UDim2.new(1, 0, 0, 28)
+	title.Text = "FIN 修改金钱(买一次后再第一次)"
+	title.Font = Enum.Font.GothamBold
+	title.TextSize = 20
+	title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	title.BackgroundTransparency = 1
+	title.LayoutOrder = 0
+	title.TextXAlignment = Enum.TextXAlignment.Left
+	title.Parent = frame
+ 
+	local input = Instance.new("TextBox")
+	input.Size = UDim2.new(1, 0, 0, 34)
+	input.PlaceholderText = "数值"
+	input.Text = ""
+	input.Font = Enum.Font.Gotham
+	input.TextSize = 16
+	input.TextColor3 = Color3.fromRGB(255, 255, 255)
+	input.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	input.ClearTextOnFocus = false
+	input.LayoutOrder = 1
+	input.Parent = frame
+	Instance.new("UICorner", input).CornerRadius = UDim.new(0, 6)
+ 
+	local confirm = Instance.new("TextButton")
+	confirm.Size = UDim2.new(1, 0, 0, 34)
+	confirm.Text = "启动"
+	confirm.Font = Enum.Font.GothamBold
+	confirm.TextSize = 16
+	confirm.TextColor3 = Color3.fromRGB(255, 255, 255)
+	confirm.BackgroundColor3 = Color3.fromRGB(0, 160, 120)
+	confirm.LayoutOrder = 2
+	confirm.Parent = frame
+	Instance.new("UICorner", confirm).CornerRadius = UDim.new(0, 6)
+ 
+	local close = Instance.new("TextButton")
+	close.Size = UDim2.new(0, 24, 0, 24)
+	close.Position = UDim2.new(1, -10, 0, -10)
+	close.AnchorPoint = Vector2.new(1, 0)
+	close.Text = "✖"
+	close.Font = Enum.Font.GothamBold
+	close.TextSize = 14
+	close.TextColor3 = Color3.fromRGB(255, 255, 255)
+	close.BackgroundColor3 = Color3.fromRGB(160, 50, 50)
+	close.Parent = frame
+	Instance.new("UICorner", close).CornerRadius = UDim.new(1, 0)
+ 
+	close.MouseButton1Click:Connect(function()
+		gui:Destroy()
+	end)
+ 
+	confirm.MouseButton1Click:Connect(function()
+		local amount = tonumber(input.Text)
+		if amount then
+			moneyStat.Value = amount
+			input.Text = ""
+			TweenService:Create(confirm, TweenInfo.new(0.2), {
+				BackgroundColor3 = Color3.fromRGB(0, 200, 150)
+			}):Play()
+			task.delay(0.5, function()
+				TweenService:Create(confirm, TweenInfo.new(0.2), {
+					BackgroundColor3 = Color3.fromRGB(0, 160, 120)
+				}):Play()
+			end)
+		else
+			input.Text = "Invalid!"
+			task.delay(1.2, function()
+				input.Text = ""
+			end)
+		end
+	end)
+end
+ 
+button.MouseButton1Click:Connect(function()
+	local existing = player.PlayerGui:FindFirstChild("MoneyChangerUI")
+	if existing then
+		existing:Destroy()
+	else
+		createMoneyGui()
+	end
+end)
