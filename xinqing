@@ -783,6 +783,10 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+Tab:AddButton({
+  Name = "脑红1",
+  Default = false,
+  Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub"))()
   end
 })
