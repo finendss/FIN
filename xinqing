@@ -776,3 +776,13 @@ Tab:AddButton({
 loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()
   end
 })
+
+local Tab = Window:MakeTab({
+    Name = "偷走脑红",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub"))()
+  end
+})
