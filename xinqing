@@ -665,7 +665,7 @@ Tab:AddButton({
   Name = "FIN被遗弃",
   Default = false,
   Callback = function(Value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/qq-352602248/refs/heads/main/FinSend"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/qq-352602248/refs/heads/main/Forsaken"))()
   end
 })
 
