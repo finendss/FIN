@@ -657,6 +657,22 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ChinaQY/Scripts/Main/
   end
 })
 
+Tab:AddButton({
+  Name = "被遗弃(FIN汉化)",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FINED921/qq-155723303/refs/heads/main/Translation"))()
+  end
+})
+
+Tab:AddButton({
+  Name = "访客假防御",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FINED921/qq-155723303/refs/heads/main/FIN%20false%20defense"))()
+  end
+})
+
 local Section = Tab:AddSection({
 	Name = "自制FIN被遗弃脚本"
 })
