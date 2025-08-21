@@ -759,7 +759,7 @@ Tab:AddButton({
   Name = "修改钱数(买一次再修改一次)",
   Default = false,
   Callback = function(Value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/qq-352602248/refs/heads/main/M.E.G"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FINED921/qq-155723303/refs/heads/main/MEG"))()
   end
 })
 
