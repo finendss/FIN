@@ -790,3 +790,17 @@ Tab:AddButton({
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub"))()
   end
 })
+
+local Tab = Window:MakeTab({
+    Name = "AUT",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "老外AUT1",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AkatsukiHub1/A-Universal-Time/refs/heads/main/README.md"))()
+  end
+})
