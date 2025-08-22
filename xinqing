@@ -71,9 +71,9 @@ Tab:AddParagraph("作者","鑫晴")
 Tab:AddParagraph("欢迎使用FIN脚本","脚本将持续云更新")
 Tab:AddParagraph("此脚本完全免费","永不会跑路")
 Tab:AddParagraph("禁止倒卖")
-Tab:AddParagraph("更新日志","被遗弃汉化更新")
-Tab:AddParagraph("更新AUT海外脚本","更新被遗弃访客假防御")
-Tab:AddParagraph("无","无")
+Tab:AddParagraph("更新日志","更新 FIN被遗弃")
+Tab:AddParagraph("添加 战争大亨英文","添加 探测中英文")
+Tab:AddParagraph("预告 项目scp自制","无")
 
 
 Tab:AddButton ({--这个就相当于一个按钮
