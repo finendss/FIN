@@ -830,6 +830,20 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/AkatsukiHub1/A-Univer
 })
 
 local Tab = Window:MakeTab({
+    Name = "探测中",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "探测中1",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MajestySkie/list/refs/heads/main/games"))()
+  end
+})
+
+local Tab = Window:MakeTab({
     Name = "战争大亨",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
