@@ -2,10 +2,10 @@ local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footag
 
 
 local Window = WindUI:CreateWindow({
-    Title = "FIN v2",
+    Title = "FIN V2 Hub",
     Icon = "pocket",
     Folder = "CompactGameFunctions",
-    Size = UDim2.fromOffset(350, 250),  -- 缩小一倍
+    Size = UDim2.fromOffset(350, 250), 
     Theme = "Sky",
     SideBarWidth = 120 
 })
