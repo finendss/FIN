@@ -57,7 +57,7 @@ MainTab:Button({
     end
 })
 
-MainTab:Divider({ Text = "玩家工具" })
+MainTab:Divider({ Text = "主功能" })
 
 MainTab:Button({
     Title = "FPS显示",
@@ -86,7 +86,7 @@ MainTab:Button({
     end
 })
 
-SpecialTab:Button({
+MainTab:Button({
     Title = "死亡笔记",
     Icon = "book",
     Size = "sm",
@@ -95,7 +95,7 @@ SpecialTab:Button({
     end
 })
 
-SpecialTab:Button({
+MainTab:Button({
     Title = "踏空",
     Icon = "cloud",
     Size = "sm",
@@ -104,7 +104,7 @@ SpecialTab:Button({
     end
 })
 
-SpecialTab:Button({
+MainTab:Button({
     Title = "无限跳",
     Icon = "arrow-up",
     Size = "sm",
@@ -113,9 +113,9 @@ SpecialTab:Button({
     end
 })
 
-SpecialTab:Divider({ Text = "特殊动作" })
+MainTab:Divider({ Text = "惶惶的" })
 
-SpecialTab:Button({
+MainTab:Button({
     Title = "R6撸管",
     Icon = "user",
     Size = "sm",
@@ -124,7 +124,7 @@ SpecialTab:Button({
     end
 })
 
-SpecialTab:Button({
+MainTab:Button({
     Title = "R15撸管",
     Icon = "users",
     Size = "sm",
