@@ -187,7 +187,7 @@ Tabs.ParagraphTab:Paragraph({
     Desc = "脚本将持续云更新",
     Image = "https://play-lh.googleusercontent.com/7cIIPlWm4m7AGqVpEsIfyL-HW4cQla4ucXnfalMft1TMIYQIlf2vqgmthlZgbNAQoaQ",
     ImageSize = 42, -- default 30
-    Thumbnail = "https://tr.rbxcdn.com/180DAY-59af3523ad8898216dbe1043788837bf/768/432/Image/Webp/noFilter",
+    Thumbnail = "rbxassetid://108646851620147",
     ThumbnailSize = 120 -- Thumbnail height
 })
 Tabs.ParagraphTab:Paragraph({
