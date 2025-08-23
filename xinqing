@@ -72,10 +72,6 @@ local SliderTab = Window:Section({ Title = "介绍" }):Tab({
 
 MainTab:Divider({ Text = "作者" })
 
-Tab:AddParagraph("作者","鑫晴")
-    end
-})
-
 
 local MainTab = Window:Section({ Title = "主功能" }):Tab({ 
     Title = "通用功能",
