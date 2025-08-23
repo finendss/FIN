@@ -1,5 +1,4 @@
--- 禁止倒卖
-local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
 
 
 
@@ -51,71 +50,204 @@ WindUI:Popup({
 })
 
 
-repeat wait() until Confirmed
-
---
-
+-- 创建紧凑型主窗口
 local Window = WindUI:CreateWindow({
-    Title = "FIN | 主脚本",
-    Icon = "rbxassetid://108646851620147",
-    IconThemed = true,
-    Author = "FIN v2",
-    Folder = "CloudHub",
-    Size = UDim2.fromOffset(580, 460),
-    Transparent = true,
+    Title = "FIN V2",
+    Icon = "pocket",
+    Folder = "CompactGameFunctions",
+    Size = UDim2.fromOffset(350, 250),  -- 缩小一倍
     Theme = "Sky",
-    User = {
-        Enabled = true, -- <- or false
-        Callback = function() print("clicked") end, -- <- optional
-        Anonymous = true -- <- or true
-    },
-    SideBarWidth = 200,
-    -- HideSearchBar = true, -- hides searchbar
-    ScrollBarEnabled = true, -- enables scrollbar
-    -- Background = "rbxassetid://13511292247", -- rbxassetid only
-
-    -- remove it below if you don't want to use the key system in your script.
-    KeySystem = { -- <- keysystem enabled
-        Key = { "66992580", "10293847560" },
-        Note = "请输入你的卡密",
-        -- Thumbnail = {
-        --     Image = "rbxassetid://18220445082", -- rbxassetid only
-        --     Title = "Thumbnail"
-        -- },
-        URL = "155723303", -- remove this if the key is not obtained from the link.
-        SaveKey = true, -- saves key : optional
-    },
+    SideBarWidth = 120  -- 缩小侧边栏
 })
 
--- Window:SetBackgroundImage("rbxassetid://13511292247")
--- Window:SetBackgroundImageTransparency(0.9)
+-- 创建紧凑标签页
+local MainTab = Window:Section({ Title = "主功能" }):Tab({ 
+    Title = "常用功能",
+    Icon = "grid"
+})
 
+-- 组合式按钮布局
+MainTab:Divider({ Text = "核心功能" })
 
--- TopBar Edit
+MainTab:Button({
+    Title = "光影",
+    Icon = "sun",
+    Size = "sm",  -- 小型按钮
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"))()
+    end
+})
 
--- Disable Topbar Buttons
--- Window:DisableTopbarButtons({
---     "Close", 
---     "Minimize", 
---     "Fullscreen",
--- })
+MainTab:Button({
+    Title = "画质",
+    Icon = "monitor",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/jHBfJYmS"))()
+    end
+})
 
--- Create Custom Topbar Buttons
---                        ↓ Name             ↓ Icon          ↓ Callback                           ↓ LayoutOrder
-Window:CreateTopbarButton("MyCustomButton1", "bird",         function() print("clicked 1!") end,  990)
-Window:CreateTopbarButton("MyCustomButton2", "droplet-off",  function() print("clicked 2!") end,  989)
-Window:CreateTopbarButton("MyCustomButton3", "battery-plus", function() Window:ToggleFullscreen() end, 988)
+MainTab:Button({
+    Title = "飞行",
+    Icon = "feather",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
+    end
+})
 
+MainTab:Button({
+    Title = "飞车",
+    Icon = "car",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/vb/main/%E9%A3%9E%E8%BD%A6.lua"))()
+    end
+})
 
-Window:EditOpenButton({
-    Title = "FIN v2 Hub",
-    Icon = "pocket",
-    CornerRadius = UDim.new(0,16),
-    StrokeThickness = 2,
-    Color = ColorSequence.new( -- gradient
-        Color3.fromHex("FF0F7B"), 
-        Color3.fromHex("F89B29")
-    ),
-    --Enabled = false,
-    Draggable = true,
+MainTab:Divider({ Text = "玩家工具" })
+
+MainTab:Button({
+    Title = "FPS显示",
+    Icon = "bar-chart-2",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastefy.app/d9j82YJr/raw",true))()
+    end
+})
+
+MainTab:Button({
+    Title = "玩家提示",
+    Icon = "user-plus",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))()
+    end
+})
+
+MainTab:Button({
+    Title = "虚拟键盘",
+    Icon = "keyboard",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
+    end
+})
+
+-- 创建特殊功能标签页
+local SpecialTab = Window:Section({ Title = "特殊功能" }):Tab({ 
+    Title = "高级功能",
+    Icon = "zap"
+})
+
+SpecialTab:Divider({ Text = "特殊能力" })
+
+SpecialTab:Button({
+    Title = "死亡笔记",
+    Icon = "book",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/tt/main/%E6%AD%BB%E4%BA%A1%E7%AC%94%E8%AE%B0%20(1).txt"))()
+    end
+})
+
+SpecialTab:Button({
+    Title = "踏空",
+    Icon = "cloud",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
+    end
+})
+
+SpecialTab:Button({
+    Title = "无限跳",
+    Icon = "arrow-up",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/V5PQy3y0", true))()
+    end
+})
+
+SpecialTab:Divider({ Text = "特殊动作" })
+
+SpecialTab:Button({
+    Title = "R6动作",
+    Icon = "user",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
+    end
+})
+
+SpecialTab:Button({
+    Title = "R15动作",
+    Icon = "users",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))()
+    end
+})
+
+-- 创建甩飞功能专用标签页
+local FlingTab = Window:Section({ Title = "物理功能" }):Tab({ 
+    Title = "甩飞系统",
+    Icon = "wind"
+})
+
+FlingTab:Divider({ Text = "基础甩飞" })
+
+FlingTab:Button({
+    Title = "铁拳",
+    Icon = "fist",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_rf6iQURzu1fqrytcnLBAvW34C9N55kS9g9G3CKz086rC47M6632sEd4ZZYB0AYgV.lua.txt'))()
+    end
+})
+
+FlingTab:Button({
+    Title = "旋转",
+    Icon = "rotate-cw",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/tt/main/%E6%97%8B%E8%BD%AC.lua"))()
+    end
+})
+
+FlingTab:Button({
+    Title = "触碰即飞",
+    Icon = "move",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/0Ben1/fe./main/Fling%20GUI"))()
+    end
+})
+
+FlingTab:Divider({ Text = "高级甩飞" })
+
+FlingTab:Button({
+    Title = "指定目标",
+    Icon = "crosshair",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet(('https://pastefy.app/9SmQXduA/raw'),true))()
+    end
+})
+
+FlingTab:Button({
+    Title = "全图甩飞",
+    Icon = "globe",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/zqyDSUWX"))()
+    end
+})
+
+-- 添加紧凑型通知
+WindUI:Notify({
+    Title = "精简UI已加载",
+    Content = "所有功能在紧凑界面中可用",
+    Duration = 3,
+    Size = "sm"
 })
