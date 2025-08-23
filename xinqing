@@ -3,7 +3,7 @@ local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footag
 
 local Window = WindUI:CreateWindow({
     Title = "FIN V2 Hub",
-    Icon = "pocket",
+    Icon = "rbxassetid://108646851620147",
     Folder = "CompactGameFunctions",
     Size = UDim2.fromOffset(350, 250), 
     Theme = "Sky",
@@ -13,7 +13,7 @@ local Window = WindUI:CreateWindow({
 
 local MainTab = Window:Section({ Title = "主功能" }):Tab({ 
     Title = "通用功能",
-    Icon = "grid"
+    Icon = "rbxassetid://108646851620147"
 })
 
 
@@ -21,7 +21,7 @@ MainTab:Divider({ Text = "画质与光影" })
 
 MainTab:Button({
     Title = "光影",
-    Icon = "sun",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm", 
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"))()
@@ -30,7 +30,7 @@ MainTab:Button({
 
 MainTab:Button({
     Title = "画质",
-    Icon = "monitor",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/jHBfJYmS"))()
@@ -41,7 +41,7 @@ MainTab:Divider({ Text = "飞行区" })
 
 MainTab:Button({
     Title = "飞行",
-    Icon = "feather",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
@@ -50,7 +50,7 @@ MainTab:Button({
 
 MainTab:Button({
     Title = "飞车",
-    Icon = "car",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/vb/main/%E9%A3%9E%E8%BD%A6.lua"))()
@@ -61,7 +61,7 @@ MainTab:Divider({ Text = "主功能" })
 
 MainTab:Button({
     Title = "FPS显示",
-    Icon = "bar-chart-2",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://pastefy.app/d9j82YJr/raw",true))()
@@ -70,7 +70,7 @@ MainTab:Button({
 
 MainTab:Button({
     Title = "玩家进入提示",
-    Icon = "user-plus",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))()
@@ -79,7 +79,7 @@ MainTab:Button({
 
 MainTab:Button({
     Title = "电脑键盘",
-    Icon = "keyboard",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
@@ -88,7 +88,7 @@ MainTab:Button({
 
 MainTab:Button({
     Title = "死亡笔记",
-    Icon = "book",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/tt/main/%E6%AD%BB%E4%BA%A1%E7%AC%94%E8%AE%B0%20(1).txt"))()
@@ -97,7 +97,7 @@ MainTab:Button({
 
 MainTab:Button({
     Title = "踏空",
-    Icon = "cloud",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
@@ -106,7 +106,7 @@ MainTab:Button({
 
 MainTab:Button({
     Title = "无限跳",
-    Icon = "arrow-up",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/V5PQy3y0", true))()
@@ -117,7 +117,7 @@ MainTab:Divider({ Text = "惶惶的" })
 
 MainTab:Button({
     Title = "R6撸管",
-    Icon = "user",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
@@ -126,7 +126,7 @@ MainTab:Button({
 
 MainTab:Button({
     Title = "R15撸管",
-    Icon = "users",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))()
@@ -136,14 +136,14 @@ MainTab:Button({
 
 local FlingTab = Window:Section({ Title = "甩飞与传送" }):Tab({ 
     Title = "甩飞区",
-    Icon = "wind"
+    Icon = "rbxassetid://108646851620147"
 })
 
 FlingTab:Divider({ Text = "甩飞" })
 
 FlingTab:Button({
     Title = "指定甩飞(简易版)",
-    Icon = "crosshair",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet(('https://pastefy.app/9SmQXduA/raw'),true))()
@@ -152,7 +152,7 @@ FlingTab:Button({
 
 FlingTab:Button({
     Title = "全图甩飞",
-    Icon = "globe",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/zqyDSUWX"))()
@@ -161,7 +161,7 @@ FlingTab:Button({
 
 FlingTab:Button({
     Title = "铁拳",
-    Icon = "fist",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_rf6iQURzu1fqrytcnLBAvW34C9N55kS9g9G3CKz086rC47M6632sEd4ZZYB0AYgV.lua.txt'))()
@@ -170,7 +170,7 @@ FlingTab:Button({
 
 FlingTab:Button({
     Title = "旋转甩飞",
-    Icon = "rotate-cw",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/tt/main/%E6%97%8B%E8%BD%AC.lua"))()
@@ -179,7 +179,7 @@ FlingTab:Button({
 
 FlingTab:Button({
     Title = "碰到就飞",
-    Icon = "move",
+    Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/0Ben1/fe./main/Fling%20GUI"))()
