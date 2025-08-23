@@ -168,9 +168,9 @@ do
         IconThemed = true, 
         Desc = "Long Description" 
     })
-    Tabs.LockedTab = Tabs.OtherSection:Tab({ Title = "Locked Tab", Icon = "lock", Desc = "This tab is locked", Locked = true })
-    Tabs.TabWithoutIcon = Tabs.OtherSection:Tab({ Title = "Tab Without icon", ShowTabTitle = true })
-    Tabs.Tests = Tabs.OtherSection:Tab({ Title = "Tests", Icon = "https://raw.githubusercontent.com/Footagesus/WindUI/main/docs/ui.png", ShowTabTitle = true })
+    
+    Tabs.TabWithoutIcon = Tabs.OtherSection:Tab({ Title = "WindUi获取", ShowTabTitle = true })
+    Tabs.Tests = Tabs.OtherSection:Tab({ Title = "获取", Icon = "https://raw.githubusercontent.com/Footagesus/WindUI/main/docs/ui.png", ShowTabTitle = true })
     
     
     Tabs.LastSection = Window:Section({
