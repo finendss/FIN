@@ -87,19 +87,6 @@ MainTab:Button({
     end
 })
 
-MainTab:Button({
-    Title = "点击复制FIN主群",
-    Icon = "rbxassetid://108646851620147",
-    Size = "sm",
-    Callback = function()
-        setclipboard("155723303")
-        WindUI:Notify({
-            Title = "FIN主群已复制",
-            Content = "已复制到剪贴板",
-            Duration = 3,
-            Size = "sm"
-})
-
 
     Title = "通用功能",
     Icon = "rbxassetid://108646851620147"
