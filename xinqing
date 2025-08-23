@@ -63,7 +63,6 @@ local Window = WindUI:CreateWindow({
     SideBarWidth = 120 
 })
 
-
 local MainTab = Window:Section({ Title = "主功能" }):Tab({ 
     Title = "通用功能",
     Icon = "rbxassetid://108646851620147"
