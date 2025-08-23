@@ -1,6 +1,59 @@
 local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
 
 
+
+
+
+
+
+
+
+
+function gradient(text, startColor, endColor)
+    local result = ""
+    local length = #text
+
+    for i = 1, length do
+        local t = (i - 1) / math.max(length - 1, 1)
+        local r = math.floor((startColor.R + (endColor.R - startColor.R) * t) * 255)
+        local g = math.floor((startColor.G + (endColor.G - startColor.G) * t) * 255)
+        local b = math.floor((startColor.B + (endColor.B - startColor.B) * t) * 255)
+
+        local char = text:sub(i, i)
+        result = result .. "<font color=\"rgb(" .. r ..", " .. g .. ", " .. b .. ")\">" .. char .. "</font>"
+    end
+
+    return result
+end
+
+local Confirmed = false
+
+WindUI:Popup({
+    Title = "FIN脚本V2",
+    Icon = "rbxassetid://108646851620147",
+    IconThemed = true,
+    Content = "一个半缝合半自制 " .. gradient("FIN", Color3.fromHex("#00FF87"), Color3.fromHex("#60EFFF")) .. " 脚本",
+    Buttons = {
+        {
+            Title = "关闭",
+            --Icon = "",
+            Callback = function() end,
+            Variant = "Secondary", -- Primary, Secondary, Tertiary
+        },
+        {
+            Title = "启动",
+            Icon = "arrow-right",
+            Callback = function() Confirmed = true end,
+            Variant = "Primary", -- Primary, Secondary, Tertiary
+        }
+    }
+})
+
+
+repeat wait() until Confirmed
+
+--
+
 local Window = WindUI:CreateWindow({
     Title = "FIN V2 Hub",
     Icon = "rbxassetid://108646851620147",
