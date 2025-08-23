@@ -63,50 +63,44 @@ local Window = WindUI:CreateWindow({
     SideBarWidth = 120 
 })
 
-local AboutTab = Window:Section({ Title = "主页" }):Tab({ 
-    Title = "关于",
+local MainTab = Window:Section({ Title = "主功能" }):Tab({ 
+    Title = "关于作者",
     Icon = "rbxassetid://108646851620147"
 })
 
-AboutTab:Divider({ Text = "介绍" })
+MainTab:Divider({ Text = "介绍" })
 
 
-AboutTab:Button({
+MainTab:Button({
     Title = "作者 鑫晴",
-    Content = "欢迎使用FIN脚本 脚本将持续云更新且免费 禁止倒卖和翻库 不然4000家"
+    Icon = "rbxassetid://108646851620147",
+    Size = "sm", 
+    Callback = function()
+    end
 })
 
-AboutTab:Button({
-    Title = "FIN Hub主群",
+MainTab:Button({
+    Title = "欢迎使用FIN V2 会持续云更新 禁止倒卖和翻库 不然4000家",
+    Icon = "rbxassetid://108646851620147",
+    Size = "sm", 
+    Callback = function()
+    end
+})
+
+MainTab:Button({
+    Title = "点击复制FIN主群",
     Icon = "rbxassetid://108646851620147",
     Size = "sm",
     Callback = function()
         setclipboard("155723303")
         WindUI:Notify({
-            Title = "Q群已复制",
+            Title = "FIN主群已复制",
             Content = "已复制到剪贴板",
             Duration = 3,
             Size = "sm"
-        })
-    end
-})
-
-AboutTab:Button({
-    Title = "脚本作者qq",
-    Icon = "rbxassetid://108646851620147",
-    Size = "sm",
-    Callback = function()
-        setclipboard("352602248")
-        WindUI:Notify({
-            Title = 作者qq已复制",
-            Content = "已复制到剪贴板",
-            Duration = 3,
-            Size = "sm"
-    end
 })
 
 
-local MainTab = Window:Section({ Title = "主功能" }):Tab({ 
     Title = "通用功能",
     Icon = "rbxassetid://108646851620147"
 })
