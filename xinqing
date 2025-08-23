@@ -134,12 +134,30 @@ MainTab:Button({
 })
 
 
-local FlingTab = Window:Section({ Title = "物理功能" }):Tab({ 
+local FlingTab = Window:Section({ Title = "甩飞与传送" }):Tab({ 
     Title = "甩飞区",
     Icon = "wind"
 })
 
 FlingTab:Divider({ Text = "甩飞" })
+
+FlingTab:Button({
+    Title = "指定甩飞(简易版)",
+    Icon = "crosshair",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet(('https://pastefy.app/9SmQXduA/raw'),true))()
+    end
+})
+
+FlingTab:Button({
+    Title = "全图甩飞",
+    Icon = "globe",
+    Size = "sm",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/zqyDSUWX"))()
+    end
+})
 
 FlingTab:Button({
     Title = "铁拳",
@@ -165,24 +183,6 @@ FlingTab:Button({
     Size = "sm",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/0Ben1/fe./main/Fling%20GUI"))()
-    end
-})
-
-FlingTab:Button({
-    Title = "指定甩飞(简易版)",
-    Icon = "crosshair",
-    Size = "sm",
-    Callback = function()
-        loadstring(game:HttpGet(('https://pastefy.app/9SmQXduA/raw'),true))()
-    end
-})
-
-FlingTab:Button({
-    Title = "全图甩飞",
-    Icon = "globe",
-    Size = "sm",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/zqyDSUWX"))()
     end
 })
 
