@@ -54,11 +54,6 @@ repeat wait() until Confirmed
 
 --
 
-Window:CreateTopbarButton("MyCustomButton1", "bird",         function() print("clicked 1!") end,  990)
-Window:CreateTopbarButton("MyCustomButton2", "droplet-off",  function() print("clicked 2!") end,  989)
-Window:CreateTopbarButton("MyCustomButton3", "battery-plus", function() Window:ToggleFullscreen() end, 988)
-
-
 local Window = WindUI:CreateWindow({
     Title = "FIN V2 Hub",
     Icon = "rbxassetid://108646851620147",
