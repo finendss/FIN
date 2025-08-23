@@ -169,16 +169,13 @@ do
         Desc = "喵喵喵" 
     })
     
-    Tabs.TabWithoutIcon = Tabs.OtherSection:Tab({ Title = "巴掌模拟器", Icon = "rbxassetid://108646851620147", ShowTabTitle = true })
-    Tabs.Tests = Tabs.OtherSection:Tab({ Title = "WindUi获取", Icon = "https://raw.githubusercontent.com/Footagesus/WindUI/main/docs/ui.png", ShowTabTitle = true })
-    
     
     Tabs.LastSection = Window:Section({
-        Title = "Section without tabs",
+        Title = "后面有用",
         --Opened = true,
     })
     
-    Tabs.ConfigTab = Window:Tab({ Title = "Config", Icon = "file-cog" })
+    Tabs.ConfigTab = Window:Tab({ Title = "后面有用", Icon = "file-cog" })
 end
 
 
