@@ -64,15 +64,6 @@ local Window = WindUI:CreateWindow({
 })
 
 
-local SliderTab = Window:Section({ Title = "介绍" }):Tab({ 
-    Title = "脚本介绍",
-    Icon = "rbxassetid://108646851620147"
-})
-
-
-MainTab:Divider({ Text = "作者" })
-
-
 local MainTab = Window:Section({ Title = "主功能" }):Tab({ 
     Title = "通用功能",
     Icon = "rbxassetid://108646851620147"
