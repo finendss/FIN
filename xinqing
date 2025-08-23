@@ -31,9 +31,9 @@ local Confirmed = false
 
 WindUI:Popup({
     Title = "FIN脚本V2",
-    Icon = "rbxassetid://129260712070622",
+    Icon = "rbxassetid://108646851620147",
     IconThemed = true,
-    Content = "一个半缝合半自制 " .. gradient("cool", Color3.fromHex("#00FF87"), Color3.fromHex("#60EFFF")) .. " 脚本",
+    Content = "一个半缝合半自制 " .. gradient("FIN", Color3.fromHex("#00FF87"), Color3.fromHex("#60EFFF")) .. " 脚本",
     Buttons = {
         {
             Title = "关闭",
@@ -57,7 +57,7 @@ repeat wait() until Confirmed
 
 local Window = WindUI:CreateWindow({
     Title = "FIN | 主脚本",
-    Icon = "rbxassetid://129260712070622",
+    Icon = "rbxassetid://108646851620147",
     IconThemed = true,
     Author = "FIN v2",
     Folder = "CloudHub",
@@ -79,7 +79,7 @@ local Window = WindUI:CreateWindow({
         Key = { "66992580", "10293847560" },
         Note = "请输入你的卡密",
         -- Thumbnail = {
-        --     Image = "rbxassetid://18220445082", -- rbxassetid only
+        --     Image = "rbxassetid://108646851620147", -- rbxassetid only
         --     Title = "Thumbnail"
         -- },
         URL = "155723303", -- remove this if the key is not obtained from the link.
@@ -88,7 +88,7 @@ local Window = WindUI:CreateWindow({
 })
 
 
--- Window:SetBackgroundImage("rbxassetid://13511292247")
+-- Window:SetBackgroundImage("rbxassetid://108646851620147")
 -- Window:SetBackgroundImageTransparency(0.9)
 
 
@@ -142,12 +142,12 @@ do
     })
 
     
-    Tabs.ParagraphTab = Tabs.ElementsSection:Tab({ Title = "介绍", Icon = "type" })
-    Tabs.ButtonTab = Tabs.ElementsSection:Tab({ Title = "通用", Icon = "type", Desc = "Contains interactive buttons for various actions." })
-    Tabs.CodeTab = Tabs.ElementsSection:Tab({ Title = "飞行区", Icon = "type", Desc = "Displays and manages code snippets." })
-    Tabs.ColorPickerTab = Tabs.ElementsSection:Tab({ Title = "光影与画质", Icon = "type", Desc = "Choose and customize colors easily." })
-    Tabs.DialogTab = Tabs.ElementsSection:Tab({ Title = "惶惶的", Icon = "type", Desc = "Dialog lol" })
-    Tabs.NotificationTab = Tabs.ElementsSection:Tab({ Title = "甩飞区", Icon = "bell", Desc = "Configure and view notifications." })
+    Tabs.ParagraphTab = Tabs.ElementsSection:Tab({ Title = "介绍", Icon = "rbxassetid://108646851620147" })
+    Tabs.ButtonTab = Tabs.ElementsSection:Tab({ Title = "通用", Icon = "rbxassetid://108646851620147", Desc = "Contains interactive buttons for various actions." })
+    Tabs.CodeTab = Tabs.ElementsSection:Tab({ Title = "飞行区", Icon = "rbxassetid://108646851620147", Desc = "Displays and manages code snippets." })
+    Tabs.ColorPickerTab = Tabs.ElementsSection:Tab({ Title = "光影与画质", Icon = "rbxassetid://108646851620147", Desc = "Choose and customize colors easily." })
+    Tabs.DialogTab = Tabs.ElementsSection:Tab({ Title = "惶惶的", Icon = "rbxassetid://108646851620147", Desc = "Dialog lol" })
+    Tabs.NotificationTab = Tabs.ElementsSection:Tab({ Title = "甩飞区", Icon = "rbxassetid://108646851620147", Desc = "Configure and view notifications." })
     Tabs.ToggleTab = Tabs.ElementsSection:Tab({ Title = "Toggle", Icon = "toggle-left", Desc = "Switch settings on and off." })
     Tabs.SliderTab = Tabs.ElementsSection:Tab({ Title = "Slider", Icon = "sliders-horizontal", Desc = "Adjust values smoothly with sliders." })
     Tabs.InputTab = Tabs.ElementsSection:Tab({ Title = "Input", Icon = "keyboard", Desc = "Accept text and numerical input." })
@@ -155,16 +155,16 @@ do
     Tabs.DropdownTab = Tabs.ElementsSection:Tab({ Title = "Dropdown", Icon = "chevrons-up-down", Desc = "Select from multiple options." })
     
     Tabs.WindowTab = Tabs.WindowSection:Tab({ 
-        Title = "Window and File Configuration", 
+        Title = "UI颜色", 
         Icon = "settings", 
         Desc = "Manage window settings and file configurations.", 
         ShowTabTitle = true 
     })
-    Tabs.CreateThemeTab = Tabs.WindowSection:Tab({ Title = "Create Theme", Icon = "palette", Desc = "Design and apply custom themes." })
+    Tabs.CreateThemeTab = Tabs.WindowSection:Tab({ Title = "UI字颜色", Icon = "palette", Desc = "Design and apply custom themes." })
     
     Tabs.LongTab = Tabs.OtherSection:Tab({ 
-        Title = "Long and empty tab. with custom icon", 
-        Icon = "rbxassetid://129260712070622", 
+        Title = "森林99夜", 
+        Icon = "rbxassetid://108646851620147", 
         IconThemed = true, 
         Desc = "Long Description" 
     })
