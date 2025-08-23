@@ -197,59 +197,7 @@ Tabs.ParagraphTab:Paragraph({
     ImageSize = 42, -- default 30
     Thumbnail = "https://tr.rbxcdn.com/180DAY-59af3523ad8898216dbe1043788837bf/768/432/Image/Webp/noFilter",
     ThumbnailSize = 120, -- Thumbnail height
-    Buttons = {
-        {
-            Title = "Button 1",
-            Variant = "Primary",
-            Callback = function() print("1 Button") end,
-            Icon = "bird",
-        },
-        {
-            Title = "Button 2",
-            Variant = "Primary",
-            Callback = function() print("2 Button") end,
-            Icon = "bird",
-        },
-        {
-            Title = "Button 3",
-            Variant = "Primary",
-            Callback = function() print("3 Button") end,
-            Icon = "bird",
-        },
-    }
 })
-
-Tabs.ParagraphTab:Divider()
-
-for _,i in next, { "Default", "Red", "Orange", "Green", "Blue", "Grey", "White" } do
-    Tabs.ParagraphTab:Paragraph({
-        Title = i,
-        Desc = "Paragraph with color",
-        Image = "bird",
-        Color = i ~= "Default" and i or nil,
-        Buttons = {
-            {
-                Title = "Button 1",
-                Variant = "Primary",
-                Callback = function() print("1 Button") end,
-                Icon = "bird",
-            },
-            {
-                Title = "Button 2",
-                Variant = "Primary",
-                Callback = function() print("2 Button") end,
-                Icon = "bird",
-            },
-            {
-                Title = "Button 3",
-                Variant = "Primary",
-                Callback = function() print("3 Button") end,
-                Icon = "bird",
-            },
-        }
-    })
-end
-
 
 
 Tabs.ButtonTab:Button({
