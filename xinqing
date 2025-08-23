@@ -71,7 +71,7 @@ local AboutTab = Window:Section({ Title = "主页" }):Tab({
 AboutTab:Divider({ Text = "介绍" })
 
 
-AboutTab:Paragraph({
+AboutTab:Button({
     Title = "作者 鑫晴",
     Content = "欢迎使用FIN脚本 脚本将持续云更新且免费 禁止倒卖和翻库 不然4000家"
 })
