@@ -55,6 +55,59 @@ repeat wait() until Confirmed
 --
 
 local Window = WindUI:CreateWindow({
+    Title = "FIN | 主脚本",
+    Icon = "rbxassetid://108646851620147",
+    IconThemed = true,
+    Author = "FIN v2",
+    Folder = "CloudHub",
+    Size = UDim2.fromOffset(580, 460),
+    Transparent = true,
+    Theme = "Sky",
+    User = {
+        Enabled = true, -- <- or false
+        Callback = function() print("clicked") end, -- <- optional
+        Anonymous = true -- <- or true
+    },
+    SideBarWidth = 200,
+    -- HideSearchBar = true, -- hides searchbar
+    ScrollBarEnabled = true, -- enables scrollbar
+    -- Background = "rbxassetid://13511292247", -- rbxassetid only
+
+    -- remove it below if you don't want to use the key system in your script.
+    KeySystem = { -- <- keysystem enabled
+        Key = { "66992580", "10293847560" },
+        Note = "请输入你的卡密",
+        -- Thumbnail = {
+        --     Image = "rbxassetid://18220445082", -- rbxassetid only
+        --     Title = "Thumbnail"
+        -- },
+        URL = "155723303", -- remove this if the key is not obtained from the link.
+        SaveKey = true, -- saves key : optional
+    },
+})
+
+
+-- Window:SetBackgroundImage("rbxassetid://13511292247")
+-- Window:SetBackgroundImageTransparency(0.9)
+
+
+-- TopBar Edit
+
+-- Disable Topbar Buttons
+-- Window:DisableTopbarButtons({
+--     "Close", 
+--     "Minimize", 
+--     "Fullscreen",
+-- })
+
+-- Create Custom Topbar Buttons
+--                        ↓ Name             ↓ Icon          ↓ Callback                           ↓ LayoutOrder
+Window:CreateTopbarButton("MyCustomButton1", "bird",         function() print("clicked 1!") end,  990)
+Window:CreateTopbarButton("MyCustomButton2", "droplet-off",  function() print("clicked 2!") end,  989)
+Window:CreateTopbarButton("MyCustomButton3", "battery-plus", function() Window:ToggleFullscreen() end, 988)
+
+
+local Window = WindUI:CreateWindow({
     Title = "FIN V2 Hub",
     Icon = "rbxassetid://108646851620147",
     Folder = "CompactGameFunctions",
