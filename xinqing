@@ -70,42 +70,7 @@ local ParagraphTab = Tabs.ElementsSection:Tab({ Title = "介绍" }):Tab({
 })
 
 
-Tabs.ParagraphTab:Paragraph({
-    Title = "作者 鑫晴 & 欢迎使用FIN v2",
-    Desc = "严禁倒卖此脚本",
-    Image = "https://play-lh.googleusercontent.com/7cIIPlWm4m7AGqVpEsIfyL-HW4cQla4ucXnfalMft1TMIYQIlf2vqgmthlZgbNAQoaQ",
-    ImageSize = 42, -- default 30
-    Thumbnail = "https://tr.rbxcdn.com/180DAY-59af3523ad8898216dbe1043788837bf/768/432/Image/Webp/noFilter",
-    ThumbnailSize = 120 -- Thumbnail height
-})
-Tabs.ParagraphTab:Paragraph({
-    Title = "脚本将持续云更新",
-    Desc = "永不会跑路",
-    Image = "https://play-lh.googleusercontent.com/7cIIPlWm4m7AGqVpEsIfyL-HW4cQla4ucXnfalMft1TMIYQIlf2vqgmthlZgbNAQoaQ",
-    ImageSize = 42, -- default 30
-    Thumbnail = "https://tr.rbxcdn.com/180DAY-59af3523ad8898216dbe1043788837bf/768/432/Image/Webp/noFilter",
-    ThumbnailSize = 120, -- Thumbnail height
-    Buttons = {
-        {
-            Title = "qq群:115723303",
-            Variant = "Primary",
-            Callback = function() print("1 Button") end,
-            Icon = "bird",
-        },
-        {
-            Title = "q号:352602248",
-            Variant = "Primary",
-            Callback = function() print("2 Button") end,
-            Icon = "bird",
-        },
-        {
-            Title = "翻库呵倒卖4000家",
-            Variant = "Primary",
-            Callback = function() print("3 Button") end,
-            Icon = "bird",
-        },
-    }
-})
+ParagraphTab:Divider({ Text = "作者" })
 
 
 local MainTab = Window:Section({ Title = "主功能" }):Tab({ 
