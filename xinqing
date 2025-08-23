@@ -64,30 +64,6 @@ local Window = WindUI:CreateWindow({
 })
 
 local ButtonTab = Window:Section({ Title = "主页" }):Tab({ 
-    Title = "关于作者",
-    Icon = "rbxassetid://108646851620147"
-})
-
-ButtonTab:Divider({ Text = "介绍" })
-
-
-ButtonTab:Button({
-    Title = "作者 鑫晴",
-    Icon = "rbxassetid://108646851620147",
-    Size = "sm", 
-    Callback = function()
-    end
-})
-
-ButtonTab:Button({
-    Title = "欢迎使用FIN V2 会持续云更新 禁止倒卖和翻库 不然4000家",
-    Icon = "rbxassetid://108646851620147",
-    Size = "sm", 
-    Callback = function()
-    end
-})
-
-
     Title = "通用功能",
     Icon = "rbxassetid://108646851620147"
 })
