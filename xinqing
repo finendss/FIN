@@ -68,8 +68,8 @@ local MainTab = Window:Section({ Title = "主功能" }):Tab({
     Icon = "rbxassetid://108646851620147"
 })
 
-
 MainTab:Divider({ Text = "画质与光影" })
+
 
 MainTab:Button({
     Title = "光影",
@@ -192,6 +192,7 @@ local FlingTab = Window:Section({ Title = "甩飞与传送" }):Tab({
 })
 
 FlingTab:Divider({ Text = "甩飞" })
+
 
 FlingTab:Button({
     Title = "指定甩飞(简易版)",
