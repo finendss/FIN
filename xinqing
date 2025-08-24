@@ -842,3 +842,36 @@ Tab:AddButton({
 loadstring(game:HttpGet("https://pastefy.app/aNEyyP9E/raw"))()
   end
 })
+
+Tab:AddButton({
+  Name = "矿井",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://pastefy.app/dV7bCuze/raw"))()
+  end
+})
+
+Tab:AddButton({
+  Name = "精神病医院",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://pastefy.app/8hJ3L8Ag/raw"))()
+  end
+})
+
+Tab:AddButton({
+  Name = "地铁",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://pastefy.app/UhU2bv1G/raw"))()
+  end
+})
+
+Tab:AddButton({
+  Name = "地铁伪人通知器",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://pastefy.app/N09qgHsS/raw"))()
+  end
+})
+
