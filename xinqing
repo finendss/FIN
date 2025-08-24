@@ -484,7 +484,13 @@ Tab:AddButton({
   Default = false,
   Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ChinaQY/Scripts/Main/AntiFling.lua"))()
-  end
+
+		OrionLib:MakeNotification({
+                    Name = "成功开启防甩飞:  "..loadstring(game:HttpGet("https://raw.githubusercontent.com/ChinaQY/Scripts/Main/AntiFling.lua"))().."   |防甩飞",
+                    Content = "成功",
+                    Time = 3
+                })
+	end
 })
 
 local Tab = Window:MakeTab({
