@@ -498,30 +498,11 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
-Tab:AddToggle({
-  Name = "水上行走",
-  Default = false,
-  Callback = function(Value)
-
-then game.Workspace.WaterLevel.CanCollide = false game.Workspace.WaterLevel.Size = Vector3.new(10, 1, 10) end if AHJ == true then game.Workspace.WaterLevel.CanCollide = true game.Workspace.WaterLevel.Size = Vector3.new(5000, 1, 5000) end
-  end
-})
-
 Tab:AddButton({
-  Name = "传送到地图",
+  Name = "黑洞v2",
   Default = false,
   Callback = function(Value)
-
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-115.828506, 65.4863434, 18.8461514, 0.00697017973, 0.0789371505, -0.996855199, -3.13589936e-07, 0.996879458, 0.0789390653, 0.999975681, -0.000549906865, 0.00694845384)
-  end
-})
-
-Tab:AddButton({
-  Name = "游戏岛",
-  Default = false,
-  Callback = function(Value)
-
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-83.5, 38.5, -27.5, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BOOSBS/666/refs/heads/main/656"))()
   end
 })
 
