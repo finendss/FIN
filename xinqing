@@ -506,18 +506,11 @@ Tab:AddToggle({
   end
 })
 
-Tab:AddToggle({
-  Name = "禁用掉落伤害",
-  Default = false,
-  Callback = function(Value)
-  _G.NoFallDamage = AJH; while wait(0.5) do if _G.NoFallDamage == true then local FallDamageScript = (game.Players.LocalPlayer.Character ~= nil) and game.Players.LocalPlayer.Character:FindFirstChild("FallDamageScript") or nil if FallDamageScript then FallDamageScript:Destroy() end end end
-  end
-})
-
 Tab:AddButton({
   Name = "传送到地图",
   Default = false,
   Callback = function(Value)
+
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-115.828506, 65.4863434, 18.8461514, 0.00697017973, 0.0789371505, -0.996855199, -3.13589936e-07, 0.996879458, 0.0789390653, 0.999975681, -0.000549906865, 0.00694845384)
   end
 })
@@ -526,6 +519,7 @@ Tab:AddButton({
   Name = "游戏岛",
   Default = false,
   Callback = function(Value)
+
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-83.5, 38.5, -27.5, -1, 0, 0, 0, 1, 0, 0, 0, -1)
   end
 })
