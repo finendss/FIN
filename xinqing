@@ -71,8 +71,8 @@ Tab:AddParagraph("作者","鑫晴")
 Tab:AddParagraph("欢迎使用FIN脚本","脚本将持续云更新")
 Tab:AddParagraph("此脚本完全免费","永不会跑路")
 Tab:AddParagraph("禁止倒卖")
-Tab:AddParagraph("更新日志","被遗弃汉化更新")
-Tab:AddParagraph("更新AUT海外脚本","更新被遗弃访客假防御")
+Tab:AddParagraph("更新日志","更新防甩飞功能")
+Tab:AddParagraph("更新自然灾害模拟器","更新入侵者脚本")
 Tab:AddParagraph("无","无")
 
 
@@ -479,6 +479,14 @@ loadstring(game:HttpGet("https://pastebin.com/raw/zqyDSUWX"))()
   end
 })
 
+Tab:AddButton({
+  Name = "防甩飞",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ChinaQY/Scripts/Main/AntiFling.lua"))()
+  end
+})
+
 local Tab = Window:MakeTab({
     Name = "森林99夜",
 	Icon = "rbxassetid://4483345998",
@@ -818,5 +826,19 @@ Tab:AddButton({
   Default = false,
   Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/AkatsukiHub1/A-Universal-Time/refs/heads/main/README.md"))()
+  end
+})
+
+local Tab = Window:MakeTab({
+    Name = "入侵者",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "屋子与商场",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://pastefy.app/aNEyyP9E/raw"))()
   end
 })
