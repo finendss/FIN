@@ -803,7 +803,7 @@ Tab:AddButton({
   Name = "脑红1",
   Default = false,
   Callback = function(Value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub"))()
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/3df8133541564751d34283ae02077269.lua"))()
   end
 })
 
