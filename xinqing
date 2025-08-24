@@ -493,6 +493,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ChinaQY/Scripts/Main/
 })
 
 local Tab = Window:MakeTab({
+    Name = "自然灾害",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Tab = Window:MakeTab({
     Name = "森林99夜",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
