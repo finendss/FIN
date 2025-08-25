@@ -304,8 +304,8 @@ TabHandles.Elements:Colorpicker({
 })
 
 TabHandles.Appearance:Paragraph({
-    Title = "Customize Interface",
-    Desc = "Personalize your experience",
+    Title = "作者 FIN",
+    Desc = "FIN主群 155723303",
     Image = "palette",
     ImageSize = 20,
     Color = "White"
