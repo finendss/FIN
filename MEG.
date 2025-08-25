@@ -174,11 +174,11 @@ local Window = WindUI:CreateWindow({
 })
 
 Window:Tag({
-    Title = "v1.6.4",
+    Title = "测试中",
     Color = Color3.fromHex("#30ff6a")
 })
 Window:Tag({
-    Title = "Beta",
+    Title = "禁泄密",
     Color = Color3.fromHex("#315dff")
 })
 local TimeTag = Window:Tag({
