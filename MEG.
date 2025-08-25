@@ -318,7 +318,7 @@ end
 table.sort(themes)
 
 local themeDropdown = TabHandles.Appearance:Dropdown({
-    Title = "loc:UI颜色",
+    Title = "UI颜色",
     Values = themes,
     Value = "Dark",
     Callback = function(theme)
@@ -333,7 +333,7 @@ local themeDropdown = TabHandles.Appearance:Dropdown({
 })
 
 local transparencySlider = TabHandles.Appearance:Slider({
-    Title = "loc:UI透明度",
+    Title = "UI透明度",
     Value = { 
         Min = 0,
         Max = 1,
