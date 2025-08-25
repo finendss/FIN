@@ -23,9 +23,9 @@ WindUI:Localization({
             ["TRANSPARENCY"] = "Прозрачность окна"
         },
         ["en"] = {
-            ["WINDUI_EXAMPLE"] = "WindUI Example",
-            ["WELCOME"] = "Welcome to WindUI!",
-            ["LIB_DESC"] = "Beautiful UI library for Roblox",
+            ["WINDUI_EXAMPLE"] = "FIN",
+            ["WELCOME"] = "此脚本测试中",
+            ["LIB_DESC"] = "自制MEG测试",
             ["SETTINGS"] = "Settings",
             ["APPEARANCE"] = "Appearance",
             ["FEATURES"] = "Features",
