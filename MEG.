@@ -311,6 +311,14 @@ TabHandles.Appearance:Paragraph({
     Color = "White"
 })
 
+TabHandles.Appearance:Paragraph({
+    Title = "此脚本为小付费脚本(目前只要1块)",
+    Desc = "正在努力更新中",
+    Image = "palette",
+    ImageSize = 20,
+    Color = "White"
+})
+
 local themes = {}
 for themeName, _ in pairs(WindUI:GetThemes()) do
     table.insert(themes, themeName)
