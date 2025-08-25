@@ -18,10 +18,10 @@ local isLocalPlayerWhitelisted = IsWhitelisted(localPlayer)
 if isLocalPlayerWhitelisted then
     StarterGui:SetCore("SendNotification", {
         Title = "白名单认证",
-        Text = "玩家:"..localPlayer.Name.."，检测完毕白名单玩家，稍后会加载脚本",
+        Text = "玩家:"..localPlayer.Name.."，检测完毕，尊贵的FINv2使用者",
         Duration = 7,
     })
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ENDFINE/qq-155723303/refs/heads/main/FIN.V2"))()
 else
-    localPlayer:Kick("你没有被加入白名单，请找群主反馈")
+    localPlayer:Kick("没有白名单玩什么，请找群主进行购买💀")
 end
