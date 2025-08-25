@@ -23,9 +23,9 @@ WindUI:Localization({
             ["TRANSPARENCY"] = "Прозрачность окна"
         },
         ["en"] = {
-            ["WINDUI_EXAMPLE"] = "FIN",
-            ["WELCOME"] = "此脚本测试中",
-            ["LIB_DESC"] = "自制MEG测试",
+            ["FIN"] = "FIN",
+            ["此脚本测试中"] = "此脚本测试中",
+            ["制作MEG测试"] = "自制MEG测试",
             ["SETTINGS"] = "Settings",
             ["APPEARANCE"] = "Appearance",
             ["FEATURES"] = "Features",
