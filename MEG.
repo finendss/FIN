@@ -133,19 +133,19 @@ local Window = WindUI:CreateWindow({
         end
     },
     SideBarWidth = 200,
-     KeySystem = { -- <- ↓ remove this all, if you dont neet the key system
-     Key = { "1234", "5678" },  
-         Note = "Example Key System. With platoboost, etc.",
-     URL = "https://github.com/Footagesus/WindUI",
-     Thumbnail = {
-         Image = "rbxassetid://",
-         Title = "Thumbnail",
-     },
-         API = {
-             {   
-     Title = "Platoboost", -- optional 
-     Desc = "Click to copy.", -- optional
-     Icon = "rbxassetid://", -- optional
+    -- KeySystem = { -- <- ↓ remove this all, if you dont neet the key system
+    --     -- Key = { "1234", "5678" },  
+    --     Note = "Example Key System. With platoboost, etc.",
+    --     -- URL = "https://github.com/Footagesus/WindUI",
+    --     -- Thumbnail = {
+    --     --     Image = "rbxassetid://",
+    --     --     Title = "Thumbnail",
+    --     -- },
+    --     API = {
+    --         {   
+    --             -- Title = "Platoboost", -- optional 
+    --             -- Desc = "Click to copy.", -- optional
+    --             -- Icon = "rbxassetid://", -- optional
                 
     --             Type = "platoboost", -- type: platoboost, ...
     --             ServiceId = 5541, -- service id
