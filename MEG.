@@ -368,15 +368,15 @@ end)
 
 
 TabHandles.Appearance:Button({
-    Title = "复制FIN主群qq",
+    Title = "不要点击",
     Icon = "plus",
     Callback = function()
         Window:Dialog({
-            Title = "复制成功",
-            Content = "已复制FIN主群qq",
+            Title = "你点你妈呢😡",
+            Content = "我就拿筷子",
             Buttons = {
                 {
-                    Title = "好的",
+                    Title = "谢谢",
                     Variant = "Primary"
                 }
             }
