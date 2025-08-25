@@ -8,7 +8,7 @@ WindUI:Localization({
     DefaultLanguage = "en",
     Translations = {
         ["ru"] = {
-            ["WINDUI_EXAMPLE"] = "WindUI Пример",
+            ["FIN"] = "FIN",
             ["WELCOME"] = "Добро пожаловать в WindUI!",
             ["LIB_DESC"] = "Библиотека для создания красивых интерфейсов",
             ["SETTINGS"] = "Настройки",
