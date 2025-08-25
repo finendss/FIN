@@ -25,7 +25,7 @@ WindUI:Localization({
         ["en"] = {
             ["WINDUI_EXAMPLE"] = "FIN | MEG",
             ["WELCOME"] = "MEG自制",
-            ["LIB_DESC"] = "Beautiful UI library for Roblox",
+            ["LIB_DESC"] = "目前正在尽力研发",
             ["SETTINGS"] = "Settings",
             ["APPEARANCE"] = "Appearance",
             ["FEATURES"] = "Features",
