@@ -304,7 +304,7 @@ TabHandles.Elements:Colorpicker({
 })
 
 TabHandles.Appearance:Paragraph({
-    Title = "作者 FIN",
+    Title = "作者:FIN",
     Desc = "UI颜色设置",
     Image = "palette",
     ImageSize = 20,
