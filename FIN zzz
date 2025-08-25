@@ -2,7 +2,7 @@ local StarterGui = game:GetService("StarterGui")
 local Players = game:GetService("Players")
 local WhitelistedPlayers = {
     ["roblox_aikun2"] = true,
-    ["玩家用户名"] = true,
+    ["molikuncha"] = true,
     ["玩家用户名"] = true,
     ["玩家用户名"] = true,
 }
