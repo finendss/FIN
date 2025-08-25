@@ -2,46 +2,6 @@
 
 local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
 
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local HttpService = game:GetService("HttpService")
-
--- 白名单数据，可从远程服务器获取或本地维护
-local whitelist = {
-    -- 格式：["molikuncha"] = true
-    ["end"] = true,
-    ["roblox_aikun2"] = true,
-    ["fine"] = true
-}
-
--- 可选：从远程 JSON 接口获取白名单（需确保接口安全且可访问）
-local function fetchWhitelistFromRemote()
-    local success, response = pcall(function()
-        return HttpService:GetAsync("https://your-safe-api.com/whitelist.json")
-    end)
-    if success and response then
-        local successParse, data = pcall(function()
-            return HttpService:JSONDecode(response)
-        end)
-        if successParse and data then
-            whitelist = {}
-            for _, username in ipairs(data) do
-                whitelist[username] = true
-            end
-            print("✅ 成功从远程获取白名单")
-        else
-            warn("⚠️ 解析远程白名单失败")
-        end
-    else
-        warn("⚠️ 获取远程白名单失败，使用本地白名单")
-    end
-end
-
--- 检查玩家是否在白名单内
-local function isPlayerWhitelisted(player)
-    return whitelist[player.Name] == true
-end
-
 WindUI:Localization({
     Enabled = true,
     Prefix = "loc:",
