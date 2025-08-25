@@ -23,9 +23,9 @@ WindUI:Localization({
             ["TRANSPARENCY"] = "Прозрачность окна"
         },
         ["en"] = {
-            ["WINDUI_EXAMPLE"] = "FIN | M.E.G",
-            ["WELCOME"] = "FIN操蛋牛得很",
-            ["LIB_DESC"] = "MEG自制测试中",
+            ["WINDUI_EXAMPLE"] = "WindUI Example",
+            ["WELCOME"] = "Welcome to WindUI!",
+            ["LIB_DESC"] = "Beautiful UI library for Roblox",
             ["SETTINGS"] = "Settings",
             ["APPEARANCE"] = "Appearance",
             ["FEATURES"] = "Features",
@@ -41,7 +41,7 @@ WindUI:Localization({
 })
 
 WindUI.TransparencyValue = 0.2
-WindUI:SetTheme(Sky")
+WindUI:SetTheme("Dark")
 
 local function gradient(text, startColor, endColor)
     local result = ""
