@@ -373,10 +373,10 @@ TabHandles.Appearance:Button({
     Callback = function()
         Window:Dialog({
             Title = "Create Theme",
-            Content = "This feature is coming soon!",
+            Content = "已复制FIN主群qq",
             Buttons = {
                 {
-                    Title = "OK",
+                    Title = "好的",
                     Variant = "Primary"
                 }
             }
