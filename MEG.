@@ -318,7 +318,7 @@ end
 table.sort(themes)
 
 local themeDropdown = TabHandles.Appearance:Dropdown({
-    Title = "loc:THEME_SELECT",
+    Title = "loc:UI透明度调整",
     Values = themes,
     Value = "Dark",
     Callback = function(theme)
