@@ -349,8 +349,8 @@ local transparencySlider = TabHandles.Appearance:Slider({
 local canchangetheme = true
 
 local ThemeToggle = TabHandles.Appearance:Toggle({
-    Title = "Enable Dark Mode",
-    Desc = "Use dark color scheme",
+    Title = "黑色UI",
+    Desc = "深色UI",
     Value = true,
     Callback = function(state)
         if canchangetheme then
@@ -368,7 +368,7 @@ end)
 
 
 TabHandles.Appearance:Button({
-    Title = "Create New Theme",
+    Title = "复制FIN主群qq",
     Icon = "plus",
     Callback = function()
         Window:Dialog({
