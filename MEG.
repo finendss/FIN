@@ -9,9 +9,9 @@ local HttpService = game:GetService("HttpService")
 -- 白名单数据，可从远程服务器获取或本地维护
 local whitelist = {
     -- 格式：["molikuncha"] = true
-    ["YourUserName1"] = true,
-    ["YourUserName2"] = true,
-    ["YourUserName3"] = true
+    ["end"] = true,
+    ["roblox_aikun2"] = true,
+    ["fine"] = true
 }
 
 -- 可选：从远程 JSON 接口获取白名单（需确保接口安全且可访问）
@@ -41,43 +41,6 @@ end
 local function isPlayerWhitelisted(player)
     return whitelist[player.Name] == true
 end
-
--- 假设已加载 WindUI
-local WindUISuccess, WindUI = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
-end)
-
-if not WindUISuccess then
-    error("❌ WindUI 加载失败")
-    return
-end
-
-local Window
-local windowSuccess, windowResult = pcall(function()
-    return WindUI:CreateWindow({
-        Title = "白名单系统",
-        Icon = "rbxassetid://129260712070622",
-        Author = "示例作者",
-        Folder = "WhitelistSystem",
-        Size = UDim2.fromOffset(400, 300),
-        Theme = "Dark",
-    })
-end)
-
-if not windowSuccess then
-    error("❌ 窗口创建失败: " .. tostring(windowResult))
-    return
-else
-    Window = windowResult
-end
-
-local MainTab = Window:Section({Title = "白名单", Opened = true}):Tab({Title = "状态", Icon = "shield"})
-
--- 显示当前玩家白名单状态
-MainTab:Label({
-    Text = "您的白名单状态: " .. (isPlayerWhitelisted(LocalPlayer) and "已白名单" or "未白名单"),
-    Color = isPlayerWhitelisted(LocalPlayer) and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-})
 
 WindUI:Localization({
     Enabled = true,
