@@ -356,7 +356,7 @@ local ThemeToggle = TabHandles.Appearance:Toggle({
         if canchangetheme then
             WindUI:SetTheme(state and "Dark" or "Light")
         end
-        themeDropdown:Select(state and "Dark" or "Light")
+        themeDropdown:Select(state and "黑色" or "其他颜色")
     end
 })
 
@@ -372,7 +372,7 @@ TabHandles.Appearance:Button({
     Icon = "plus",
     Callback = function()
         Window:Dialog({
-            Title = "Create Theme",
+            Title = "复制成功",
             Content = "已复制FIN主群qq",
             Buttons = {
                 {
