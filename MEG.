@@ -1,4 +1,4 @@
--- 禁止翻库和倒卖
+-- 禁止翻库和倒卖不然4000家
 
 local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
 
