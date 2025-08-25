@@ -26,8 +26,8 @@ WindUI:Localization({
             ["WINDUI_EXAMPLE"] = "FIN | MEG",
             ["WELCOME"] = "MEG自制",
             ["LIB_DESC"] = "目前正在尽力研发",
-            ["SETTINGS"] = "颜色设置",
-            ["APPEARANCE"] = "UI颜色",
+            ["SETTINGS"] = "介绍",
+            ["APPEARANCE"] = "公告与UI颜色",
             ["FEATURES"] = "Features",
             ["UTILITIES"] = "Utilities",
             ["UI_ELEMENTS"] = "UI Elements",
@@ -304,8 +304,8 @@ TabHandles.Elements:Colorpicker({
 })
 
 TabHandles.Appearance:Paragraph({
-    Title = "Customize Interface",
-    Desc = "Personalize your experience",
+    Title = "作者 FIN",
+    Desc = "UI颜色设置",
     Image = "palette",
     ImageSize = 20,
     Color = "White"
@@ -318,7 +318,7 @@ end
 table.sort(themes)
 
 local themeDropdown = TabHandles.Appearance:Dropdown({
-    Title = "loc:THEME_SELECT",
+    Title = "loc:UI颜色",
     Values = themes,
     Value = "Dark",
     Callback = function(theme)
@@ -333,7 +333,7 @@ local themeDropdown = TabHandles.Appearance:Dropdown({
 })
 
 local transparencySlider = TabHandles.Appearance:Slider({
-    Title = "loc:TRANSPARENCY",
+    Title = "loc:UI透明度",
     Value = { 
         Min = 0,
         Max = 1,
@@ -349,8 +349,8 @@ local transparencySlider = TabHandles.Appearance:Slider({
 local canchangetheme = true
 
 local ThemeToggle = TabHandles.Appearance:Toggle({
-    Title = "Enable Dark Mode",
-    Desc = "Use dark color scheme",
+    Title = 黑色与白色UI",
+    Desc = "深色UI",
     Value = true,
     Callback = function(state)
         if canchangetheme then
@@ -368,7 +368,7 @@ end)
 
 
 TabHandles.Appearance:Button({
-    Title = "Create New Theme",
+    Title = "新主题",
     Icon = "plus",
     Callback = function()
         Window:Dialog({
