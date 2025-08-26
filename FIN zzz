@@ -21,7 +21,7 @@ if isLocalPlayerWhitelisted then
         Text = "玩家:"..localPlayer.Name.."，检测完毕，尊贵的FINv2使用者",
         Duration = 7,
     })
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ENDFINE/qq-155723303/refs/heads/main/FIN.V2"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ENDFINE/qq-155723303/refs/heads/main/LOL"))()
 else
     localPlayer:Kick("没有白名单玩什么，请找群主进行购买💀")
 end
