@@ -3,8 +3,12 @@ local Players = game:GetService("Players")
 local WhitelistedPlayers = {
     ["roblox_aikun2"] = true,
     ["molikuncha"] = true,
-    ["玩家用户名"] = true,
-    ["玩家用户名"] = true,
+    ["yezi_9191"] = true,
+    ["fxz666116"] = true,
+    ["ASEPTIClu"] = true,
+    ["hzhzdyind888"] = true,
+    ["wuodf5"] = true,
+    ["114514haq"] = true,
 }
 
 local function IsWhitelisted(player)
