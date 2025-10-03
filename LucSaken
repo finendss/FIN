@@ -11,16 +11,16 @@ local StaminaSettings = {
 }
 
 WindUI:Popup({
-    Title = "欢迎使用XP KFI脚本",
+    Title = "欢迎使用Lucky Clover Script",
     Icon = "sparkles",
-    Content = "尊敬的XP KFI用户👑,祝你天天开心",
+    Content = "尊敬的LUC用户👑,祝你天天开心",
     Buttons = {
         {
-            Title = "启动XP KFI",
+            Title = "启动LUC",
             Icon = "arrow-right",
             Variant = "Primary",
             Callback = function() 
-                print("启动XP")
+                print("启动LUC")
                 -- 创建主窗口
                 createMainWindow()
             end
@@ -29,11 +29,11 @@ WindUI:Popup({
 })
 
     local Window = WindUI:CreateWindow({
-        Title = "XP KFI<font color='#00FF00'>1.0</font> /被遗弃",
+        Title = "LucSaken",
         Icon = "rbxassetid://4483362748",
         IconTransparency = 0.5,
         IconThemed = true,
-        Author = "作者:副教主",
+        Author = "LUC Team",
         Folder = "CloudHub",
         Size = UDim2.fromOffset(400, 300),
         Transparent = true,
@@ -45,11 +45,11 @@ WindUI:Popup({
         },
         SideBarWidth = 200,
         ScrollBarEnabled = true,
-        Background = "rbxassetid://73416826039813"
+        Background = "rbxassetid:/"
     })
 
     Window:Tag({
-        Title = "v1.3.4",
+        Title = "注入器:"..identifyexecutor()",
         Color = Color3.fromHex("#30ff6a")
     })
     Window:Tag({
