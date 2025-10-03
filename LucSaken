@@ -45,11 +45,11 @@ WindUI:Popup({
         },
         SideBarWidth = 200,
         ScrollBarEnabled = true,
-        Background = "rbxassetid:/"
+        Background = "rbxassetid://"
     })
 
     Window:Tag({
-        Title = "注入器:"..identifyexecutor()",
+        Title = "喵喵喵",
         Color = Color3.fromHex("#30ff6a")
     })
     Window:Tag({
@@ -62,7 +62,7 @@ WindUI:Popup({
     })
 
     Window:EditOpenButton({
-        Title = "XP KFI脚本",
+        Title = "Lucky Clover Script",
         Icon = "star",
         CornerRadius = UDim.new(0,16),
         StrokeThickness = 2,
