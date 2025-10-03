@@ -45,7 +45,7 @@ WindUI:Popup({
         },
         SideBarWidth = 200,
         ScrollBarEnabled = true,
-        Background = "rbxassetid://"
+        Background = "rbxassetid://130041358347087"
     })
 
     Window:Tag({
