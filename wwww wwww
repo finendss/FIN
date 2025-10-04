@@ -1,0 +1,152 @@
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local TextChatService = game:GetService("TextChatService")
+local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+
+-- 初始化环境变量
+_env = {
+    SpeedBoost = false,
+    SpeedBoostValue = 1,
+    NoStun = false,
+    Fullbright = false,
+    Brightness = 0,
+    GlobalShadows = false,
+    NoFog = false
+}
+
+local StaminaSettings = {
+    StaminaLoss = 10,
+    StaminaGain = 25,
+    InfiniteGain = 9999
+}
+
+WindUI:Popup({
+    Title = "欢迎使用Lucky Clover脚本",
+    Icon = "sparkles",
+    Content = "尊敬的Luc用户,祝你天天开心",
+    Buttons = {
+        {
+            Title = "启动Luc",
+            Icon = "arrow-right",
+            Variant = "Primary",
+            Callback = function() 
+                print("启动Luc")
+                -- 创建主窗口
+                createMainWindow()
+            end
+        }
+    }
+})
+
+-- 辅助函数：递归查找子对象
+local function findFirstChildRecursive(parent, name)
+    if parent.Name == name then
+        return parent
+    end
+    
+    for _, child in ipairs(parent:GetChildren()) do
+        local result = findFirstChildRecursive(child, name)
+        if result then
+            return result
+        end
+    end
+    
+    return nil
+end
+
+function createMainWindow()
+    local LocalPlayer = Players.LocalPlayer
+    local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local hum = Character:WaitForChild("HumanoidRootPart")
+    local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+    
+    -- 声明所有线程控制变量
+    local teleportMedkitThread, teleportColaThread, medkitThread, colaThread
+    local autoTeleportMedkitEnabled, autoTeleportColaEnabled, autoMedkitEnabled, autoColaEnabled
+
+    local Window = WindUI:CreateWindow({
+        Title = "LucSaken",
+        Icon = "rbxassetid://4483362748",
+        IconTransparency = 0.5,
+        IconThemed = true,
+        Author = "Luc Team",
+        Folder = "CloudHub",
+        Size = UDim2.fromOffset(400, 300),
+        Transparent = true,
+        Theme = "Light",
+        User = {
+            Enabled = true,
+            Callback = function() print("clicked") end,
+            Anonymous = false
+        },
+        SideBarWidth = 200,
+        ScrollBarEnabled = true,
+        Background = "rbxassetid://73416826039813"
+    })
+
+    Window:Tag({
+        Title = "Luc玩家",
+        Color = Color3.fromHex("#30ff6a")
+    })
+    Window:Tag({
+        Title = "付费版", 
+        Color = Color3.fromHex("#315dff")
+    })
+    local TimeTag = Window:Tag({
+        Title = "持续更新",
+        Color = Color3.fromHex("#000000")
+    })
+
+    Window:EditOpenButton({
+        Title = "Lucky Clover脚本",
+        Icon = "star",
+        CornerRadius = UDim.new(0,16),
+        StrokeThickness = 2,
+        Color = ColorSequence.new(
+            Color3.fromHex("FF0F7B"), 
+            Color3.fromHex("F89B29")
+        ),
+        Draggable = true,
+    })
+    
+    -- 添加彩虹边框效果
+    Window:EditOpenButton({
+        StrokeColor = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),     -- 红色
+            ColorSequenceKeypoint.new(0.2, Color3.fromRGB(255, 165, 0)), -- 橙色
+            ColorSequenceKeypoint.new(0.4, Color3.fromRGB(255, 255, 0)), -- 黄色
+            ColorSequenceKeypoint.new(0.6, Color3.fromRGB(0, 255, 0)),   -- 绿色
+            ColorSequenceKeypoint.new(0.8, Color3.fromRGB(0, 0, 255)),   -- 蓝色
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(128, 0, 128))    -- 紫色
+        }),
+        StrokeThickness = 3,  -- 增加边框厚度
+    })
+    
+    local MainTab = Window:Tab({
+        Title = "主页",
+        Icon = "zap",
+        Locked = false,
+    })
+    
+    MainTab:Paragraph({
+        Title = "欢迎使用 XP KFL",
+        Desc = "QQ群 1056927323",
+        Image = "rbxassetid://114477834305321",
+        ImageSize = 42,
+        Thumbnail = "rbxassetid://96291371536118",
+        ThumbnailSize = 120
+    })
+    
+    MainTab:Paragraph({
+        Title = "更新日志",
+        Desc = "[+]将基础功能更新,修改移速的功能 修改绘制的功能[无bug]",
+    })
+
+    local Tab = Window:Tab({
+        Title = "基础功能",
+        Icon = "drama",
+        Locked = false,
+    })
