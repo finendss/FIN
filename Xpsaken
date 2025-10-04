@@ -20,7 +20,7 @@ StaminaGain = 25,
 InfiniteGain = 9999
 }
 WindUI:Popup({
-Title = "欢迎使用XP KFI脚本",
+Title = "欢迎使用XP KFI Script",
 Icon = "sparkles",
 Content = "尊敬的XP KFI用户👑,祝你天天开心",
 Buttons = {
@@ -61,11 +61,11 @@ local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local teleportMedkitThread, teleportColaThread, medkitThread, colaThread
 local autoTeleportMedkitEnabled, autoTeleportColaEnabled, autoMedkitEnabled, autoColaEnabled
 local Window = WindUI:CreateWindow({
-Title = "XP KFI1.0 /被遗弃",
+Title = "XpSaken / XP KFI Hub",
 Icon = "rbxassetid://4483362748",
 IconTransparency = 0.5,
 IconThemed = true,
-Author = "作者:副帮主",
+Author = "XP Team",
 Folder = "CloudHub",
 Size = UDim2.fromOffset(400, 300),
 Transparent = true,
@@ -80,11 +80,11 @@ ScrollBarEnabled = true,
 Background = "rbxassetid://73416826039813"
 })
 Window:Tag({
-Title = "KS/FIN",
+Title = "XP用户",
 Color = Color3.fromHex("#30ff6a")
 })
 Window:Tag({
-Title = "公益版",
+Title = "限免版",
 Color = Color3.fromHex("#315dff")
 })
 local TimeTag = Window:Tag({
@@ -92,7 +92,7 @@ Title = "持续更新",
 Color = Color3.fromHex("#000000")
 })
 Window:EditOpenButton({
-Title = "XP KFI脚本",
+Title = "XP KFI",
 Icon = "star",
 CornerRadius = UDim.new(0,16),
 StrokeThickness = 2,
