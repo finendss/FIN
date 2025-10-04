@@ -36,6 +36,79 @@ end
 }
 }
 })
+local UserGui = Instance.new("ScreenGui", game.CoreGui)
+local UICorner = Instance.new("UICorner")
+local BackgroundRect = Instance.new("Frame", UserGui)
+local RectGradient = Instance.new("UIGradient")
+local UserLabel = Instance.new("TextLabel", UserGui)
+local TextGradient = Instance.new("UIGradient")
+
+UserGui.Name = "UserGui"
+UserGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+UserGui.Enabled = true
+
+BackgroundRect.Name = "BackgroundRect"
+BackgroundRect.BackgroundColor3 = Color3.new(0, 0, 0)
+BackgroundRect.BackgroundTransparency = 1
+BackgroundRect.BorderSizePixel = 0
+BackgroundRect.Position = UDim2.new(0.7, 0, 0.02, 0)
+BackgroundRect.Size = UDim2.new(0, 220, 0, 70)
+BackgroundRect.ZIndex = 1
+
+UICorner.CornerRadius = UDim.new(0, 12)
+UICorner.Parent = BackgroundRect
+
+RectGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
+    ColorSequenceKeypoint.new(0.10, Color3.fromRGB(255, 127, 0)),
+    ColorSequenceKeypoint.new(0.20, Color3.fromRGB(255, 255, 0)),
+    ColorSequenceKeypoint.new(0.30, Color3.fromRGB(0, 255, 0)),
+    ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 255, 255)),
+    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 0, 255)),
+    ColorSequenceKeypoint.new(0.60, Color3.fromRGB(139, 0, 255)),
+    ColorSequenceKeypoint.new(0.70, Color3.fromRGB(255, 0, 0)),
+    ColorSequenceKeypoint.new(0.80, Color3.fromRGB(255, 127, 0)),
+    ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 255, 0)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 255, 0))
+}
+RectGradient.Rotation = 10
+RectGradient.Parent = BackgroundRect
+
+UserLabel.Name = "UserLabel"
+UserLabel.BackgroundTransparency = 1 -- 背景透明度
+UserLabel.Position = UDim2.new(0.7, 0, 0.02, 0)
+UserLabel.Size = UDim2.new(0, 220, 0, 70)
+UserLabel.Font = Enum.Font.GothamSemibold
+UserLabel.Text = "XpSaken 限免版用户：" .. game.Players.LocalPlayer.Name
+UserLabel.TextColor3 = Color3.new(1, 1, 1)
+UserLabel.TextTransparency = 0
+UserLabel.TextScaled = false
+UserLabel.TextSize = 16 --字体大小
+UserLabel.TextWrapped = true
+UserLabel.Visible = true
+UserLabel.ZIndex = 2
+
+TextGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
+    ColorSequenceKeypoint.new(0.10, Color3.fromRGB(255, 127, 0)),
+    ColorSequenceKeypoint.new(0.20, Color3.fromRGB(255, 255, 0)),
+    ColorSequenceKeypoint.new(0.30, Color3.fromRGB(0, 255, 0)),
+    ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 255, 255)),
+    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 0, 255)),
+    ColorSequenceKeypoint.new(0.60, Color3.fromRGB(139, 0, 255)),
+    ColorSequenceKeypoint.new(0.70, Color3.fromRGB(255, 0, 0)),
+    ColorSequenceKeypoint.new(0.80, Color3.fromRGB(255, 127, 0)),
+    ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 255, 0)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 255, 0))
+}
+TextGradient.Rotation = 10
+TextGradient.Parent = UserLabel
+
+local TweenService = game:GetService("TweenService")
+local tweenInfo = TweenInfo.new(7, Enum.EasingStyle.Linear, Enum.EasingDirection.In, -1)
+TweenService:Create(RectGradient, tweenInfo, {Rotation = 360}):Play()
+TweenService:Create(TextGradient, tweenInfo, {Rotation = 360}):Play()
+
 -- 辅助函数：递归查找子对象
 local function findFirstChildRecursive(parent, name)
 if parent.Name == name then
