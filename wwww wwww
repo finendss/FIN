@@ -1,9 +1,19 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local TextChatService = game:GetService("TextChatService")
+
+local StaminaSettings = {
+    StaminaLoss = 10,
+    StaminaGain = 25,
+    InfiniteGain = 9999
+}
+
 WindUI:Popup({
-    Title = "欢迎使用Lucky Clover脚本",
+    Title = "欢迎使用Lucky Clover Script",
     Icon = "sparkles",
-    Content = "尊敬的Luc用户,祝你天天开心",
+    Content = "尊敬的Luc脚本用户,祝你天天开心",
     Buttons = {
         {
             Title = "启动Luc",
@@ -23,7 +33,7 @@ WindUI:Popup({
         Icon = "rbxassetid://4483362748",
         IconTransparency = 0.5,
         IconThemed = true,
-        Author = "Luc Team",
+        Author = "LUC Team",
         Folder = "CloudHub",
         Size = UDim2.fromOffset(400, 300),
         Transparent = true,
@@ -39,7 +49,7 @@ WindUI:Popup({
     })
 
     Window:Tag({
-        Title = "Luc玩家",
+        Title = "LUC",
         Color = Color3.fromHex("#30ff6a")
     })
     Window:Tag({
@@ -49,55 +59,4 @@ WindUI:Popup({
     local TimeTag = Window:Tag({
         Title = "持续更新",
         Color = Color3.fromHex("#000000")
-    })
-
-    Window:EditOpenButton({
-        Title = "Lucky Clover脚本",
-        Icon = "star",
-        CornerRadius = UDim.new(0,16),
-        StrokeThickness = 2,
-        Color = ColorSequence.new(
-            Color3.fromHex("FF0F7B"), 
-            Color3.fromHex("F89B29")
-        ),
-        Draggable = true,
-    })
-    
-    -- 添加彩虹边框效果
-    Window:EditOpenButton({
-        StrokeColor = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),     -- 红色
-            ColorSequenceKeypoint.new(0.2, Color3.fromRGB(255, 165, 0)), -- 橙色
-            ColorSequenceKeypoint.new(0.4, Color3.fromRGB(255, 255, 0)), -- 黄色
-            ColorSequenceKeypoint.new(0.6, Color3.fromRGB(0, 255, 0)),   -- 绿色
-            ColorSequenceKeypoint.new(0.8, Color3.fromRGB(0, 0, 255)),   -- 蓝色
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(128, 0, 128))    -- 紫色
-        }),
-        StrokeThickness = 3,  -- 增加边框厚度
-    })
-    
-    local MainTab = Window:Tab({
-        Title = "主页",
-        Icon = "zap",
-        Locked = false,
-    })
-    
-    MainTab:Paragraph({
-        Title = "欢迎使用 XP KFL",
-        Desc = "QQ群 1056927323",
-        Image = "rbxassetid://114477834305321",
-        ImageSize = 42,
-        Thumbnail = "rbxassetid://96291371536118",
-        ThumbnailSize = 120
-    })
-    
-    MainTab:Paragraph({
-        Title = "更新日志",
-        Desc = "[+]将基础功能更新,修改移速的功能 修改绘制的功能[无bug]",
-    })
-
-    local Tab = Window:Tab({
-        Title = "基础功能",
-        Icon = "drama",
-        Locked = false,
     })
