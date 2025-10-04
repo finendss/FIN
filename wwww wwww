@@ -1,28 +1,5 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local RunService = game:GetService("RunService")
-local TextChatService = game:GetService("TextChatService")
-local Players = game:GetService("Players")
-local Lighting = game:GetService("Lighting")
-
--- 初始化环境变量
-_env = {
-    SpeedBoost = false,
-    SpeedBoostValue = 1,
-    NoStun = false,
-    Fullbright = false,
-    Brightness = 0,
-    GlobalShadows = false,
-    NoFog = false
-}
-
-local StaminaSettings = {
-    StaminaLoss = 10,
-    StaminaGain = 25,
-    InfiniteGain = 9999
-}
-
 WindUI:Popup({
     Title = "欢迎使用Lucky Clover脚本",
     Icon = "sparkles",
