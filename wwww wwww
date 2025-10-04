@@ -41,32 +41,6 @@ WindUI:Popup({
     }
 })
 
--- 辅助函数：递归查找子对象
-local function findFirstChildRecursive(parent, name)
-    if parent.Name == name then
-        return parent
-    end
-    
-    for _, child in ipairs(parent:GetChildren()) do
-        local result = findFirstChildRecursive(child, name)
-        if result then
-            return result
-        end
-    end
-    
-    return nil
-end
-
-function createMainWindow()
-    local LocalPlayer = Players.LocalPlayer
-    local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-    local hum = Character:WaitForChild("HumanoidRootPart")
-    local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
-    
-    -- 声明所有线程控制变量
-    local teleportMedkitThread, teleportColaThread, medkitThread, colaThread
-    local autoTeleportMedkitEnabled, autoTeleportColaEnabled, autoMedkitEnabled, autoColaEnabled
-
     local Window = WindUI:CreateWindow({
         Title = "LucSaken",
         Icon = "rbxassetid://4483362748",
