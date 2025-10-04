@@ -123,8 +123,8 @@ Locked = false,
 })
 
 MainTab:Paragraph({
-Title = "欢迎使用 XP KFL",
-Desc = "QQ群 1056927323",
+Title = "欢迎使用 XPSaken",
+Desc = "加入QQ群获取最新消息 951740588",
 Image = "rbxassetid://114477834305321",
 ImageSize = 42,
 Thumbnail = "rbxassetid://96291371536118",
