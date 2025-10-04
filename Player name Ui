@@ -37,7 +37,7 @@ RectGradient.Rotation = 10
 RectGradient.Parent = BackgroundRect
 
 UserLabel.Name = "UserLabel"
-UserLabel.BackgroundTransparency = 1 — 背景透明度
+UserLabel.BackgroundTransparency = 1 -- 背景透明度
 UserLabel.Position = UDim2.new(0.7, 0, 0.02, 0)
 UserLabel.Size = UDim2.new(0, 220, 0, 70)
 UserLabel.Font = Enum.Font.GothamSemibold
@@ -45,7 +45,7 @@ UserLabel.Text = "XpSaken 限免版用户：" .. game.Players.LocalPlayer.Name
 UserLabel.TextColor3 = Color3.new(1, 1, 1)
 UserLabel.TextTransparency = 0
 UserLabel.TextScaled = false
-UserLabel.TextSize = 16 —字体大小
+UserLabel.TextSize = 16 --字体大小
 UserLabel.TextWrapped = true
 UserLabel.Visible = true
 UserLabel.ZIndex = 2
