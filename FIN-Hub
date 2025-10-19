@@ -276,6 +276,14 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function
     })
 
     Tab:Button({
+        Title = "光影 2",
+        Default = true,
+        Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/LightandShadow-2"))()
+        end
+    })
+
+    Tab:Button({
         Title = "FE-死亡笔记",
         Default = true,
         Callback = function()
