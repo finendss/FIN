@@ -169,7 +169,16 @@ local function createMainWindow()
         game.Workspace.Gravity = value
         end
     })
+
+    Tab:Button({
+        Title = "FIN-飞行",
+        Default = true,
+        Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-Flye"))()
+        end
+    })
 end
+
 
 WindUI:Popup({
     Title = "FIN-v1-Hub",
