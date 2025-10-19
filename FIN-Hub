@@ -380,7 +380,6 @@ local function createMainWindow()
         end
     })
 
-    -- 将Tab2移到createMainWindow函数内部
     local Tab2 = Window:Tab({
         Title = "监狱人生",
         Icon = "drama",
@@ -408,64 +407,6 @@ local function createMainWindow()
         end
     })
 
-local killAllEnabled = false
-local killAllConnection = nil
-
-Tab2:Toggle({
-    Title = "杀死所有人",
-    Default = false,
-    Callback = function(enabled)
-        killAllEnabled = enabled
-        
-        if killAllConnection then
-            killAllConnection:Disconnect()
-            killAllConnection = nil
-        end
-        
-        if enabled then
-            killAllConnection = RunService.Heartbeat:Connect(function()
-                if not killAllEnabled then return end
-                
-                for i, v in next, game:GetService("Players"):GetChildren() do
-                    pcall(function()
-                        if v ~= game:GetService("Players").LocalPlayer and 
-                           v.Character and 
-                           v.Character:FindFirstChild("Humanoid") and
-                           not v.Character:FindFirstChildOfClass("ForceField") and 
-                           v.Character.Humanoid.Health > 0 then
-                            
-                            if game.Players.LocalPlayer.Character and 
-                               game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and
-                               v.Character:FindFirstChild("HumanoidRootPart") then
-                               
-                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
-                            end
-                            
-                            for x, c in next, game:GetService("Players"):GetChildren() do
-                                if c ~= game:GetService("Players").LocalPlayer then 
-                                    game.ReplicatedStorage.meleeEvent:FireServer(c) 
-                                end
-                            end
-                        end
-                    end)
-                end
-            end)
-            
-            WindUI:Notify({
-                Title = "已开启自动杀戮",
-                Content = "正在杀死所有玩家",
-                Duration = 3
-            })
-        else
-            WindUI:Notify({
-                Title = "已关闭自动杀戮",
-                Content = "以停止自动杀戮",
-                Duration = 3
-            })
-        end
-    end
-})
-end
 
 WindUI:Popup({
     Title = "FIN-v1-Hub",
