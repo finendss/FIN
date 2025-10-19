@@ -136,9 +136,12 @@ local function createMainWindow()
         },
         Increment = 1,
         Callback = function(value)
-        if game.Players.LocalPlayer.Character then
-            game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = value
-        end
+            if game.Players.LocalPlayer.Character then
+                local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.WalkSpeed = value
+                end
+            end
         end
     })
 
@@ -151,9 +154,12 @@ local function createMainWindow()
         },
         Increment = 1,
         Callback = function(value)
-        if game.Players.LocalPlayer.Character then
-            game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").JumpPower = value
-        end
+            if game.Players.LocalPlayer.Character then
+                local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.JumpPower = value
+                end
+            end
         end
     })
 
@@ -166,212 +172,311 @@ local function createMainWindow()
         },
         Increment = 1,
         Callback = function(value)
-        game.Workspace.Gravity = value
+            game.Workspace.Gravity = value
         end
     })
 
     Tab:Toggle({
         Title = "夜视",
-        Default = true,
+        Default = false,
         Callback = function(Value)
-    		if Value then
-		    game.Lighting.Ambient = Color3.new(1, 1, 1)
-		else
-		    game.Lighting.Ambient = Color3.new(0, 0, 0)
-		end
+            if Value then
+                game.Lighting.Ambient = Color3.new(1, 1, 1)
+            else
+                game.Lighting.Ambient = Color3.new(0, 0, 0)
+            end
         end
     })
 
-local Workspace = game:GetService("Workspace")
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
+    local Workspace = game:GetService("Workspace")
+    local Players = game:GetService("Players")
+    local RunService = game:GetService("RunService")
 
-local clipConnection = nil
+    local clipConnection = nil
 
-Tab:Toggle({
-    Title = "穿墙",
-    Default = false,
-    Callback = function(enabled)
-        if clipConnection then
-            clipConnection:Disconnect()
-            clipConnection = nil
-        end
-        
-        if enabled then
-            clipConnection = RunService.Stepped:Connect(function()
+    Tab:Toggle({
+        Title = "穿墙",
+        Default = false,
+        Callback = function(enabled)
+            if clipConnection then
+                clipConnection:Disconnect()
+                clipConnection = nil
+            end
+            
+            if enabled then
+                clipConnection = RunService.Stepped:Connect(function()
+                    local char = Players.LocalPlayer.Character
+                    if char then
+                        for _, part in ipairs(char:GetChildren()) do
+                            if part:IsA("BasePart") then
+                                part.CanCollide = false
+                            end
+                        end
+                    end
+                end)
+                WindUI:Notify({
+                    Title = "已开启穿墙",
+                    Content = "ok了老铁",
+                    Duration = 3
+                })
+            else
                 local char = Players.LocalPlayer.Character
                 if char then
                     for _, part in ipairs(char:GetChildren()) do
                         if part:IsA("BasePart") then
-                            part.CanCollide = false
+                            part.CanCollide = true
                         end
                     end
                 end
-            end)
-            WindUI:Notify({
-                Title = "已开启穿墙",
-                Content = "ok了老铁",
-                Duration = 3
-            })
-        else
-            local char = Players.LocalPlayer.Character
-            if char then
-                for _, part in ipairs(char:GetChildren()) do
-                    if part:IsA("BasePart") then
-                        part.CanCollide = true
-                    end
-                end
+                WindUI:Notify({
+                    Title = "已关闭穿墙",
+                    Content = "不ok了老铁",
+                    Duration = 5
+                })
             end
-            WindUI:Notify({
-                Title = "已关闭穿墙",
-                Content = "不ok了老铁",
-                Duration = 5
-            })
         end
-    end
-})
+    })
 
-Tab:Toggle({
-    Title = "绘制玩家",
-    Default = true,
-    Callback = function(state)
-        if state then
-            local FillColor = Color3.fromRGB(255, 0, 0)
-            local DepthMode = "AlwaysOnTop"
-            local FillTransparency = 0.5
-            local OutlineColor = Color3.fromRGB(255,255,255)
-            local OutlineTransparency = 0
+    Tab:Toggle({
+        Title = "绘制玩家",
+        Default = false,
+        Callback = function(state)
+            if state then
+                local FillColor = Color3.fromRGB(255, 0, 0)
+                local DepthMode = "AlwaysOnTop"
+                local FillTransparency = 0.5
+                local OutlineColor = Color3.fromRGB(255,255,255)
+                local OutlineTransparency = 0
 
-            local CoreGui = game:FindService("CoreGui")
-            local Players = game:FindService("Players")
-            local connections = {}
-            
-            local Storage = Instance.new("Folder")
-            Storage.Parent = CoreGui
-            Storage.Name = "Highlight_Storage"
-
-            local function Highlight(plr)
-                if not Storage or not Storage.Parent then return end
+                local CoreGui = game:GetService("CoreGui")
+                local Players = game:GetService("Players")
+                local connections = {}
                 
-                local Highlight = Instance.new("Highlight")
-                Highlight.Name = plr.Name
-                Highlight.FillColor = FillColor
-                Highlight.DepthMode = DepthMode
-                Highlight.FillTransparency = FillTransparency
-                Highlight.OutlineColor = OutlineColor
-                Highlight.OutlineTransparency = 0
-                Highlight.Parent = Storage
-                
-                local plrchar = plr.Character
-                if plrchar then
-                    Highlight.Adornee = plrchar
+                local Storage = Instance.new("Folder")
+                Storage.Parent = CoreGui
+                Storage.Name = "Highlight_Storage"
+
+                local function Highlight(plr)
+                    if not Storage or not Storage.Parent then return end
+                    
+                    local Highlight = Instance.new("Highlight")
+                    Highlight.Name = plr.Name
+                    Highlight.FillColor = FillColor
+                    Highlight.DepthMode = DepthMode
+                    Highlight.FillTransparency = FillTransparency
+                    Highlight.OutlineColor = OutlineColor
+                    Highlight.OutlineTransparency = 0
+                    Highlight.Parent = Storage
+                    
+                    local plrchar = plr.Character
+                    if plrchar then
+                        Highlight.Adornee = plrchar
+                    end
+
+                    connections[plr] = plr.CharacterAdded:Connect(function(char)
+                        if Highlight and Highlight.Parent then
+                            Highlight.Adornee = char
+                        end
+                    end)
                 end
 
-                connections[plr] = plr.CharacterAdded:Connect(function(char)
-                    if Highlight and Highlight.Parent then
-                        Highlight.Adornee = char
+                connections.playerAdded = Players.PlayerAdded:Connect(Highlight)
+                
+                for i,v in next, Players:GetPlayers() do
+                    Highlight(v)
+                end
+
+                connections.playerRemoving = Players.PlayerRemoving:Connect(function(plr)
+                    if Storage and Storage.Parent then
+                        local plrname = plr.Name
+                        if Storage[plrname] then
+                            Storage[plrname]:Destroy()
+                        end
+                    end
+                    if connections[plr] then
+                        connections[plr]:Disconnect()
+                        connections[plr] = nil
                     end
                 end)
-            end
-
-            connections.playerAdded = Players.PlayerAdded:Connect(Highlight)
-            
-            for i,v in next, Players:GetPlayers() do
-                Highlight(v)
-            end
-
-            connections.playerRemoving = Players.PlayerRemoving:Connect(function(plr)
-                if Storage and Storage.Parent then
-                    local plrname = plr.Name
-                    if Storage[plrname] then
-                        Storage[plrname]:Destroy()
-                    end
-                end
-                if connections[plr] then
-                    connections[plr]:Disconnect()
-                    connections[plr] = nil
-                end
-            end)
-            
-            Storage:SetAttribute("Connections", connections)
-        else
-            local CoreGui = game:FindService("CoreGui")
-            local Storage = CoreGui:FindFirstChild("Highlight_Storage")
-            if Storage then
-                local connections = Storage:GetAttribute("Connections")
-                if connections then
-                    for key, connection in pairs(connections) do
-                        if connection and typeof(connection) == "RBXScriptConnection" then
-                            connection:Disconnect()
+                
+                Storage:SetAttribute("Connections", connections)
+            else
+                local CoreGui = game:GetService("CoreGui")
+                local Storage = CoreGui:FindFirstChild("Highlight_Storage")
+                if Storage then
+                    local connections = Storage:GetAttribute("Connections")
+                    if connections then
+                        for key, connection in pairs(connections) do
+                            if connection and typeof(connection) == "RBXScriptConnection" then
+                                connection:Disconnect()
+                            end
                         end
                     end
+                    Storage:Destroy()
                 end
-                Storage:Destroy()
             end
         end
-    end
-})
+    })
 
     Tab:Button({
         Title = "FIN-飞行",
-        Default = true,
         Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-Fly"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-Fly"))()
         end
     })
 
     Tab:Button({
         Title = "FIN-飞车",
-        Default = true,
         Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-FlyCar"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-FlyCar"))()
         end
     })
 
     Tab:Button({
         Title = "光影 1",
-        Default = true,
         Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Lightandshadow-1"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Lightandshadow-1"))()
         end
     })
 
     Tab:Button({
         Title = "光影 2",
-        Default = true,
         Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/LightandShadow-2"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/LightandShadow-2"))()
         end
     })
 
     Tab:Button({
         Title = "FE-死亡笔记",
-        Default = true,
         Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-DeathNote"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-DeathNote"))()
         end
     })
 
     Tab:Button({
         Title = "无限跳",
-        Default = true,
         Callback = function()
-    	game:GetService("UserInputService").JumpRequest:connect(function()
-		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")		
-	end)
-         WindUI:Notify({
-             Title = "已开启无限跳",
-             Content = "跳跳虎",
-             Duration = 3 --消失时长
-        })
+            game:GetService("UserInputService").JumpRequest:Connect(function()
+                local character = game:GetService("Players").LocalPlayer.Character
+                if character then
+                    local humanoid = character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid:ChangeState("Jumping")
+                    end
+                end
+            end)
+            WindUI:Notify({
+                Title = "已开启无限跳",
+                Content = "跳跳虎",
+                Duration = 3 --消失时长
+            })
         end
     })
 
     Tab:Button({
         Title = "踏空行走",
-        Default = true,
         Callback = function()
-loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
+        end
+    })
+
+    -- 将Tab2移到createMainWindow函数内部
+    local Tab2 = Window:Tab({
+        Title = "监狱人生",
+        Icon = "drama",
+        Locked = false,
+    })
+
+    Tab2:Button({
+        Title = "变成汽车模型",
+        Callback = function()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/littlegui/main/FPS-Counter'))()
+        end
+    })
+
+    Tab2:Button({
+        Title = "变成死神(仅自己可见)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/ewv9bbRp"))() 
+        end
+    })
+
+    Tab2:Button({
+        Title = "FE-变成钢铁侠(别人可见)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/7prijqYH"))()
+        end
+    })
+
+    Tab2:Button({
+        Title = "手里剑(秒杀别人)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/mSLiAZHk"))()
+        end
+    })
+
+local killAllEnabled = false
+local killAllConnection = nil
+
+Tab2:Toggle({
+    Title = "杀死所有人",
+    Default = false,
+    Callback = function(enabled)
+        killAllEnabled = enabled
+        
+        if killAllConnection then
+            killAllConnection:Disconnect()
+            killAllConnection = nil
+        end
+        
+        if enabled then
+            killAllConnection = RunService.Heartbeat:Connect(function()
+                if not killAllEnabled then return end
+                
+                for i, v in next, game:GetService("Players"):GetChildren() do
+                    pcall(function()
+                        if v ~= game:GetService("Players").LocalPlayer and 
+                           v.Character and 
+                           v.Character:FindFirstChild("Humanoid") and
+                           not v.Character:FindFirstChildOfClass("ForceField") and 
+                           v.Character.Humanoid.Health > 0 then
+                            
+                            if game.Players.LocalPlayer.Character and 
+                               game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and
+                               v.Character:FindFirstChild("HumanoidRootPart") then
+                               
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+                            end
+                            
+                            for x, c in next, game:GetService("Players"):GetChildren() do
+                                if c ~= game:GetService("Players").LocalPlayer then 
+                                    game.ReplicatedStorage.meleeEvent:FireServer(c) 
+                                end
+                            end
+                        end
+                    end)
+                end
+            end)
+            
+            WindUI:Notify({
+                Title = "已开启自动杀戮",
+                Content = "正在杀死所有玩家",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "已关闭自动杀戮",
+                Content = "以停止自动杀戮",
+                Duration = 3
+            })
+        end
+    end
+})
+
+    Tab2:Button({
+        Title = "FE-无敌模式(别人可见)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/LdTVujTA"))()
         end
     })
 end
