@@ -523,9 +523,60 @@ end
     Tab3:Button({
         Title = "禁用跌落伤害",
         Callback = function()
-      
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local RunService = game:GetService("RunService")
+        local Players = game:GetService("Players")
+        
+        local hiddenfling = false
+        local flingThread
+        
+        if not ReplicatedStorage:FindFirstChild("juisdfj0i32i0eidsuf0iok") then
+            local detection = Instance.new("Decal")
+            detection.Name = "juisdfj0i32i0eidsuf0iok"
+            detection.Parent = ReplicatedStorage
         end
-    })
+        
+        local function fling()
+            local lp = Players.LocalPlayer
+            local c, hrp, vel, movel = nil, nil, nil, 0.1
+        
+            while hiddenfling do
+                RunService.Heartbeat:Wait()
+                c = lp.Character
+                hrp = c and c:FindFirstChild("HumanoidRootPart")
+        
+                if hrp then
+                    vel = hrp.Velocity
+                    hrp.Velocity = vel * 10000 + Vector3.new(0, 10000, 0)
+                    RunService.RenderStepped:Wait()
+                    hrp.Velocity = vel
+                    RunService.Stepped:Wait()
+                    hrp.Velocity = vel + Vector3.new(0, movel, 0)
+                    movel = -movel
+                end
+            end
+        end
+        
+        hiddenfling = not hiddenfling
+        
+        if hiddenfling then
+            flingThread = coroutine.create(fling)
+            coroutine.resume(flingThread)
+            WindUI:Notify({
+                Title = "已开启防坠落伤害",
+                Content = "推荐和FE-无敌少侠搭配",
+                Duration = 3 --消失时长
+            })
+        else
+            hiddenfling = false
+            WindUI:Notify({
+                Title = "无法关闭噢",
+                Content = "我懒得搞开关",
+                Duration = 3 --消失时长
+            })
+        end
+    end
+})
 end
 
 WindUI:Popup({
