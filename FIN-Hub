@@ -156,6 +156,19 @@ local function createMainWindow()
         end
         end
     })
+
+    Tab:Slider({
+        Title = "重力(万有引力)",
+        Value = {
+            Min = 50,
+            Max = 500,
+            Default = 196,
+        },
+        Increment = 1,
+        Callback = function(value)
+        game.Workspace.Gravity = value
+        end
+    })
 end
 
 WindUI:Popup({
