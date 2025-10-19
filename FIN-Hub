@@ -185,6 +185,16 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function
 loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-FlyCar"))()
         end
     })
+
+    Tab:Button({
+        Title = "FIN-飞车",
+        Default = true,
+        Callback = function()
+    	game:GetService("UserInputService").JumpRequest:connect(function()
+		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")		
+	end)
+        end
+    })
 end
 
 WindUI:Popup({
