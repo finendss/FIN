@@ -187,12 +187,17 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function
     })
 
     Tab:Button({
-        Title = "FIN-飞车",
+        Title = "无限跳",
         Default = true,
         Callback = function()
     	game:GetService("UserInputService").JumpRequest:connect(function()
 		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")		
 	end)
+         WindUI:Notify({
+             Title = "已开启无限跳",
+             Content = "跳跳虎",
+             Duration = 3 --消失时长
+        })
         end
     })
 end
