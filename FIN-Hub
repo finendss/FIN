@@ -407,6 +407,39 @@ local function createMainWindow()
         end
     })
 
+    Tab2:Button({
+        Title = "杀死所有人(开启后无法关闭)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/kXjfpFPh"))()
+        end
+    })
+
+    Tab2:Button({
+        Title = "逮捕囚犯",
+        Callback = function()
+    Player = game.Players.LocalPlayer
+	Pcf = Player.Character.HumanoidRootPart.CFrame
+	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+	if v.Name ~= Player.Name then
+	local i = 10
+    repeat
+    wait()
+    i = i-1
+    game.Workspace.Remote.arrest:InvokeServer(v.Character.HumanoidRootPart)
+    Player.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1)
+    until i == 0
+end
+end
+        end
+    })
+
+    Tab2:Button({
+        Title = "传送至警卫室",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(847.7261352539062, 98.95999908447266, 2267.387451171875)
+        end
+    })
+end
 
 WindUI:Popup({
     Title = "FIN-v1-Hub",
