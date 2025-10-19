@@ -5,23 +5,7 @@ local TextChatService = game:GetService("TextChatService")
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 
-WindUI:Popup({
-    Title = "FIN-v1-Hub",
-    Icon = "sparkles",
-    Content = "尊敬的：" .. game.Players.LocalPlayer.Name,
-    Buttons = {
-        {
-            Title = "启动",
-            Icon = "arrow-right",
-            Variant = "Primary",
-            Callback = function()
-                print("启动")
-                createMainWindow()
-            end
-        }
-    }
-})
-    
+local function createMainWindow()
     local Window = WindUI:CreateWindow({
         Title = "FIN-Hub",
         Icon = "rbxassetid://4483362748",
@@ -72,21 +56,21 @@ WindUI:Popup({
     
     task.wait(0.3)
 
-Window:EditOpenButton({
-    Title = "FIN-Hub",
-    Icon = "monitor",
-    CornerRadius = UDim.new(0,16),
-    StrokeThickness = 2,
-    Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromHex("FF0000")),
-        ColorSequenceKeypoint.new(0.66, Color3.fromHex("0000FF")),
-        ColorSequenceKeypoint.new(0.83, Color3.fromHex("4B0082")),
-        ColorSequenceKeypoint.new(1, Color3.fromHex("9400D3"))
-    }),
-    Draggable = true,
-})
+    Window:EditOpenButton({
+        Title = "FIN-Hub",
+        Icon = "monitor",
+        CornerRadius = UDim.new(0,16),
+        StrokeThickness = 2,
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromHex("FF0000")),
+            ColorSequenceKeypoint.new(0.66, Color3.fromHex("0000FF")),
+            ColorSequenceKeypoint.new(0.83, Color3.fromHex("4B0082")),
+            ColorSequenceKeypoint.new(1, Color3.fromHex("9400D3"))
+        }),
+        Draggable = true,
+    })
 
-task.wait(0.2)
+    task.wait(0.2)
 
     local MainTab = Window:Tab({ --前面加这个会更好一点点
         Title = "主页",
@@ -107,30 +91,34 @@ task.wait(0.2)
         Desc = "感谢你的支持",
     })
     MainTab:Paragraph({
-        Title = "您当前注入器为: " .. getExecutorName(),
-        Desc = "爱你们呦 么么哒",
-    })
-    MainTab:Paragraph({
         Title = "获取FIN-Hub主群qq",
         Desc = "以此获取最新内容",
         ImageSize = 20,
         Color = "Grey",
         Buttons = {
-        {
-            Title = "复制",
-            Icon = "copy",
-            Variant = "Tertiary",
-            Callback = function()
-                setclipboard("951740588")
-                WindUI:Notify({
-                    Title = "已复制",
-                    Content = "已复制到剪贴板",
-                    Duration = 5 --消失时长
-                })
-            end
+            {
+                Title = "复制",
+                Icon = "copy",
+                Variant = "Tertiary",
+                Callback = function()
+                    if type(setclipboard) == "function" then
+                        setclipboard("951740588")
+                        WindUI:Notify({
+                            Title = "已复制",
+                            Content = "已复制到剪贴板",
+                            Duration = 5 --消失时长
+                        })
+                    else
+                        WindUI:Notify({
+                            Title = "复制失败",
+                            Content = "可能是炸了",
+                            Duration = 5
+                        })
+                    end
+                end
+            }
         }
-    }
-})
+    })
     
     local Tab = Window:Tab({ --在Tab后面要加12345这样的
         Title = "标签页",
@@ -142,15 +130,15 @@ task.wait(0.2)
         Title = "一个按钮",
         Default = true,
         Callback = function()
-
+            print("按钮被点击")
         end
     })
 
     Tab:Toggle({
         Title = "一个开关",
         Default = true,
-        Callback = function()
-    
+        Callback = function(value)
+            print("开关状态:", value)
         end
     })
 
@@ -162,8 +150,8 @@ task.wait(0.2)
             Default = 70,
         },
         Increment = 1,
-        Callback = function()
-
+        Callback = function(value)
+            print("滑块值:", value)
         end
     })
 
@@ -171,7 +159,25 @@ task.wait(0.2)
         Title = "一个下拉菜单",
         Values = {"神秘", "喵喵喵", "哈基米", "大狗脚脚脚"},
         Value = "神秘",
-        Callback = function()
-
+        Callback = function(value)
+            print("选择了:", value)
         end
-     })
+    })
+end
+
+WindUI:Popup({
+    Title = "FIN-v1-Hub",
+    Icon = "sparkles",
+    Content = "尊敬的：" .. game.Players.LocalPlayer.Name,
+    Buttons = {
+        {
+            Title = "启动",
+            Icon = "arrow-right",
+            Variant = "Primary",
+            Callback = function()
+                print("启动")
+                createMainWindow()
+            end
+        }
+    }
+})
