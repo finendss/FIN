@@ -90,6 +90,7 @@ local function createMainWindow()
         Title = "当前服务器ID: " .. game.PlaceId,
         Desc = "感谢你的支持",
     })
+
     MainTab:Paragraph({
         Title = "获取FIN-Hub主群qq",
         Desc = "以此获取最新内容",
@@ -110,8 +111,8 @@ local function createMainWindow()
                         })
                     else
                         WindUI:Notify({
-                            Title = "复制失败",
-                            Content = "可能是炸了",
+                            Title = "错误",
+                            Content = "复制功能不可用",
                             Duration = 5
                         })
                     end
@@ -121,46 +122,38 @@ local function createMainWindow()
     })
     
     local Tab = Window:Tab({ --在Tab后面要加12345这样的
-        Title = "标签页",
+        Title = "通用",
         Icon = "drama",
         Locked = false,
     })
 
-    Tab:Button({ --Tab后面随着标签页的Tab数一起123456
-        Title = "一个按钮",
-        Default = true,
-        Callback = function()
-            print("按钮被点击")
-        end
-    })
-
-    Tab:Toggle({
-        Title = "一个开关",
-        Default = true,
+    Tab:Slider({
+        Title = "奔跑速度",
+        Value = {
+            Min = 16,
+            Max = 500,
+            Default = 16,
+        },
+        Increment = 1,
         Callback = function(value)
-            print("开关状态:", value)
+        if game.Players.LocalPlayer.Character then
+            game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = value
+        end
         end
     })
 
     Tab:Slider({
-        Title = "一个滑块",
+        Title = "跳跃高度",
         Value = {
             Min = 50,
-            Max = 100,
-            Default = 70,
+            Max = 400,
+            Default = 50,
         },
         Increment = 1,
         Callback = function(value)
-            print("滑块值:", value)
+        if game.Players.LocalPlayer.Character then
+            game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").JumpPower = value
         end
-    })
-
-    Tab:Dropdown({
-        Title = "一个下拉菜单",
-        Values = {"神秘", "喵喵喵", "哈基米", "大狗脚脚脚"},
-        Value = "神秘",
-        Callback = function(value)
-            print("选择了:", value)
         end
     })
 end
