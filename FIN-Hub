@@ -388,20 +388,6 @@ local function createMainWindow()
     })
 
     Tab2:Button({
-        Title = "变成汽车模型",
-        Callback = function()
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/littlegui/main/FPS-Counter'))()
-        end
-    })
-
-    Tab2:Button({
-        Title = "变成死神(仅自己可见)",
-        Callback = function()
-            loadstring(game:HttpGet("https://pastebin.com/ewv9bbRp"))() 
-        end
-    })
-
-    Tab2:Button({
         Title = "FE-变成钢铁侠(别人可见)",
         Callback = function()
             loadstring(game:HttpGet("https://pastebin.com/raw/7prijqYH"))()
@@ -412,6 +398,13 @@ local function createMainWindow()
         Title = "手里剑(秒杀别人)",
         Callback = function()
             loadstring(game:HttpGet("https://pastebin.com/raw/mSLiAZHk"))()
+        end
+    })
+
+    Tab2:Button({
+        Title = "FE-无敌模式(别人可见)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/LdTVujTA"))()
         end
     })
 
@@ -472,13 +465,6 @@ Tab2:Toggle({
         end
     end
 })
-
-    Tab2:Button({
-        Title = "FE-无敌模式(别人可见)",
-        Callback = function()
-            loadstring(game:HttpGet("https://pastebin.com/raw/LdTVujTA"))()
-        end
-    })
 end
 
 WindUI:Popup({
