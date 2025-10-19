@@ -492,6 +492,40 @@ if bool == true then do game.Players.LocalPlayer.PlayerGui.MainGui.MapVotePage.V
 end
         end
     })
+
+    Tab3:Toggle({
+        Title = "水上行走",
+        Default = true,
+        Callback = function(bool)
+     if bool == false then do game.Workspace.WaterLevel.CanCollide = false
+                            game.Workspace.WaterLevel.Size = Vector3.new(10, 1, 10)
+                        end
+                    end
+                    if bool == true then do game.Workspace.WaterLevel.CanCollide = true
+                            game.Workspace.WaterLevel.Size = Vector3.new(5000, 1, 5000)
+                        end
+                    end
+        end
+    })
+
+    Tab3:Toggle({
+        Title = "游戏岛悬崖碰撞",
+        Default = true,
+        Callback = function(bool)
+    for i, v in pairs (game.workspace:GetDescendants())do
+                                if v.Name == 'LowerRocks' then
+                                    v.CanCollide = bool
+                                end
+                            end
+        end
+    })
+
+    Tab3:Button({
+        Title = "禁用跌落伤害",
+        Callback = function()
+      
+        end
+    })
 end
 
 WindUI:Popup({
