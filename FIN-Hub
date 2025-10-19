@@ -182,6 +182,45 @@ local function createMainWindow()
         end
     })
 
+local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local clipConnection = nil
+
+Tab:Toggle({
+    Title = "穿墙",
+    Default = false,
+    Callback = function(enabled)
+        if clipConnection then
+            clipConnection:Disconnect()
+            clipConnection = nil
+        end
+        
+        if enabled then
+            clipConnection = RunService.Stepped:Connect(function()
+                local char = Players.LocalPlayer.Character
+                if char then
+                    for _, part in ipairs(char:GetChildren()) do
+                        if part:IsA("BasePart") then
+                            part.CanCollide = false
+                        end
+                    end
+                end
+            end)
+        else
+            local char = Players.LocalPlayer.Character
+            if char then
+                for _, part in ipairs(char:GetChildren()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = true
+                    end
+                end
+            end
+        end
+    end
+})
+
 Tab:Toggle({
     Title = "绘制玩家",
     Default = true,
