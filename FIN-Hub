@@ -6,16 +6,16 @@ local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 
 WindUI:Popup({
-    Title = "ui",
+    Title = "FIN-v1-Hub",
     Icon = "sparkles",
     Content = "尊敬的：" .. game.Players.LocalPlayer.Name,
     Buttons = {
         {
-            Title = "启动ui",
+            Title = "启动",
             Icon = "arrow-right",
             Variant = "Primary",
             Callback = function()
-                print("启动ui")
+                print("启动")
                 createMainWindow()
             end
         }
@@ -23,11 +23,11 @@ WindUI:Popup({
 })
     
     local Window = WindUI:CreateWindow({
-        Title = "FIN-Ui示例",
+        Title = "FIN-Hub",
         Icon = "rbxassetid://4483362748",
         IconTransparency = 0.5,
         IconThemed = true,
-        Author = "FIN Ui",
+        Author = "By 鑫晴",
         Folder = "CloudHub",
         Size = UDim2.fromOffset(400, 300),
         Transparent = true,
@@ -66,19 +66,14 @@ WindUI:Popup({
     end)
     
     Window:Tag({
-        Title = "喵喵喵",
+        Title = "缝合版",
         Color = Color3.fromHex("#315dff")
-    })
-    
-    local UpdateTag = Window:Tag({
-        Title = "喵喵喵",
-        Color = Color3.fromHex("#000000")
     })
     
     task.wait(0.3)
 
 Window:EditOpenButton({
-    Title = "FIN-Ui示例",
+    Title = "FIN-Hub",
     Icon = "monitor",
     CornerRadius = UDim.new(0,16),
     StrokeThickness = 2,
@@ -94,32 +89,43 @@ Window:EditOpenButton({
 task.wait(0.2)
 
     local MainTab = Window:Tab({ --前面加这个会更好一点点
-        Title = "标签页",
+        Title = "主页",
         Icon = "zap",
         Locked = false,
     })
 
     MainTab:Paragraph({ --简介
-        Title = "输入文本",
-        Desc = "输入文本",
+        Title = "作者:鑫晴",
+        Desc = "神秘的人",
     })
-    
     MainTab:Paragraph({
-        Title = "输入文本",
-        Desc = "输入文本",
+        Title = "脚本为免费缝合",
+        Desc = "倒卖的人死全家",
+    })
+    MainTab:Paragraph({
+        Title = "当前服务器ID: " .. game.PlaceId,
+        Desc = "感谢你的支持",
+    })
+    MainTab:Paragraph({
+        Title = "您当前注入器为: " .. getExecutorName(),
+        Desc = "爱你们呦 么么哒",
+    })
+    MainTab:Paragraph({
+        Title = "获取FIN-Hub主群qq",
+        Desc = "以此获取最新内容",
         ImageSize = 20,
         Color = "Grey",
         Buttons = {
         {
-            Title = "可以复制qq群",
+            Title = "复制",
             Icon = "copy",
             Variant = "Tertiary",
             Callback = function()
-                setclipboard("这里填写你的q群")
+                setclipboard("951740588")
                 WindUI:Notify({
                     Title = "已复制",
                     Content = "已复制到剪贴板",
-                    Duration = 2 --消失时长
+                    Duration = 5 --消失时长
                 })
             end
         }
