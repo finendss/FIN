@@ -208,6 +208,11 @@ Tab:Toggle({
                     end
                 end
             end)
+            WindUI:Notify({
+                Title = "已开启穿墙",
+                Content = "ok了老铁",
+                Duration = 3
+            })
         else
             local char = Players.LocalPlayer.Character
             if char then
@@ -217,6 +222,11 @@ Tab:Toggle({
                     end
                 end
             end
+            WindUI:Notify({
+                Title = "已关闭穿墙",
+                Content = "不ok了老铁",
+                Duration = 5
+            })
         end
     end
 })
