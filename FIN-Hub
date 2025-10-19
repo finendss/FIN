@@ -200,6 +200,14 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function
         })
         end
     })
+
+    Tab:Button({
+        Title = "踏空行走",
+        Default = true,
+        Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
+        end
+    })
 end
 
 WindUI:Popup({
