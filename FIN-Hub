@@ -577,6 +577,34 @@ end
         end
     end
 })
+
+    Tab3:Button({
+        Title = "FE-无敌少侠飞行动作",
+        Callback = function()
+      loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invinicible-Flight-R15-45414"))()
+        end
+    })
+
+    Tab3:Button({
+        Title = "传送到地图",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-115.828506, 65.4863434, 18.8461514, 0.00697017973, 0.0789371505, -0.996855199, -3.13589936e-07, 0.996879458, 0.0789390653, 0.999975681, -0.000549906865, 0.00694845384)
+        end
+    })
+
+    Tab3:Button({
+        Title = "传送到游戏岛",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-83.5, 38.5, -27.5, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+        end
+    })
+
+    Tab3:Button({
+        Title = "传送到产卵塔",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-280, 170, 341, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+        end
+    })
 end
 
 WindUI:Popup({
