@@ -460,6 +460,38 @@ end
       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(760.6033325195312, 96.96992492675781, 2475.405029296875)
         end
     })
+
+    local Tab3 = Window:Tab({
+        Title = "自然灾害",
+        Icon = "drama",
+        Locked = false,
+    })
+
+    Tab3:Toggle({
+        Title = "自动胜出",
+        Default = true,
+        Callback = function(bool)
+      _G.autowinfarm = bool;
+    while wait(.1) do
+        if _G.autowinfarm == true then
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-236, 180, 360, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+        end
+end  
+        end
+    })
+
+    Tab3:Toggle({
+        Title = "地图玩家投票界面",
+        Default = true,
+        Callback = function(bool)
+    if bool == false then do game.Players.LocalPlayer.PlayerGui.MainGui.MapVotePage.Visible = false
+    end
+end
+if bool == true then do game.Players.LocalPlayer.PlayerGui.MainGui.MapVotePage.Visible = true
+    end
+end
+        end
+    })
 end
 
 WindUI:Popup({
