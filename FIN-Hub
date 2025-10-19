@@ -177,8 +177,15 @@ local function createMainWindow()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-Fly"))()
         end
     })
-end
 
+    Tab:Button({
+        Title = "FIN-飞车",
+        Default = true,
+        Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-FlyCar"))()
+        end
+    })
+end
 
 WindUI:Popup({
     Title = "FIN-v1-Hub",
