@@ -170,6 +170,18 @@ local function createMainWindow()
         end
     })
 
+    Tab:Toggle({
+        Title = "夜视",
+        Default = true,
+        Callback = function(Value)
+    		if Value then
+		    game.Lighting.Ambient = Color3.new(1, 1, 1)
+		else
+		    game.Lighting.Ambient = Color3.new(0, 0, 0)
+		end
+        end
+    })
+
 Tab:Toggle({
     Title = "绘制玩家",
     Default = true,
