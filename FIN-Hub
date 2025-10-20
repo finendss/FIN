@@ -468,13 +468,25 @@ end
     })
 
     Tab3:Button({
+        Title = "磁吸黑洞",
+        Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Magnetic-black-hole"))()
+        end
+    })
+
+    Tab3:Button({
         Title = "黑洞v1",
         Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Black-hole-v1"))()
         end
     })
 
-
+    Tab3:Button({
+        Title = "黑洞v2",
+        Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Black-hole-v2"))()
+        end
+    })
 
     Tab3:Toggle({
         Title = "自动胜出",
