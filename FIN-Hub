@@ -387,7 +387,7 @@ local function createMainWindow()
     })
 
 Tab2:Button({
-    Title = "子追",
+    Title = "子追(队伍检测)",
     Callback = function()
         local Workspace = game:GetService("Workspace")
         local Players = game:GetService("Players")
@@ -736,7 +736,26 @@ end
       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-280, 170, 341, 1, 0, 0, 0, 1, 0, 0, 0, 1)
         end
     })
-end
+
+    local Tab4 = Window:Tab({
+        Title = "被遗弃",
+        Icon = "drama",
+        Locked = false,
+    })
+
+    Tab4:Button({
+        Title = "FartSaken(汉化)",
+        Callback = function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/Chinese/refs/heads/main/Fartsaken%20Chinese"))()
+        end
+    })
+
+    Tab4:Button({
+        Title = "SntSaken(半汉化)",
+        Callback = function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/Chinese/refs/heads/main/SNTSaken"))()
+        end
+    })
 
 WindUI:Popup({
     Title = "FIN-v1-Hub",
