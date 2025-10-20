@@ -759,8 +759,8 @@ end
 
 local HighlightSystem = {
     Settings = {
-        ShowSurvivors = true,
-        ShowKillers = true,
+        ShowSurvivors = false,
+        ShowKillers = false,
         Colors = {
             Survivor = Color3.fromRGB(0, 255, 255),
             Killer = Color3.fromRGB(255, 100, 100)
@@ -772,7 +772,8 @@ local HighlightSystem = {
     },
     Cache = {
         Highlights = {},
-        Connections = {}
+        Connections = {},
+        Enabled = false
     }
 }
 
@@ -811,6 +812,10 @@ local function UpdateHighlights()
         end
     end
     
+    if not HighlightSystem.Settings.ShowSurvivors and not HighlightSystem.Settings.ShowKillers then
+        return
+    end
+    
     if HighlightSystem.Settings.ShowSurvivors then
         local survivors = workspace:FindFirstChild("Players")
         if survivors then
@@ -823,6 +828,14 @@ local function UpdateHighlights()
                         end
                     end
                 end
+            end
+        end
+    else
+        for char, highlight in pairs(HighlightSystem.Cache.Highlights) do
+            local isKiller = highlight.FillColor == HighlightSystem.Settings.Colors.Killer
+            if not isKiller then
+                highlight:Destroy()
+                HighlightSystem.Cache.Highlights[char] = nil
             end
         end
     end
@@ -841,17 +854,47 @@ local function UpdateHighlights()
                 end
             end
         end
+    else
+        for char, highlight in pairs(HighlightSystem.Cache.Highlights) do
+            local isKiller = highlight.FillColor == HighlightSystem.Settings.Colors.Killer
+            if isKiller then
+                highlight:Destroy()
+                HighlightSystem.Cache.Highlights[char] = nil
+            end
+        end
     end
 end
 
-HighlightSystem.Cache.Connections["Main"] = game:GetService("RunService").Heartbeat:Connect(UpdateHighlights)
+local function ToggleHighlightSystem(enable)
+    if enable then
+        if not HighlightSystem.Cache.Connections["Main"] then
+            HighlightSystem.Cache.Connections["Main"] = game:GetService("RunService").Heartbeat:Connect(UpdateHighlights)
+        end
+    else
+        if HighlightSystem.Cache.Connections["Main"] then
+            HighlightSystem.Cache.Connections["Main"]:Disconnect()
+            HighlightSystem.Cache.Connections["Main"] = nil
+        end
+        
+        for char, highlight in pairs(HighlightSystem.Cache.Highlights) do
+            highlight:Destroy()
+        end
+        HighlightSystem.Cache.Highlights = {}
+    end
+end
 
 Tab4:Toggle({
     Title = "绘制杀手",
     Default = false,
     Callback = function(state)
         HighlightSystem.Settings.ShowKillers = state
-        UpdateHighlights()
+        
+        if not HighlightSystem.Settings.ShowSurvivors and not state then
+            ToggleHighlightSystem(false)
+        else
+            ToggleHighlightSystem(true)
+            UpdateHighlights()
+        end
     end
 })
 
@@ -860,7 +903,13 @@ Tab4:Toggle({
     Locked = false,
     Callback = function(state)
         HighlightSystem.Settings.ShowSurvivors = state
-        UpdateHighlights()
+        
+        if not state and not HighlightSystem.Settings.ShowKillers then
+            ToggleHighlightSystem(false)
+        else
+            ToggleHighlightSystem(true)
+            UpdateHighlights()
+        end
     end
 })
 end
