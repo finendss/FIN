@@ -757,6 +757,15 @@ end
         end
     })
 
+    Tab4:Toggle({
+        Title = "绘制杀手",
+        Default = false,
+        Callback = function()
+          for _, ESP in 
+        end
+    })
+end
+
 WindUI:Popup({
     Title = "FIN-v1-Hub",
     Icon = "sparkles",
