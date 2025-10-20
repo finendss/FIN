@@ -757,18 +757,112 @@ end
         end
     })
 
-    Tab4:Toggle({
-        Title = "绘制杀手",
-        Default = false,
-        Callback = function()
-          for _, ESP in workspace.Players.Killers:GetChildren() do
-       local h = lnstance.new("Highlight")
-       h.FillColor = Color3.new(1.0.0)
-       h.FillTransparency = 0
-       h.Parent = ESP
-       end
+local HighlightSystem = {
+    Settings = {
+        ShowSurvivors = true,
+        ShowKillers = true,
+        Colors = {
+            Survivor = Color3.fromRGB(0, 255, 255),
+            Killer = Color3.fromRGB(255, 100, 100)
+        },
+        Transparency = {
+            Fill = 0.9,
+            Outline = 0
+        }
+    },
+    Cache = {
+        Highlights = {},
+        Connections = {}
+    }
+}
+
+local function CreateHighlight(char, isKiller)
+    if not char or not char:FindFirstChild("Humanoid") then
+        return nil
+    end
+    
+    local highlight = Instance.new("Highlight")
+    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    highlight.FillColor = isKiller and HighlightSystem.Settings.Colors.Killer or HighlightSystem.Settings.Colors.Survivor
+    highlight.OutlineColor = highlight.FillColor
+    highlight.FillTransparency = HighlightSystem.Settings.Transparency.Fill
+    highlight.OutlineTransparency = HighlightSystem.Settings.Transparency.Outline
+    highlight.Parent = char
+    
+    local conn = char.Humanoid.HealthChanged:Connect(function()
+        if not char:FindFirstChild("Humanoid") then 
+            conn:Disconnect() 
         end
-    })
+    end)
+    
+    char.Humanoid.Died:Connect(function()
+        highlight.OutlineTransparency = 1
+        conn:Disconnect()
+    end)
+    
+    return highlight
+end
+
+local function UpdateHighlights()
+    for char, highlight in pairs(HighlightSystem.Cache.Highlights) do
+        if not char.Parent then
+            highlight:Destroy()
+            HighlightSystem.Cache.Highlights[char] = nil
+        end
+    end
+    
+    if HighlightSystem.Settings.ShowSurvivors then
+        local survivors = workspace:FindFirstChild("Players")
+        if survivors then
+            survivors = survivors:FindFirstChild("Survivors")
+            if survivors then
+                for _, char in ipairs(survivors:GetDescendants()) do
+                    if char:IsA("Model") and char:FindFirstChild("Humanoid") then
+                        if not HighlightSystem.Cache.Highlights[char] then
+                            HighlightSystem.Cache.Highlights[char] = CreateHighlight(char, false)
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    if HighlightSystem.Settings.ShowKillers then
+        local killers = workspace:FindFirstChild("Players")
+        if killers then
+            killers = killers:FindFirstChild("Killers")
+            if killers then
+                for _, char in ipairs(killers:GetDescendants()) do
+                    if char:IsA("Model") and char:FindFirstChild("Humanoid") then
+                        if not HighlightSystem.Cache.Highlights[char] then
+                            HighlightSystem.Cache.Highlights[char] = CreateHighlight(char, true)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+HighlightSystem.Cache.Connections["Main"] = game:GetService("RunService").Heartbeat:Connect(UpdateHighlights)
+
+Tab4:Toggle({
+    Title = "绘制杀手",
+    Default = false,
+    Callback = function(state)
+        HighlightSystem.Settings.ShowKillers = state
+        UpdateHighlights()
+    end
+})
+
+Tab4:Toggle({
+    Title = "绘制幸存者",
+    Locked = false,
+    Callback = function(state)
+        HighlightSystem.Settings.ShowSurvivors = state
+        UpdateHighlights()
+    end
+})
 end
 
 WindUI:Popup({
