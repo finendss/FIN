@@ -761,7 +761,12 @@ end
         Title = "绘制杀手",
         Default = false,
         Callback = function()
-          for _, ESP in 
+          for _, ESP in workspace.Players.Killers:GetChildren() do
+       local h = lnstance.new("Highlight")
+       h.FillColor = Color3.new(1.0.0)
+       h.FillTransparency = 0
+       h.Parent = ESP
+       end
         end
     })
 end
