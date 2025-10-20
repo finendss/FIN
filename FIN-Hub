@@ -493,12 +493,7 @@ Tab2:Button({
                 FOV_Circle = nil
             end
         end
-            WindUI:Notify({
-                Title = "已开启子追",
-                Content = "队伍检测不知道有没有用就对了",
-                Duration = 3 --消失时长
-            })
-   end
+    end
 })
 
     Tab2:Button({
