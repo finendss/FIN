@@ -387,6 +387,105 @@ local function createMainWindow()
     })
 
     Tab2:Button({
+        Title = "子追",
+        Callback = function()
+local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
+local olds
+
+-- FOV 设置
+local FOV_Circle = Drawing.new("Circle")
+FOV_Circle.Visible = true
+FOV_Circle.Radius = 60  -- FOV 大小（角度单位，非像素）
+FOV_Circle.Color = Color3.fromRGB(255, 255, 255)
+FOV_Circle.Thickness = 1
+FOV_Circle.Transparency = 1
+FOV_Circle.Filled = false
+FOV_Circle.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+
+-- 当屏幕大小变化时调整 FOV 位置
+Camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+    FOV_Circle.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+end)
+
+local function getClosestHead()
+    local closestHead
+    local closestDistance = math.huge
+    local cameraDirection = Camera.CFrame.LookVector
+    local cameraPos = Camera.CFrame.Position
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            local character = player.Character
+            local head = character:FindFirstChild("Head")
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            local forcefield = character:FindFirstChild("ForceField")
+            
+            if head and humanoid and not forcefield and humanoid.Health > 0 then
+                local directionToHead = (head.Position - cameraPos).Unit
+                local angle = math.deg(math.acos(cameraDirection:Dot(directionToHead)))
+                
+                -- 检查目标是否在 FOV 范围内（角度判定）
+                if angle <= FOV_Circle.Radius then
+                    local distance = (head.Position - cameraPos).Magnitude
+                    if distance < closestDistance then
+                        closestHead = head
+                        closestDistance = distance
+                    end
+                end
+            end
+        end
+    end
+    
+    return closestHead
+end
+
+-- 仅拦截来自 LocalPlayer 的 Raycast 调用（避免影响摄像机）
+old = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
+    
+    -- 仅当调用者是 LocalPlayer 时才修改 Raycast
+    if (method == "Raycast" or method == "FindPartOnRay") and not checkcaller() and self == Workspace then
+        local origin, direction
+        if method == "Raycast" then
+            origin = args[1]
+            direction = args[2]
+        else
+            local ray = args[1]
+            if typeof(ray) == "Ray" then
+                origin = ray.Origin
+                direction = ray.Direction
+            end
+        end
+        
+        if origin and direction then
+            local closestHead = getClosestHead()
+            if closestHead then
+                return {
+                    Instance = closestHead,
+                    Position = closestHead.Position,
+                    Normal = (closestHead.Position - origin).Unit,
+                    Material = Enum.Material.Plastic
+                }
+            end
+        end
+    end
+    
+    return old(self, ...)
+end)
+
+            WindUI:Notify({
+                Title = "已开启子弹追踪",
+                Content = "推荐和队伍检测一起使用",
+                Duration = 3 --消失时长
+            })
+        end
+    })
+
+    Tab2:Button({
         Title = "FE-变成钢铁侠(别人可见)",
         Callback = function()
             loadstring(game:HttpGet("https://pastebin.com/raw/7prijqYH"))()
