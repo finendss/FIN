@@ -1213,6 +1213,64 @@ table.insert(_G.RealGeneratorESP.Connections, heartbeatConnection)
 scanGenerators()
      end
 })
+
+local sprintModule
+local isStaminaDrainDisabled = false
+local staminaMonitorConnection = nil
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local function modifyStaminaSettings()
+    pcall(function()
+        if not sprintModule then
+            local success, module = pcall(require, ReplicatedStorage.Systems.Character.Game.Sprinting)
+            if success and module then
+                sprintModule = module
+                return
+            end
+        end
+        if sprintModule and sprintModule.StaminaLossDisabled ~= nil then
+             sprintModule.StaminaLossDisabled = isStaminaDrainDisabled
+        end
+    end)
+end
+
+local function monitorAndReapplyStamina()
+    if staminaMonitorConnection then
+        staminaMonitorConnection:Disconnect()
+    end
+    staminaMonitorConnection = RunService.Heartbeat:Connect(function()
+        if isStaminaDrainDisabled then
+            modifyStaminaSettings()
+        else
+            if staminaMonitorConnection then
+                staminaMonitorConnection:Disconnect()
+                staminaMonitorConnection = nil
+            end
+        end
+    end)
+end
+
+Tab4:Toggle({
+    Title = "无限体力",
+    Default = false,
+    Callback = function(state)
+        isStaminaDrainDisabled = state
+        modifyStaminaSettings()
+        
+        if state then
+            monitorAndReapplyStamina()
+        else
+            if staminaMonitorConnection then
+                staminaMonitorConnection:Disconnect()
+                staminaMonitorConnection = nil
+            end
+            if sprintModule and sprintModule.StaminaLossDisabled ~= nil then
+                sprintModule.StaminaLossDisabled = false 
+            end
+        end
+    end
+})
 end
 
 WindUI:Popup({
