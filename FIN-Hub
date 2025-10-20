@@ -912,10 +912,311 @@ Tab4:Toggle({
         end
     end
 })
+
+Tab4:Toggle({
+    Title = "绘制电机",
+    Locked = false,
+    Callback = function(enabled)
+if not _G.RealGeneratorESP then
+    _G.RealGeneratorESP = {
+        Active = false,
+        Data = {},
+        Connections = {}
+    }
+end
+
+if not enabled then
+    if _G.RealGeneratorESP.Active then
+        for _, connection in pairs(_G.RealGeneratorESP.Connections) do
+            if connection and connection.Connected then
+                connection:Disconnect()
+            end
+        end
+        
+        for gen, data in pairs(_G.RealGeneratorESP.Data) do
+            if type(data) == "table" then
+                if data.Billboard and data.Billboard.Parent then
+                    data.Billboard:Destroy()
+                end
+                if data.DistanceBillboard and data.DistanceBillboard.Parent then
+                    data.DistanceBillboard:Destroy()
+                end
+                if data.Highlight and data.Highlight.Parent then
+                    data.Highlight:Destroy()
+                end
+            end
+        end
+        
+        _G.RealGeneratorESP.Data = {}
+        _G.RealGeneratorESP.Connections = {}
+        _G.RealGeneratorESP.Active = false
+    end
+    return
+end
+
+if _G.RealGeneratorESP.Active then
+    return
+end
+
+_G.RealGeneratorESP.Active = true
+
+local scanInterval = 1.0
+local lastScanTime = 0
+local maxGenerators = 20
+
+local distanceSettings = {
+    MinDistance = 5,
+    MaxDistance = 500,
+    MinScale = 0.8,
+    MaxScale = 1.5,
+    MinTextSize = 8,
+    MaxTextSize = 10
+}
+
+local function updateGeneratorESP(gen, data)
+    if not gen or not gen.Parent or not gen:FindFirstChild("Main") then
+        return false
+    end
+    
+    if #_G.RealGeneratorESP.Data > maxGenerators then
+        return false
+    end
+    
+    if gen:FindFirstChild("Progress") then
+        local progress = gen.Progress.Value
+        if progress >= 99 then
+            return false
+        end
+        
+        if data.TextLabel then
+            data.TextLabel.Text = string.format("真电机: %d%%", progress)
+        end
+        
+        local character = game:GetService("Players").LocalPlayer.Character
+        local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+        
+        if humanoidRootPart and data.DistanceLabel then
+            local distance = (gen.Main.Position - humanoidRootPart.Position).Magnitude
+            
+            data.DistanceLabel.Text = string.format("距离: %d米", math.floor(distance))
+            
+            local distanceRatio = math.clamp(
+                (distance - distanceSettings.MinDistance) / 
+                (distanceSettings.MaxDistance - distanceSettings.MinDistance),
+                0, 1
+            )
+            
+            local scale = distanceSettings.MinScale + 
+                distanceRatio * (distanceSettings.MaxScale - distanceSettings.MinScale)
+            
+            local textSize = distanceSettings.MinTextSize + 
+                distanceRatio * (distanceSettings.MaxTextSize - distanceSettings.MinTextSize)
+            
+            if data.Billboard then 
+                data.Billboard.Size = UDim2.new(4 * scale, 0, 1 * scale, 0)
+                data.Billboard.Enabled = true
+            end
+            
+            if data.DistanceBillboard then 
+                data.DistanceBillboard.Size = UDim2.new(4 * scale, 0, 1 * scale, 0)
+                data.DistanceBillboard.Enabled = true
+            end
+            
+            if data.TextLabel then 
+                data.TextLabel.TextSize = textSize
+                data.TextLabel.Visible = true
+            end
+            
+            if data.DistanceLabel then 
+                data.DistanceLabel.TextSize = textSize
+                data.DistanceLabel.Visible = true
+            end
+            
+            if data.Highlight then
+                data.Highlight.Enabled = true
+                local transparency = math.clamp((distance - 50) / 100, 0, 0.4)
+                data.Highlight.FillTransparency = 0.85 + (transparency * 0.5)
+                data.Highlight.OutlineColor = Color3.fromRGB(144, 238, 144)  -- 改为浅绿色
+                data.Highlight.FillColor = Color3.fromRGB(144, 238, 144)     -- 改为浅绿色
+            end
+        end
+    end
+    
+    return true
+end
+
+local function createGeneratorESP(gen)
+    if not gen or not gen:FindFirstChild("Main") or _G.RealGeneratorESP.Data[gen] then 
+        return 
+    end
+    
+    if #_G.RealGeneratorESP.Data >= maxGenerators then
+        return
+    end
+    
+    local billboard = Instance.new("BillboardGui")
+    billboard.Name = "RealGeneratorESP"
+    billboard.Size = UDim2.new(4, 0, 1, 0)
+    billboard.StudsOffset = Vector3.new(0, 2.5, 0)
+    billboard.Adornee = gen.Main
+    billboard.Parent = gen.Main
+    billboard.AlwaysOnTop = true
+    billboard.Enabled = true
+    
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 0.5, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextScaled = false
+    textLabel.Text = "真电机加载中..."
+    textLabel.TextColor3 = Color3.fromRGB(144, 238, 144)  -- 改为浅绿色
+    textLabel.Font = Enum.Font.Arcade
+    textLabel.TextStrokeTransparency = 0
+    textLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    textLabel.TextSize = 8
+    textLabel.Parent = billboard
+    
+    local distanceBillboard = Instance.new("BillboardGui")
+    distanceBillboard.Name = "RealGeneratorDistanceESP"
+    distanceBillboard.Size = UDim2.new(4, 0, 1, 0)
+    distanceBillboard.StudsOffset = Vector3.new(0, 3.5, 0)
+    distanceBillboard.Adornee = gen.Main
+    distanceBillboard.Parent = gen.Main
+    distanceBillboard.AlwaysOnTop = true
+    distanceBillboard.Enabled = true
+    
+    local distanceLabel = Instance.new("TextLabel")
+    distanceLabel.Size = UDim2.new(1, 0, 0.5, 0)
+    distanceLabel.BackgroundTransparency = 1
+    distanceLabel.TextScaled = false
+    distanceLabel.Text = "计算距离中..."
+    distanceLabel.TextColor3 = Color3.fromRGB(144, 238, 144)  -- 改为浅绿色
+    distanceLabel.Font = Enum.Font.Arcade
+    distanceLabel.TextStrokeTransparency = 0
+    distanceLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    distanceLabel.TextSize = 8
+    distanceLabel.Parent = distanceBillboard
+    
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "RealGeneratorHighlight"
+    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    highlight.Enabled = true
+    highlight.OutlineColor = Color3.fromRGB(144, 238, 144)  -- 改为浅绿色
+    highlight.FillColor = Color3.fromRGB(144, 238, 144)     -- 改为浅绿色
+    highlight.FillTransparency = 0.9
+    highlight.OutlineTransparency = 0
+    highlight.Parent = gen
+    
+    _G.RealGeneratorESP.Data[gen] = {
+        Billboard = billboard,
+        DistanceBillboard = distanceBillboard,
+        TextLabel = textLabel,
+        DistanceLabel = distanceLabel,
+        Highlight = highlight
+    }
+    
+    local destroyConnection
+    destroyConnection = gen.Destroying:Connect(function()
+        if _G.RealGeneratorESP.Data[gen] then
+            if _G.RealGeneratorESP.Data[gen].Billboard then 
+                _G.RealGeneratorESP.Data[gen].Billboard:Destroy() 
+            end
+            if _G.RealGeneratorESP.Data[gen].DistanceBillboard then 
+                _G.RealGeneratorESP.Data[gen].DistanceBillboard:Destroy() 
+            end
+            if _G.RealGeneratorESP.Data[gen].Highlight then 
+                _G.RealGeneratorESP.Data[gen].Highlight:Destroy() 
+            end
+            _G.RealGeneratorESP.Data[gen] = nil
+        end
+        if destroyConnection then
+            destroyConnection:Disconnect()
+        end
+    end)
+    
+    table.insert(_G.RealGeneratorESP.Connections, destroyConnection)
+end
+
+local function scanGenerators()
+    local mapFolder = workspace:FindFirstChild("Map")
+    if mapFolder then
+        local ingameFolder = mapFolder:FindFirstChild("Ingame")
+        if ingameFolder then
+            local mapSubFolder = ingameFolder:FindFirstChild("Map")
+            if mapSubFolder then
+                local generators = mapSubFolder:GetDescendants()
+                for _, gen in pairs(generators) do
+                    if gen:IsA("Model") and gen:FindFirstChild("Main") and gen.Name == "Generator" then
+                        createGeneratorESP(gen)
+                    end
+                end
+            end
+        end
+    end
+end
+
+local mainConnection
+local mapFolder = workspace:FindFirstChild("Map")
+if mapFolder then
+    local ingameFolder = mapFolder:FindFirstChild("Ingame")
+    if ingameFolder then
+        local mapSubFolder = ingameFolder:FindFirstChild("Map")
+        if mapSubFolder then
+            mainConnection = mapSubFolder.DescendantAdded:Connect(function(v)
+                if v:IsA("Model") and v:FindFirstChild("Main") and v.Name == "Generator" then
+                    createGeneratorESP(v)
+                end
+            end)
+        end
+    end
+end
+
+if mainConnection then
+    table.insert(_G.RealGeneratorESP.Connections, mainConnection)
+end
+
+local heartbeatConnection = game:GetService("RunService").Heartbeat:Connect(function(deltaTime)
+    lastScanTime = lastScanTime + deltaTime
+    if lastScanTime >= scanInterval then
+        lastScanTime = 0
+        scanGenerators()
+    end
+    
+    local gensToRemove = {}
+    for gen, data in pairs(_G.RealGeneratorESP.Data) do
+        if not gen or not gen.Parent then
+            table.insert(gensToRemove, gen)
+        else
+            if not updateGeneratorESP(gen, data) then
+                table.insert(gensToRemove, gen)
+            end
+        end
+    end
+    
+    for _, gen in ipairs(gensToRemove) do
+        if _G.RealGeneratorESP.Data[gen] then
+            if _G.RealGeneratorESP.Data[gen].Billboard then 
+                _G.RealGeneratorESP.Data[gen].Billboard:Destroy() 
+            end
+            if _G.RealGeneratorESP.Data[gen].DistanceBillboard then 
+                _G.RealGeneratorESP.Data[gen].DistanceBillboard:Destroy() 
+            end
+            if _G.RealGeneratorESP.Data[gen].Highlight then 
+                _G.RealGeneratorESP.Data[gen].Highlight:Destroy() 
+            end
+            _G.RealGeneratorESP.Data[gen] = nil
+        end
+    end
+end)
+
+table.insert(_G.RealGeneratorESP.Connections, heartbeatConnection)
+
+scanGenerators()
+     end
+})
 end
 
 WindUI:Popup({
-    Title = "FIN-v1-Hub",
+    Title = "FIN-Hub",
     Icon = "sparkles",
     Content = "尊敬的：" .. game.Players.LocalPlayer.Name,
     Buttons = {
