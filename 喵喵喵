@@ -1763,31 +1763,39 @@ Tab5:Toggle({
     end
 })
 
-    Tab5:Toggle({
-        Title = "无视杀手墙",
-        Default = true,
-        Callback = function()
-            local killerOnlyFolder = game:GetService("Workspace"):FindFirstChild("GameAssets"):FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly")
+Tab5:Toggle({
+    Title = "无视杀手墙",
+    Default = false,
+    Callback = function(state)
+        local killerOnlyFolder = game:GetService("Workspace"):FindFirstChild("GameAssets"):FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly")
         if killerOnlyFolder then
             for _, part in pairs(killerOnlyFolder:GetDescendants()) do
                 if part:IsA("BasePart") then
-                    part.CanCollide = false
+                    part.CanCollide = not state  -- state为true时关闭碰撞，为false时开启碰撞
                 end
             end
-            WindUI:Notify({
-                Title = "无视已开启",
-                Content = "应该有用哈",
-                Duration = 3
-            })
+            if state then
+                WindUI:Notify({
+                    Title = "无视已开启",
+                    Content = "杀手墙碰撞已关闭",
+                    Duration = 3
+                })
+            else
+                WindUI:Notify({
+                    Title = "无视已关闭",
+                    Content = "杀手墙碰撞已恢复",
+                    Duration = 3
+                })
+            end
         else
             WindUI:Notify({
-                Title = "无视已关闭",
-                Content = "妈妈",
+                Title = "错误",
+                Content = "有可能是我弄错误了",
                 Duration = 3
             })
         end
-        end
-    })
+    end
+})
 end
 
 WindUI:Popup({
