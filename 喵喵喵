@@ -1644,12 +1644,13 @@ end)
         Locked = false,
     })
 
-    Tab5:Toggle({
-        Title = "绘制杀手",
-        Default = true,
-        Callback = function(Value)
-            local killerHighlights = {}
-        
+local killerHighlights = {}
+local survivorHighlights = {}
+
+Tab5:Toggle({
+    Title = "绘制杀手",
+    Default = true,
+    Callback = function(Value)
         if Value then
             WindUI:Notify({
                 Title = "绘制杀手开启",
@@ -1667,7 +1668,11 @@ end)
                 killerHighlights[killer] = h
             end
             
-            local killerConnection = workspace.GameAssets.Teams.Killer.ChildAdded:Connect(function(killer)
+            if killerHighlights._connection then
+                killerHighlights._connection:Disconnect()
+            end
+            
+            killerHighlights._connection = workspace.GameAssets.Teams.Killer.ChildAdded:Connect(function(killer)
                 local h = Instance.new("Highlight")
                 h.FillColor = Color3.new(1, 0, 0)
                 h.FillTransparency = 0.65
@@ -1676,8 +1681,6 @@ end)
                 h.Parent = killer
                 killerHighlights[killer] = h
             end)
-            
-            killerHighlights._connection = killerConnection
             
         else
             WindUI:Notify({
@@ -1694,19 +1697,18 @@ end)
             
             if killerHighlights._connection then
                 killerHighlights._connection:Disconnect()
+                killerHighlights._connection = nil
             end
             
             killerHighlights = {}
         end
-        end
-    })
+    end
+})
 
-    Tab5:Toggle({
-        Title = "绘制幸存者",
-        Default = true,
-        Callback = function(Value)
-            local survivorHighlights = {}
-        
+Tab5:Toggle({
+    Title = "绘制幸存者",
+    Default = true,
+    Callback = function(Value)
         if Value then
             WindUI:Notify({
                 Title = "绘制幸存者开启",
@@ -1724,7 +1726,11 @@ end)
                 survivorHighlights[survivor] = h
             end
             
-            local survivorConnection = workspace.GameAssets.Teams.Survivor.ChildAdded:Connect(function(survivor)
+            if survivorHighlights._connection then
+                survivorHighlights._connection:Disconnect()
+            end
+            
+            survivorHighlights._connection = workspace.GameAssets.Teams.Survivor.ChildAdded:Connect(function(survivor)
                 local h = Instance.new("Highlight")
                 h.FillColor = Color3.new(0, 0, 1)
                 h.FillTransparency = 0.65
@@ -1733,8 +1739,6 @@ end)
                 h.Parent = survivor
                 survivorHighlights[survivor] = h
             end)
-            
-            survivorHighlights._connection = survivorConnection
             
         else
             WindUI:Notify({
@@ -1751,12 +1755,13 @@ end)
             
             if survivorHighlights._connection then
                 survivorHighlights._connection:Disconnect()
+                survivorHighlights._connection = nil
             end
             
             survivorHighlights = {}
         end
-        end
-    })
+    end
+})
 end
 
 WindUI:Popup({
