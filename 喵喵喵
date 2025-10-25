@@ -1,0 +1,1665 @@
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-Ui/refs/heads/main/FIN-WindUi"))()
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local TextChatService = game:GetService("TextChatService")
+local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+
+local function createMainWindow()
+    local Window = WindUI:CreateWindow({
+        Title = "FIN-Hub",
+        Icon = "rbxassetid://4483362748",
+        IconTransparency = 0.5,
+        IconThemed = true,
+        Author = "By 鑫晴",
+        Folder = "CloudHub",
+        Size = UDim2.fromOffset(400, 300),
+        Transparent = true,
+        Theme = "Dark",
+        User = {
+            Enabled = true,
+            Callback = function() print("clicked") end,
+            Anonymous = false
+        },
+        SideBarWidth = 200,
+        ScrollBarEnabled = true,
+        Background = "rbxassetid://1010101010"
+    })
+    
+    local TimeTag = Window:Tag({
+        Title = "00:00", --时间
+        Color = Color3.fromHex("#30ff6a")
+    })
+    
+    -- Rainbow effect & Time 
+    local hue = 0
+    task.spawn(function()
+        while true do
+            local now = os.date("*t")
+            local hours = string.format("%02d", now.hour)
+            local minutes = string.format("%02d", now.min)
+            
+            hue = (hue + 0.01) % 1
+            local color = Color3.fromHSV(hue, 1, 1)
+            
+            TimeTag:SetTitle(hours .. ":" .. minutes)
+            --TimeTag:SetColor(color)
+
+            task.wait(0.06)
+        end
+    end)
+    
+    Window:Tag({
+        Title = "宝宝",
+        Color = Color3.fromHex("#315dff")
+    })
+    
+    task.wait(0.3)
+
+    Window:EditOpenButton({
+        Title = "FIN-Hub",
+        Icon = "monitor",
+        CornerRadius = UDim.new(0,16),
+        StrokeThickness = 2,
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromHex("FF0000")),
+            ColorSequenceKeypoint.new(0.66, Color3.fromHex("0000FF")),
+            ColorSequenceKeypoint.new(0.83, Color3.fromHex("4B0082")),
+            ColorSequenceKeypoint.new(1, Color3.fromHex("9400D3"))
+        }),
+        Draggable = true,
+    })
+
+    task.wait(0.2)
+
+    local MainTab = Window:Tab({ --前面加这个会更好一点点
+        Title = "主页",
+        Icon = "zap",
+        Locked = false,
+    })
+
+    MainTab:Paragraph({ --简介
+        Title = "作者:鑫晴",
+        Desc = "神秘的人",
+    })
+    MainTab:Paragraph({
+        Title = "此剧本为免费剧本",
+        Desc = "倒卖的人死全家",
+    })
+    MainTab:Paragraph({
+        Title = "当前服务器ID: " .. game.PlaceId,
+        Desc = "感谢你的支持",
+    })
+
+    MainTab:Paragraph({
+        Title = "获取FIN-Hub主群qq",
+        Desc = "以此获取最新内容",
+        ImageSize = 20,
+        Color = "Grey",
+        Buttons = {
+            {
+                Title = "复制",
+                Icon = "copy",
+                Variant = "Tertiary",
+                Callback = function()
+                    if type(setclipboard) == "function" then
+                        setclipboard("951740588")
+                        WindUI:Notify({
+                            Title = "已复制",
+                            Content = "已复制到剪贴板",
+                            Duration = 5 --消失时长
+                        })
+                    else
+                        WindUI:Notify({
+                            Title = "错误",
+                            Content = "复制功能不可用",
+                            Duration = 5
+                        })
+                    end
+                end
+            }
+        }
+    })
+    
+    local Tab = Window:Tab({ --在Tab后面要加12345这样的
+        Title = "通用",
+        Icon = "drama",
+        Locked = false,
+    })
+
+    Tab:Slider({
+        Title = "奔跑速度",
+        Value = {
+            Min = 16,
+            Max = 500,
+            Default = 16,
+        },
+        Increment = 1,
+        Callback = function(value)
+            if game.Players.LocalPlayer.Character then
+                local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.WalkSpeed = value
+                end
+            end
+        end
+    })
+
+    Tab:Slider({
+        Title = "跳跃高度",
+        Value = {
+            Min = 50,
+            Max = 400,
+            Default = 50,
+        },
+        Increment = 1,
+        Callback = function(value)
+            if game.Players.LocalPlayer.Character then
+                local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.JumpPower = value
+                end
+            end
+        end
+    })
+
+    Tab:Slider({
+        Title = "重力(万有引力)",
+        Value = {
+            Min = 50,
+            Max = 500,
+            Default = 196,
+        },
+        Increment = 1,
+        Callback = function(value)
+            game.Workspace.Gravity = value
+        end
+    })
+
+    Tab:Toggle({
+        Title = "夜视",
+        Default = false,
+        Callback = function(Value)
+            if Value then
+                game.Lighting.Ambient = Color3.new(1, 1, 1)
+            else
+                game.Lighting.Ambient = Color3.new(0, 0, 0)
+            end
+        end
+    })
+
+    local Workspace = game:GetService("Workspace")
+    local Players = game:GetService("Players")
+    local RunService = game:GetService("RunService")
+
+    local clipConnection = nil
+
+    Tab:Toggle({
+        Title = "穿墙",
+        Default = false,
+        Callback = function(enabled)
+            if clipConnection then
+                clipConnection:Disconnect()
+                clipConnection = nil
+            end
+            
+            if enabled then
+                clipConnection = RunService.Stepped:Connect(function()
+                    local char = Players.LocalPlayer.Character
+                    if char then
+                        for _, part in ipairs(char:GetChildren()) do
+                            if part:IsA("BasePart") then
+                                part.CanCollide = false
+                            end
+                        end
+                    end
+                end)
+                WindUI:Notify({
+                    Title = "已开启穿墙",
+                    Content = "ok了老铁",
+                    Duration = 3
+                })
+            else
+                local char = Players.LocalPlayer.Character
+                if char then
+                    for _, part in ipairs(char:GetChildren()) do
+                        if part:IsA("BasePart") then
+                            part.CanCollide = true
+                        end
+                    end
+                end
+                WindUI:Notify({
+                    Title = "已关闭穿墙",
+                    Content = "不ok了老铁",
+                    Duration = 5
+                })
+            end
+        end
+    })
+
+    Tab:Toggle({
+        Title = "绘制玩家",
+        Default = false,
+        Callback = function(state)
+            if state then
+                local FillColor = Color3.fromRGB(255, 0, 0)
+                local DepthMode = "AlwaysOnTop"
+                local FillTransparency = 0.5
+                local OutlineColor = Color3.fromRGB(255,255,255)
+                local OutlineTransparency = 0
+
+                local CoreGui = game:GetService("CoreGui")
+                local Players = game:GetService("Players")
+                local connections = {}
+                
+                local Storage = Instance.new("Folder")
+                Storage.Parent = CoreGui
+                Storage.Name = "Highlight_Storage"
+
+                local function Highlight(plr)
+                    if not Storage or not Storage.Parent then return end
+                    
+                    local Highlight = Instance.new("Highlight")
+                    Highlight.Name = plr.Name
+                    Highlight.FillColor = FillColor
+                    Highlight.DepthMode = DepthMode
+                    Highlight.FillTransparency = FillTransparency
+                    Highlight.OutlineColor = OutlineColor
+                    Highlight.OutlineTransparency = 0
+                    Highlight.Parent = Storage
+                    
+                    local plrchar = plr.Character
+                    if plrchar then
+                        Highlight.Adornee = plrchar
+                    end
+
+                    connections[plr] = plr.CharacterAdded:Connect(function(char)
+                        if Highlight and Highlight.Parent then
+                            Highlight.Adornee = char
+                        end
+                    end)
+                end
+
+                connections.playerAdded = Players.PlayerAdded:Connect(Highlight)
+                
+                for i,v in next, Players:GetPlayers() do
+                    Highlight(v)
+                end
+
+                connections.playerRemoving = Players.PlayerRemoving:Connect(function(plr)
+                    if Storage and Storage.Parent then
+                        local plrname = plr.Name
+                        if Storage[plrname] then
+                            Storage[plrname]:Destroy()
+                        end
+                    end
+                    if connections[plr] then
+                        connections[plr]:Disconnect()
+                        connections[plr] = nil
+                    end
+                end)
+                
+                Storage:SetAttribute("Connections", connections)
+            else
+                local CoreGui = game:GetService("CoreGui")
+                local Storage = CoreGui:FindFirstChild("Highlight_Storage")
+                if Storage then
+                    local connections = Storage:GetAttribute("Connections")
+                    if connections then
+                        for key, connection in pairs(connections) do
+                            if connection and typeof(connection) == "RBXScriptConnection" then
+                                connection:Disconnect()
+                            end
+                        end
+                    end
+                    Storage:Destroy()
+                end
+            end
+        end
+    })
+
+    Tab:Button({
+        Title = "FIN-飞行",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-Fly"))()
+        end
+    })
+
+    Tab:Button({
+        Title = "FIN-飞车",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-FlyCar"))()
+        end
+    })
+
+    Tab:Button({
+        Title = "光影 1",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Lightandshadow-1"))()
+        end
+    })
+
+    Tab:Button({
+        Title = "光影 2",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/LightandShadow-2"))()
+        end
+    })
+
+    Tab:Button({
+        Title = "FE-死亡笔记",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-DeathNote"))()
+        end
+    })
+
+    Tab:Button({
+        Title = "无限跳",
+        Callback = function()
+            game:GetService("UserInputService").JumpRequest:Connect(function()
+                local character = game:GetService("Players").LocalPlayer.Character
+                if character then
+                    local humanoid = character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid:ChangeState("Jumping")
+                    end
+                end
+            end)
+            WindUI:Notify({
+                Title = "已开启无限跳",
+                Content = "跳跳虎",
+                Duration = 3 --消失时长
+            })
+        end
+    })
+
+    Tab:Button({
+        Title = "踏空行走",
+        Callback = function()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
+        end
+    })
+
+    local Tab2 = Window:Tab({
+        Title = "监狱人生",
+        Icon = "drama",
+        Locked = false,
+    })
+
+Tab2:Button({
+    Title = "子追(队伍检测)",
+    Callback = function()
+        local Workspace = game:GetService("Workspace")
+        local Players = game:GetService("Players")
+        local Teams = game:GetService("Teams")
+        local LocalPlayer = Players.LocalPlayer
+        local Camera = Workspace.CurrentCamera
+        local old
+
+        local FOV_Circle = Drawing.new("Circle")
+        FOV_Circle.Visible = true
+        FOV_Circle.Radius = 60
+        FOV_Circle.Color = Color3.fromRGB(255, 255, 255)
+        FOV_Circle.Thickness = 1
+        FOV_Circle.Transparency = 1
+        FOV_Circle.Filled = false
+        FOV_Circle.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+
+        Camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+            FOV_Circle.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+        end)
+
+        local function isEnemy(targetPlayer)
+            if not targetPlayer then return true end
+            local localTeam = LocalPlayer.Team
+            local targetTeam = targetPlayer.Team
+            if not localTeam or not targetTeam then
+                return true
+            end
+            return localTeam ~= targetTeam
+        end
+
+        local function getClosestHead()
+            local closestHead
+            local closestDistance = math.huge
+            local cameraDirection = Camera.CFrame.LookVector
+            local cameraPos = Camera.CFrame.Position
+            
+            for _, player in ipairs(Players:GetPlayers()) do
+                if player ~= LocalPlayer and player.Character then
+                    local character = player.Character
+                    local head = character:FindFirstChild("Head")
+                    local humanoid = character:FindFirstChildOfClass("Humanoid")
+                    local forcefield = character:FindFirstChild("ForceField")
+                    
+                    if head and humanoid and not forcefield and humanoid.Health > 0 and isEnemy(player) then
+                        local directionToHead = (head.Position - cameraPos).Unit
+                        local angle = math.deg(math.acos(cameraDirection:Dot(directionToHead)))
+                        
+                        if angle <= FOV_Circle.Radius then
+                            local distance = (head.Position - cameraPos).Magnitude
+                            if distance < closestDistance then
+                                closestHead = head
+                                closestDistance = distance
+                            end
+                        end
+                    end
+                end
+            end
+            
+            return closestHead
+        end
+
+        old = hookmetamethod(game, "__namecall", function(self, ...)
+            local method = getnamecallmethod()
+            local args = {...}
+            
+            if (method == "Raycast" or method == "FindPartOnRay") and not checkcaller() and self == Workspace then
+                local origin, direction
+                if method == "Raycast" then
+                    origin = args[1]
+                    direction = args[2]
+                else
+                    local ray = args[1]
+                    if typeof(ray) == "Ray" then
+                        origin = ray.Origin
+                        direction = ray.Direction
+                    end
+                end
+                
+                if origin and direction then
+                    local closestHead = getClosestHead()
+                    if closestHead then
+                        return {
+                            Instance = closestHead,
+                            Position = closestHead.Position,
+                            Normal = (closestHead.Position - origin).Unit,
+                            Material = Enum.Material.Plastic
+                        }
+                    end
+                end
+            end
+            
+            return old(self, ...)
+        end)
+
+        return function()
+            if old then
+                hookmetamethod(game, "__namecall", old)
+                old = nil
+            end
+            if FOV_Circle then
+                FOV_Circle:Remove()
+                FOV_Circle = nil
+            end
+        end
+    end
+})
+
+    Tab2:Button({
+        Title = "FE-变成钢铁侠(别人可见)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/7prijqYH"))()
+        end
+    })
+
+    Tab2:Button({
+        Title = "手里剑(秒杀别人)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/mSLiAZHk"))()
+        end
+    })
+
+    Tab2:Button({
+        Title = "FE-无敌模式(别人可见)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/LdTVujTA"))()
+        end
+    })
+
+    Tab2:Button({
+        Title = "杀死所有人(开启后无法关闭)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/kXjfpFPh"))()
+        end
+    })
+
+    Tab2:Button({
+        Title = "逮捕囚犯",
+        Callback = function()
+    Player = game.Players.LocalPlayer
+	Pcf = Player.Character.HumanoidRootPart.CFrame
+	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+	if v.Name ~= Player.Name then
+	local i = 10
+    repeat
+    wait()
+    i = i-1
+    game.Workspace.Remote.arrest:InvokeServer(v.Character.HumanoidRootPart)
+    Player.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1)
+    until i == 0
+end
+end
+        end
+    })
+
+    Tab2:Button({
+        Title = "传送至警卫室",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(847.7261352539062, 98.95999908447266, 2267.387451171875)
+        end
+    })
+
+    Tab2:Button({
+        Title = "传送至监狱室",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(919.2575073242188, 98.95999908447266, 2379.74169921875)
+        end
+    })
+
+    Tab2:Button({
+        Title = "传送至罪犯复活点位",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-937.5891723632812, 93.09876251220703, 2063.031982421875)
+        end
+    })
+
+    Tab2:Button({
+        Title = "传送至监狱室外",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(760.6033325195312, 96.96992492675781, 2475.405029296875)
+        end
+    })
+
+    local Tab3 = Window:Tab({
+        Title = "自然灾害",
+        Icon = "drama",
+        Locked = false,
+    })
+
+    Tab3:Button({
+        Title = "磁吸黑洞",
+        Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Magnetic-black-hole"))()
+        end
+    })
+
+    Tab3:Button({
+        Title = "黑洞v1",
+        Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Black-hole-v1"))()
+        end
+    })
+
+    Tab3:Button({
+        Title = "黑洞v2",
+        Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Black-hole-v2"))()
+        end
+    })
+
+    Tab3:Toggle({
+        Title = "自动胜出",
+        Default = true,
+        Callback = function(bool)
+      _G.autowinfarm = bool;
+    while wait(.1) do
+        if _G.autowinfarm == true then
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-236, 180, 360, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+        end
+end  
+        end
+    })
+
+    Tab3:Toggle({
+        Title = "地图玩家投票界面",
+        Default = true,
+        Callback = function(bool)
+    if bool == false then do game.Players.LocalPlayer.PlayerGui.MainGui.MapVotePage.Visible = false
+    end
+end
+if bool == true then do game.Players.LocalPlayer.PlayerGui.MainGui.MapVotePage.Visible = true
+    end
+end
+        end
+    })
+
+    Tab3:Toggle({
+        Title = "水上行走",
+        Default = true,
+        Callback = function(bool)
+     if bool == false then do game.Workspace.WaterLevel.CanCollide = false
+                            game.Workspace.WaterLevel.Size = Vector3.new(10, 1, 10)
+                        end
+                    end
+                    if bool == true then do game.Workspace.WaterLevel.CanCollide = true
+                            game.Workspace.WaterLevel.Size = Vector3.new(5000, 1, 5000)
+                        end
+                    end
+        end
+    })
+
+    Tab3:Toggle({
+        Title = "游戏岛悬崖碰撞",
+        Default = true,
+        Callback = function(bool)
+    for i, v in pairs (game.workspace:GetDescendants())do
+                                if v.Name == 'LowerRocks' then
+                                    v.CanCollide = bool
+                                end
+                            end
+        end
+    })
+
+    Tab3:Button({
+        Title = "禁用跌落伤害",
+        Callback = function()
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local RunService = game:GetService("RunService")
+        local Players = game:GetService("Players")
+        
+        local hiddenfling = false
+        local flingThread
+        
+        if not ReplicatedStorage:FindFirstChild("juisdfj0i32i0eidsuf0iok") then
+            local detection = Instance.new("Decal")
+            detection.Name = "juisdfj0i32i0eidsuf0iok"
+            detection.Parent = ReplicatedStorage
+        end
+        
+        local function fling()
+            local lp = Players.LocalPlayer
+            local c, hrp, vel, movel = nil, nil, nil, 0.1
+        
+            while hiddenfling do
+                RunService.Heartbeat:Wait()
+                c = lp.Character
+                hrp = c and c:FindFirstChild("HumanoidRootPart")
+        
+                if hrp then
+                    vel = hrp.Velocity
+                    hrp.Velocity = vel * 10000 + Vector3.new(0, 10000, 0)
+                    RunService.RenderStepped:Wait()
+                    hrp.Velocity = vel
+                    RunService.Stepped:Wait()
+                    hrp.Velocity = vel + Vector3.new(0, movel, 0)
+                    movel = -movel
+                end
+            end
+        end
+        
+        hiddenfling = not hiddenfling
+        
+        if hiddenfling then
+            flingThread = coroutine.create(fling)
+            coroutine.resume(flingThread)
+            WindUI:Notify({
+                Title = "已开启防坠落伤害",
+                Content = "推荐和FE-无敌少侠搭配",
+                Duration = 3 --消失时长
+            })
+        else
+            hiddenfling = false
+            WindUI:Notify({
+                Title = "无法关闭噢",
+                Content = "我懒得搞开关",
+                Duration = 3 --消失时长
+            })
+        end
+    end
+})
+
+    Tab3:Button({
+        Title = "FE-无敌少侠飞行动作",
+        Callback = function()
+      loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invinicible-Flight-R15-45414"))()
+        end
+    })
+
+    Tab3:Button({
+        Title = "传送到地图",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-115.828506, 65.4863434, 18.8461514, 0.00697017973, 0.0789371505, -0.996855199, -3.13589936e-07, 0.996879458, 0.0789390653, 0.999975681, -0.000549906865, 0.00694845384)
+        end
+    })
+
+    Tab3:Button({
+        Title = "传送到游戏岛",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-83.5, 38.5, -27.5, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+        end
+    })
+
+    Tab3:Button({
+        Title = "传送到产卵塔",
+        Callback = function()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-280, 170, 341, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+        end
+    })
+
+    local Tab4 = Window:Tab({
+        Title = "被遗弃",
+        Icon = "drama",
+        Locked = false,
+    })
+
+    Tab4:Button({
+        Title = "FartSaken(汉化)",
+        Callback = function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/Chinese/refs/heads/main/Fartsaken%20Chinese"))()
+        end
+    })
+
+    Tab4:Button({
+        Title = "SntSaken(半汉化)",
+        Callback = function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/Chinese/refs/heads/main/SNTSaken"))()
+        end
+    })
+
+local HighlightSystem = {
+    Settings = {
+        ShowSurvivors = false,
+        ShowKillers = false,
+        Colors = {
+            Survivor = Color3.fromRGB(0, 255, 255),
+            Killer = Color3.fromRGB(255, 100, 100)
+        },
+        Transparency = {
+            Fill = 0.9,
+            Outline = 0
+        }
+    },
+    Cache = {
+        Highlights = {},
+        Connections = {},
+        Enabled = false
+    }
+}
+
+local function CreateHighlight(char, isKiller)
+    if not char or not char:FindFirstChild("Humanoid") then
+        return nil
+    end
+    
+    local highlight = Instance.new("Highlight")
+    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    highlight.FillColor = isKiller and HighlightSystem.Settings.Colors.Killer or HighlightSystem.Settings.Colors.Survivor
+    highlight.OutlineColor = highlight.FillColor
+    highlight.FillTransparency = HighlightSystem.Settings.Transparency.Fill
+    highlight.OutlineTransparency = HighlightSystem.Settings.Transparency.Outline
+    highlight.Parent = char
+    
+    local conn = char.Humanoid.HealthChanged:Connect(function()
+        if not char:FindFirstChild("Humanoid") then 
+            conn:Disconnect() 
+        end
+    end)
+    
+    char.Humanoid.Died:Connect(function()
+        highlight.OutlineTransparency = 1
+        conn:Disconnect()
+    end)
+    
+    return highlight
+end
+
+local function UpdateHighlights()
+    for char, highlight in pairs(HighlightSystem.Cache.Highlights) do
+        if not char.Parent then
+            highlight:Destroy()
+            HighlightSystem.Cache.Highlights[char] = nil
+        end
+    end
+    
+    if not HighlightSystem.Settings.ShowSurvivors and not HighlightSystem.Settings.ShowKillers then
+        return
+    end
+    
+    if HighlightSystem.Settings.ShowSurvivors then
+        local survivors = workspace:FindFirstChild("Players")
+        if survivors then
+            survivors = survivors:FindFirstChild("Survivors")
+            if survivors then
+                for _, char in ipairs(survivors:GetDescendants()) do
+                    if char:IsA("Model") and char:FindFirstChild("Humanoid") then
+                        if not HighlightSystem.Cache.Highlights[char] then
+                            HighlightSystem.Cache.Highlights[char] = CreateHighlight(char, false)
+                        end
+                    end
+                end
+            end
+        end
+    else
+        for char, highlight in pairs(HighlightSystem.Cache.Highlights) do
+            local isKiller = highlight.FillColor == HighlightSystem.Settings.Colors.Killer
+            if not isKiller then
+                highlight:Destroy()
+                HighlightSystem.Cache.Highlights[char] = nil
+            end
+        end
+    end
+    
+    if HighlightSystem.Settings.ShowKillers then
+        local killers = workspace:FindFirstChild("Players")
+        if killers then
+            killers = killers:FindFirstChild("Killers")
+            if killers then
+                for _, char in ipairs(killers:GetDescendants()) do
+                    if char:IsA("Model") and char:FindFirstChild("Humanoid") then
+                        if not HighlightSystem.Cache.Highlights[char] then
+                            HighlightSystem.Cache.Highlights[char] = CreateHighlight(char, true)
+                        end
+                    end
+                end
+            end
+        end
+    else
+        for char, highlight in pairs(HighlightSystem.Cache.Highlights) do
+            local isKiller = highlight.FillColor == HighlightSystem.Settings.Colors.Killer
+            if isKiller then
+                highlight:Destroy()
+                HighlightSystem.Cache.Highlights[char] = nil
+            end
+        end
+    end
+end
+
+local function ToggleHighlightSystem(enable)
+    if enable then
+        if not HighlightSystem.Cache.Connections["Main"] then
+            HighlightSystem.Cache.Connections["Main"] = game:GetService("RunService").Heartbeat:Connect(UpdateHighlights)
+        end
+    else
+        if HighlightSystem.Cache.Connections["Main"] then
+            HighlightSystem.Cache.Connections["Main"]:Disconnect()
+            HighlightSystem.Cache.Connections["Main"] = nil
+        end
+        
+        for char, highlight in pairs(HighlightSystem.Cache.Highlights) do
+            highlight:Destroy()
+        end
+        HighlightSystem.Cache.Highlights = {}
+    end
+end
+
+Tab4:Toggle({
+    Title = "绘制杀手",
+    Default = false,
+    Callback = function(state)
+        HighlightSystem.Settings.ShowKillers = state
+        
+        if not HighlightSystem.Settings.ShowSurvivors and not state then
+            ToggleHighlightSystem(false)
+        else
+            ToggleHighlightSystem(true)
+            UpdateHighlights()
+        end
+    end
+})
+
+Tab4:Toggle({
+    Title = "绘制幸存者",
+    Locked = false,
+    Callback = function(state)
+        HighlightSystem.Settings.ShowSurvivors = state
+        
+        if not state and not HighlightSystem.Settings.ShowKillers then
+            ToggleHighlightSystem(false)
+        else
+            ToggleHighlightSystem(true)
+            UpdateHighlights()
+        end
+    end
+})
+
+Tab4:Toggle({
+    Title = "绘制电机",
+    Locked = false,
+    Callback = function(enabled)
+if not _G.RealGeneratorESP then
+    _G.RealGeneratorESP = {
+        Active = false,
+        Data = {},
+        Connections = {}
+    }
+end
+
+if not enabled then
+    if _G.RealGeneratorESP.Active then
+        for _, connection in pairs(_G.RealGeneratorESP.Connections) do
+            if connection and connection.Connected then
+                connection:Disconnect()
+            end
+        end
+        
+        for gen, data in pairs(_G.RealGeneratorESP.Data) do
+            if type(data) == "table" then
+                if data.Billboard and data.Billboard.Parent then
+                    data.Billboard:Destroy()
+                end
+                if data.DistanceBillboard and data.DistanceBillboard.Parent then
+                    data.DistanceBillboard:Destroy()
+                end
+                if data.Highlight and data.Highlight.Parent then
+                    data.Highlight:Destroy()
+                end
+            end
+        end
+        
+        _G.RealGeneratorESP.Data = {}
+        _G.RealGeneratorESP.Connections = {}
+        _G.RealGeneratorESP.Active = false
+    end
+    return
+end
+
+if _G.RealGeneratorESP.Active then
+    return
+end
+
+_G.RealGeneratorESP.Active = true
+
+local scanInterval = 1.0
+local lastScanTime = 0
+local maxGenerators = 20
+
+local distanceSettings = {
+    MinDistance = 5,
+    MaxDistance = 500,
+    MinScale = 0.8,
+    MaxScale = 1.5,
+    MinTextSize = 8,
+    MaxTextSize = 10
+}
+
+local function updateGeneratorESP(gen, data)
+    if not gen or not gen.Parent or not gen:FindFirstChild("Main") then
+        return false
+    end
+    
+    if #_G.RealGeneratorESP.Data > maxGenerators then
+        return false
+    end
+    
+    if gen:FindFirstChild("Progress") then
+        local progress = gen.Progress.Value
+        if progress >= 99 then
+            return false
+        end
+        
+        if data.TextLabel then
+            data.TextLabel.Text = string.format("真电机: %d%%", progress)
+        end
+        
+        local character = game:GetService("Players").LocalPlayer.Character
+        local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+        
+        if humanoidRootPart and data.DistanceLabel then
+            local distance = (gen.Main.Position - humanoidRootPart.Position).Magnitude
+            
+            data.DistanceLabel.Text = string.format("距离: %d米", math.floor(distance))
+            
+            local distanceRatio = math.clamp(
+                (distance - distanceSettings.MinDistance) / 
+                (distanceSettings.MaxDistance - distanceSettings.MinDistance),
+                0, 1
+            )
+            
+            local scale = distanceSettings.MinScale + 
+                distanceRatio * (distanceSettings.MaxScale - distanceSettings.MinScale)
+            
+            local textSize = distanceSettings.MinTextSize + 
+                distanceRatio * (distanceSettings.MaxTextSize - distanceSettings.MinTextSize)
+            
+            if data.Billboard then 
+                data.Billboard.Size = UDim2.new(4 * scale, 0, 1 * scale, 0)
+                data.Billboard.Enabled = true
+            end
+            
+            if data.DistanceBillboard then 
+                data.DistanceBillboard.Size = UDim2.new(4 * scale, 0, 1 * scale, 0)
+                data.DistanceBillboard.Enabled = true
+            end
+            
+            if data.TextLabel then 
+                data.TextLabel.TextSize = textSize
+                data.TextLabel.Visible = true
+            end
+            
+            if data.DistanceLabel then 
+                data.DistanceLabel.TextSize = textSize
+                data.DistanceLabel.Visible = true
+            end
+            
+            if data.Highlight then
+                data.Highlight.Enabled = true
+                local transparency = math.clamp((distance - 50) / 100, 0, 0.4)
+                data.Highlight.FillTransparency = 0.85 + (transparency * 0.5)
+                data.Highlight.OutlineColor = Color3.fromRGB(144, 238, 144)  -- 改为浅绿色
+                data.Highlight.FillColor = Color3.fromRGB(144, 238, 144)     -- 改为浅绿色
+            end
+        end
+    end
+    
+    return true
+end
+
+local function createGeneratorESP(gen)
+    if not gen or not gen:FindFirstChild("Main") or _G.RealGeneratorESP.Data[gen] then 
+        return 
+    end
+    
+    if #_G.RealGeneratorESP.Data >= maxGenerators then
+        return
+    end
+    
+    local billboard = Instance.new("BillboardGui")
+    billboard.Name = "RealGeneratorESP"
+    billboard.Size = UDim2.new(4, 0, 1, 0)
+    billboard.StudsOffset = Vector3.new(0, 2.5, 0)
+    billboard.Adornee = gen.Main
+    billboard.Parent = gen.Main
+    billboard.AlwaysOnTop = true
+    billboard.Enabled = true
+    
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 0.5, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextScaled = false
+    textLabel.Text = "真电机加载中..."
+    textLabel.TextColor3 = Color3.fromRGB(144, 238, 144)  -- 改为浅绿色
+    textLabel.Font = Enum.Font.Arcade
+    textLabel.TextStrokeTransparency = 0
+    textLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    textLabel.TextSize = 8
+    textLabel.Parent = billboard
+    
+    local distanceBillboard = Instance.new("BillboardGui")
+    distanceBillboard.Name = "RealGeneratorDistanceESP"
+    distanceBillboard.Size = UDim2.new(4, 0, 1, 0)
+    distanceBillboard.StudsOffset = Vector3.new(0, 3.5, 0)
+    distanceBillboard.Adornee = gen.Main
+    distanceBillboard.Parent = gen.Main
+    distanceBillboard.AlwaysOnTop = true
+    distanceBillboard.Enabled = true
+    
+    local distanceLabel = Instance.new("TextLabel")
+    distanceLabel.Size = UDim2.new(1, 0, 0.5, 0)
+    distanceLabel.BackgroundTransparency = 1
+    distanceLabel.TextScaled = false
+    distanceLabel.Text = "计算距离中..."
+    distanceLabel.TextColor3 = Color3.fromRGB(144, 238, 144)  -- 改为浅绿色
+    distanceLabel.Font = Enum.Font.Arcade
+    distanceLabel.TextStrokeTransparency = 0
+    distanceLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    distanceLabel.TextSize = 8
+    distanceLabel.Parent = distanceBillboard
+    
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "RealGeneratorHighlight"
+    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    highlight.Enabled = true
+    highlight.OutlineColor = Color3.fromRGB(144, 238, 144)  -- 改为浅绿色
+    highlight.FillColor = Color3.fromRGB(144, 238, 144)     -- 改为浅绿色
+    highlight.FillTransparency = 0.9
+    highlight.OutlineTransparency = 0
+    highlight.Parent = gen
+    
+    _G.RealGeneratorESP.Data[gen] = {
+        Billboard = billboard,
+        DistanceBillboard = distanceBillboard,
+        TextLabel = textLabel,
+        DistanceLabel = distanceLabel,
+        Highlight = highlight
+    }
+    
+    local destroyConnection
+    destroyConnection = gen.Destroying:Connect(function()
+        if _G.RealGeneratorESP.Data[gen] then
+            if _G.RealGeneratorESP.Data[gen].Billboard then 
+                _G.RealGeneratorESP.Data[gen].Billboard:Destroy() 
+            end
+            if _G.RealGeneratorESP.Data[gen].DistanceBillboard then 
+                _G.RealGeneratorESP.Data[gen].DistanceBillboard:Destroy() 
+            end
+            if _G.RealGeneratorESP.Data[gen].Highlight then 
+                _G.RealGeneratorESP.Data[gen].Highlight:Destroy() 
+            end
+            _G.RealGeneratorESP.Data[gen] = nil
+        end
+        if destroyConnection then
+            destroyConnection:Disconnect()
+        end
+    end)
+    
+    table.insert(_G.RealGeneratorESP.Connections, destroyConnection)
+end
+
+local function scanGenerators()
+    local mapFolder = workspace:FindFirstChild("Map")
+    if mapFolder then
+        local ingameFolder = mapFolder:FindFirstChild("Ingame")
+        if ingameFolder then
+            local mapSubFolder = ingameFolder:FindFirstChild("Map")
+            if mapSubFolder then
+                local generators = mapSubFolder:GetDescendants()
+                for _, gen in pairs(generators) do
+                    if gen:IsA("Model") and gen:FindFirstChild("Main") and gen.Name == "Generator" then
+                        createGeneratorESP(gen)
+                    end
+                end
+            end
+        end
+    end
+end
+
+local mainConnection
+local mapFolder = workspace:FindFirstChild("Map")
+if mapFolder then
+    local ingameFolder = mapFolder:FindFirstChild("Ingame")
+    if ingameFolder then
+        local mapSubFolder = ingameFolder:FindFirstChild("Map")
+        if mapSubFolder then
+            mainConnection = mapSubFolder.DescendantAdded:Connect(function(v)
+                if v:IsA("Model") and v:FindFirstChild("Main") and v.Name == "Generator" then
+                    createGeneratorESP(v)
+                end
+            end)
+        end
+    end
+end
+
+if mainConnection then
+    table.insert(_G.RealGeneratorESP.Connections, mainConnection)
+end
+
+local heartbeatConnection = game:GetService("RunService").Heartbeat:Connect(function(deltaTime)
+    lastScanTime = lastScanTime + deltaTime
+    if lastScanTime >= scanInterval then
+        lastScanTime = 0
+        scanGenerators()
+    end
+    
+    local gensToRemove = {}
+    for gen, data in pairs(_G.RealGeneratorESP.Data) do
+        if not gen or not gen.Parent then
+            table.insert(gensToRemove, gen)
+        else
+            if not updateGeneratorESP(gen, data) then
+                table.insert(gensToRemove, gen)
+            end
+        end
+    end
+    
+    for _, gen in ipairs(gensToRemove) do
+        if _G.RealGeneratorESP.Data[gen] then
+            if _G.RealGeneratorESP.Data[gen].Billboard then 
+                _G.RealGeneratorESP.Data[gen].Billboard:Destroy() 
+            end
+            if _G.RealGeneratorESP.Data[gen].DistanceBillboard then 
+                _G.RealGeneratorESP.Data[gen].DistanceBillboard:Destroy() 
+            end
+            if _G.RealGeneratorESP.Data[gen].Highlight then 
+                _G.RealGeneratorESP.Data[gen].Highlight:Destroy() 
+            end
+            _G.RealGeneratorESP.Data[gen] = nil
+        end
+    end
+end)
+
+table.insert(_G.RealGeneratorESP.Connections, heartbeatConnection)
+
+scanGenerators()
+     end
+})
+
+local sprintModule
+local isStaminaDrainDisabled = false
+local staminaMonitorConnection = nil
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local function modifyStaminaSettings()
+    pcall(function()
+        if not sprintModule then
+            local success, module = pcall(require, ReplicatedStorage.Systems.Character.Game.Sprinting)
+            if success and module then
+                sprintModule = module
+                return
+            end
+        end
+        if sprintModule and sprintModule.StaminaLossDisabled ~= nil then
+             sprintModule.StaminaLossDisabled = isStaminaDrainDisabled
+        end
+    end)
+end
+
+local function monitorAndReapplyStamina()
+    if staminaMonitorConnection then
+        staminaMonitorConnection:Disconnect()
+    end
+    staminaMonitorConnection = RunService.Heartbeat:Connect(function()
+        if isStaminaDrainDisabled then
+            modifyStaminaSettings()
+        else
+            if staminaMonitorConnection then
+                staminaMonitorConnection:Disconnect()
+                staminaMonitorConnection = nil
+            end
+        end
+    end)
+end
+
+Tab4:Toggle({
+    Title = "无限体力",
+    Default = false,
+    Callback = function(state)
+        isStaminaDrainDisabled = state
+        modifyStaminaSettings()
+        
+        if state then
+            monitorAndReapplyStamina()
+        else
+            if staminaMonitorConnection then
+                staminaMonitorConnection:Disconnect()
+                staminaMonitorConnection = nil
+            end
+            if sprintModule and sprintModule.StaminaLossDisabled ~= nil then
+                sprintModule.StaminaLossDisabled = false 
+            end
+        end
+    end
+})
+
+local FINNB = {
+    Enabled = false,
+    BaseDistance = 16,
+    ScanInterval = 0.001,
+    BlockCooldown = 0.08,
+    MoveCompBase = 1.5,
+    MoveCompFactor = 0.25,
+    SpeedThreshold = 8,
+    PredictBase = 4,
+    PredictMax = 12,
+    PredictFactor = 0.35,
+    TargetAngle = 50,
+    MinAttackSpeed = 12,
+    ShowVisualization = false,
+    EnablePrediction = false,
+    PingCompensation = 0.1,
+    FastKillerAdjust = 1.3,
+    TargetSoundIds = {
+        "102228729296384", "140242176732868", "112809109188560", "136323728355613",
+        "115026634746636", "84116622032112", "108907358619313", "127793641088496",
+        "86174610237192", "95079963655241", "101199185291628", "119942598489800",
+        "84307400688050", "113037804008732", "105200830849301", "75330693422988",
+        "82221759983649", "81702359653578", "108610718831698", "112395455254818",
+        "109431876587852", "109348678063422", "85853080745515", "12222216"
+    }
+}
+
+pcall(function()
+    local Players = game:GetService("Players")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local RunService = game:GetService("RunService")
+    local Stats = game:GetService("Stats")
+    
+    local soundLookup = {}
+    for _, id in ipairs(FINNB.TargetSoundIds) do
+        soundLookup[id] = true
+        soundLookup["rbxassetid://" .. id] = true
+    end
+    
+    local LocalPlayer = Players.LocalPlayer
+    local lastBlockTime = 0
+    local combatConnection = nil
+    local lastScanTime = 0
+    local visualizationParts = {}
+    local soundCache = {}
+    local lastSoundCheck = 0
+    local lastPingCheck = 0
+    local currentPing = 0
+    
+    local function GetPing()
+        local currentTime = os.clock()
+        if currentTime - lastPingCheck < 0.5 then
+            return currentPing
+        end
+        lastPingCheck = currentTime
+        
+        local stats = Stats and Stats.Network and Stats.Network:FindFirstChild("ServerStatsItem")
+        if stats then
+            local pingStat = stats:FindFirstChild("Data Ping")
+            if pingStat then
+                currentPing = pingStat.Value
+                return currentPing
+            end
+        end
+        
+        return 0
+    end
+    
+    local function GetPingCompensation()
+        local ping = GetPing()
+        return math.min(0.3, ping / 1000 * FINNB.PingCompensation * 10)
+    end
+    
+    local function CreateVisualization()
+        if not LocalPlayer.Character then return end
+        local rootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if not rootPart then return end
+        
+        for _, part in ipairs(visualizationParts) do
+            part:Destroy()
+        end
+        visualizationParts = {}
+        
+        local center = rootPart.Position
+        local distance = FINNB.BaseDistance
+        local angle = math.rad(FINNB.TargetAngle)
+        local segments = 36
+        
+        local basePart = Instance.new("Part")
+        basePart.Size = Vector3.new(0.1, 0.1, 0.1)
+        basePart.Position = center + Vector3.new(0, 0.1, 0)
+        basePart.Anchored = true
+        basePart.CanCollide = false
+        basePart.Transparency = 1
+        basePart.Parent = workspace
+        table.insert(visualizationParts, basePart)
+        
+        for i = 1, segments do
+            local part = Instance.new("Part")
+            part.Size = Vector3.new(0.5, 0.1, 0.5)
+            part.BrickColor = BrickColor.new("Bright green")
+            part.Material = Enum.Material.Neon
+            part.Transparency = 0.7
+            part.Anchored = true
+            part.CanCollide = false
+            part.Parent = workspace
+            table.insert(visualizationParts, part)
+        end
+        
+        local function UpdateVisualization()
+            if not FINNB.ShowVisualization then return end
+            if not LocalPlayer.Character then return end
+            local root = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            if not root then return end
+            
+            local center = root.Position + Vector3.new(0, 0.1, 0)
+            local lookVector = root.CFrame.LookVector
+            local distance = FINNB.BaseDistance
+            local angle = math.rad(FINNB.TargetAngle)
+            
+            basePart.Position = center
+            
+            for i = 1, #visualizationParts - 1 do
+                local part = visualizationParts[i + 1]
+                local segmentAngle = (i - 1) * (2 * angle) / (#visualizationParts - 2) - angle
+                local rotCFrame = CFrame.fromAxisAngle(Vector3.new(0, 1, 0), segmentAngle)
+                local dir = rotCFrame:VectorToWorldSpace(lookVector)
+                local pos = center + dir * distance
+                part.Position = pos
+                part.Size = Vector3.new(0.5, 0.1, 0.5)
+            end
+        end
+        
+        local visConnection
+        visConnection = RunService.Heartbeat:Connect(function()
+            if not FINNB.ShowVisualization then
+                for _, part in ipairs(visualizationParts) do
+                    part:Destroy()
+                end
+                visualizationParts = {}
+                visConnection:Disconnect()
+                return
+            end
+            pcall(UpdateVisualization)
+        end)
+    end
+    
+    local function HasTargetSound(character)
+        if not character then return false end
+        local rootPart = character:FindFirstChild("HumanoidRootPart")
+        if not rootPart then return false end
+        
+        local currentTime = os.clock()
+        if currentTime - lastSoundCheck < 0.0005 then
+            return soundCache[character] or false
+        end
+        lastSoundCheck = currentTime
+        
+        local found = false
+        for _, child in ipairs(rootPart:GetChildren()) do
+            if child:IsA("Sound") then
+                local soundId = tostring(child.SoundId)
+                local numericId = string.match(soundId, "(%d+)$")
+                if numericId and soundLookup[numericId] then
+                    found = true
+                    break
+                end
+            end
+        end
+        
+        soundCache[character] = found
+        return found
+    end
+    
+    local function GetMoveCompensation()
+        if not LocalPlayer.Character then return 0 end
+        local rootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if not rootPart then return 0 end
+        
+        local velocity = rootPart.Velocity
+        local speed = math.sqrt(velocity.X^2 + velocity.Y^2 + velocity.Z^2)
+        return FINNB.MoveCompBase + (speed * FINNB.MoveCompFactor)
+    end
+    
+    local function IsFastKiller(killer)
+        if not killer then return false end
+        local killerRoot = killer:FindFirstChild("HumanoidRootPart")
+        if not killerRoot then return false end
+        
+        local killerVel = killerRoot.Velocity
+        local killerSpeed = math.sqrt(killerVel.X^2 + killerVel.Y^2 + killerVel.Z^2)
+        return killerSpeed > FINNB.MinAttackSpeed
+    end
+    
+    local function GetTotalDetectionRange(killer)
+        local base = FINNB.BaseDistance
+        local moveBonus = GetMoveCompensation()
+        local predict = 0
+        local pingBonus = GetPingCompensation() * 5
+        
+        if FINNB.EnablePrediction and killer and killer:FindFirstChild("HumanoidRootPart") then
+            local killerVel = killer.HumanoidRootPart.Velocity
+            local killerSpeed = math.sqrt(killerVel.X^2 + killerVel.Y^2 + killerVel.Z^2)
+            
+            if killerSpeed > FINNB.SpeedThreshold then
+                predict = math.min(
+                    FINNB.PredictMax, 
+                    FINNB.PredictBase + (killerSpeed * FINNB.PredictFactor)
+                )
+            end
+            
+            if IsFastKiller(killer) then
+                predict = predict * FINNB.FastKillerAdjust
+            end
+        end
+        
+        return base + moveBonus + predict + pingBonus
+    end
+    
+    local function IsTargetingMe(killer)
+        local myCharacter = LocalPlayer.Character
+        if not myCharacter then return false end
+        
+        local myRoot = myCharacter:FindFirstChild("HumanoidRootPart")
+        local killerRoot = killer and killer:FindFirstChild("HumanoidRootPart")
+        if not myRoot or not killerRoot then return false end
+        
+        local directionToMe = (myRoot.Position - killerRoot.Position).Unit
+        local killerLook = killerRoot.CFrame.LookVector
+        
+        local dot = directionToMe:Dot(killerLook)
+        local angle = math.deg(math.acos(math.clamp(dot, -1, 1)))
+        
+        return angle <= FINNB.TargetAngle
+    end
+    
+    local function GetThreateningKillers()
+        local killers = {}
+        local killersFolder = workspace:FindFirstChild("Killers") or (workspace:FindFirstChild("Players") and workspace.Players:FindFirstChild("Killers"))
+        if not killersFolder then return killers end
+        
+        local myCharacter = LocalPlayer.Character
+        if not myCharacter then return killers end
+        
+        local myRoot = myCharacter:FindFirstChild("HumanoidRootPart")
+        if not myRoot then return killers end
+        
+        for _, killer in ipairs(killersFolder:GetChildren()) do
+            if killer:IsA("Model") and killer:FindFirstChild("HumanoidRootPart") then
+                local killerRoot = killer.HumanoidRootPart
+                local distance = (myRoot.Position - killerRoot.Position).Magnitude
+                local detectionRange = GetTotalDetectionRange(killer)
+                
+                if distance <= detectionRange and HasTargetSound(killer) and IsTargetingMe(killer) then
+                    table.insert(killers, killer)
+                end
+            end
+        end
+        
+        return killers
+    end
+    
+    local function GetAdjustedCooldown()
+        local ping = GetPing()
+        return math.max(0.05, FINNB.BlockCooldown - (ping / 1000 * 0.5))
+    end
+    
+    local function PerformBlock()
+        local now = os.clock()
+        if now - lastBlockTime >= GetAdjustedCooldown() then
+            pcall(function()
+                local args = {
+                    "UseActorAbility",
+                    {
+                        buffer.fromstring("\"Block\"")
+                    }
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Network"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+                lastBlockTime = now
+            end)
+        end
+    end
+    
+    local function CombatLoop()
+        local currentTime = os.clock()
+        if currentTime - lastScanTime >= FINNB.ScanInterval then
+            lastScanTime = currentTime
+            local killers = GetThreateningKillers()
+            if #killers > 0 then
+                PerformBlock()
+            end
+        end
+    end
+    
+    Tab4:Toggle({
+        Title = "自动格挡",
+        Default = true,
+        Callback = function(enabled)
+            FINNB.Enabled = enabled
+            if enabled then
+                if combatConnection then
+                    combatConnection:Disconnect()
+                end
+                combatConnection = RunService.Stepped:Connect(function()
+                    pcall(CombatLoop)
+                end)
+            elseif combatConnection then
+                combatConnection:Disconnect()
+                combatConnection = nil
+            end
+        end
+    })
+    
+    Tab4:Slider({
+        Title = "格挡距离",
+        Value = {
+            Min = 5,
+            Max = 30,
+            Default = 16,
+        },
+        Increment = 1,
+        Callback = function()
+            FINNB.BaseDistance = value
+        end
+    })
+    
+    Tab4:Slider({
+        Title = "格挡角度",
+        Value = {
+            Min = 10,
+            Max = 180,
+            Default = 70,
+        },
+        Increment = 1,
+        Callback = function(value)
+            FINNB.TargetAngle = value
+        end
+    })
+           
+    Tab4:Toggle({
+        Title = "可视化",
+        Default = true,
+        Callback = function(enabled)
+            FINNB.ShowVisualization = enabled
+            if enabled then
+                CreateVisualization()
+            else
+                for _, part in ipairs(visualizationParts) do
+                    part:Destroy()
+                end
+                visualizationParts = {}
+            end
+        end
+    })
+    
+    LocalPlayer.CharacterAdded:Connect(function()
+        if FINNB.Enabled and combatConnection then
+            combatConnection:Disconnect()
+            combatConnection = RunService.Stepped:Connect(CombatLoop)
+        end
+        if FINNB.ShowVisualization then
+            CreateVisualization()
+        end
+    end)
+end)
+end
+
+    local Tab5 = Window:Tab({
+        Title = "死亡之死",
+        Icon = "drama",
+        Locked = false,
+    })
+
+
+
+WindUI:Popup({
+    Title = "FIN-Hub",
+    Icon = "sparkles",
+    Content = "尊敬的：" .. game.Players.LocalPlayer.Name,
+    Buttons = {
+        {
+            Title = "启动",
+            Icon = "arrow-right",
+            Variant = "Primary",
+            Callback = function()
+                print("启动")
+                createMainWindow()
+            end
+        }
+    }
+})
