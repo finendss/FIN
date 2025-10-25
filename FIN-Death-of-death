@@ -1,1 +1,147 @@
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-Ui/refs/heads/main/FIN-WindUi"))()
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local TextChatService = game:GetService("TextChatService")
+local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
 
+local function createMainWindow()
+    local Window = WindUI:CreateWindow({
+        Title = "FIN-死亡之死",
+        Icon = "rbxassetid://4483362748",
+        IconTransparency = 0.5,
+        IconThemed = true,
+        Author = "By 鑫晴",
+        Folder = "CloudHub",
+        Size = UDim2.fromOffset(400, 300),
+        Transparent = true,
+        Theme = "Dark",
+        User = {
+            Enabled = true,
+            Callback = function() print("clicked") end,
+            Anonymous = false
+        },
+        SideBarWidth = 200,
+        ScrollBarEnabled = true,
+        Background = "rbxassetid://1010101010"
+    })
+    
+    local TimeTag = Window:Tag({
+        Title = "00:00", --时间
+        Color = Color3.fromHex("#30ff6a")
+    })
+    
+    -- Rainbow effect & Time 
+    local hue = 0
+    task.spawn(function()
+        while true do
+            local now = os.date("*t")
+            local hours = string.format("%02d", now.hour)
+            local minutes = string.format("%02d", now.min)
+            
+            hue = (hue + 0.01) % 1
+            local color = Color3.fromHSV(hue, 1, 1)
+            
+            TimeTag:SetTitle(hours .. ":" .. minutes)
+            --TimeTag:SetColor(color)
+
+            task.wait(0.06)
+        end
+    end)
+    
+    Window:Tag({
+        Title = "限免",
+        Color = Color3.fromHex("#315dff")
+    })
+    
+    task.wait(0.3)
+
+    Window:EditOpenButton({
+        Title = "FIN-Hub",
+        Icon = "monitor",
+        CornerRadius = UDim.new(0,16),
+        StrokeThickness = 2,
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromHex("FF0000")),
+            ColorSequenceKeypoint.new(0.66, Color3.fromHex("0000FF")),
+            ColorSequenceKeypoint.new(0.83, Color3.fromHex("4B0082")),
+            ColorSequenceKeypoint.new(1, Color3.fromHex("9400D3"))
+        }),
+        Draggable = true,
+    })
+
+    task.wait(0.2)
+
+    local MainTab = Window:Tab({ --前面加这个会更好一点点
+        Title = "主页",
+        Icon = "zap",
+        Locked = false,
+    })
+
+    MainTab:Paragraph({ --简介
+        Title = "作者:鑫晴",
+        Desc = "神秘的人",
+    })
+    MainTab:Paragraph({
+        Title = "此剧本可能是暂时免费剧本",
+        Desc = "But倒卖的人还死全家",
+    })
+    MainTab:Paragraph({
+        Title = "当前服务器ID: " .. game.PlaceId,
+        Desc = "感谢你的支持",
+    })
+
+    MainTab:Paragraph({
+        Title = "获取FIN-Hub主群qq",
+        Desc = "以此获取最新内容",
+        ImageSize = 20,
+        Color = "Grey",
+        Buttons = {
+            {
+                Title = "复制",
+                Icon = "copy",
+                Variant = "Tertiary",
+                Callback = function()
+                    if type(setclipboard) == "function" then
+                        setclipboard("951740588")
+                        WindUI:Notify({
+                            Title = "已复制",
+                            Content = "已复制到剪贴板",
+                            Duration = 5 --消失时长
+                        })
+                    else
+                        WindUI:Notify({
+                            Title = "错误",
+                            Content = "复制功能不可用",
+                            Duration = 5
+                        })
+                    end
+                end
+            }
+        }
+    })
+    
+    local Tab = Window:Tab({ --在Tab后面要加12345这样的
+        Title = "通用",
+        Icon = "drama",
+        Locked = false,
+    })
+
+
+
+WindUI:Popup({
+    Title = "FIN-Hub",
+    Icon = "sparkles",
+    Content = "尊敬的：" .. game.Players.LocalPlayer.Name,
+    Buttons = {
+        {
+            Title = "启动",
+            Icon = "arrow-right",
+            Variant = "Primary",
+            Callback = function()
+                print("启动")
+                createMainWindow()
+            end
+        }
+    }
+})
