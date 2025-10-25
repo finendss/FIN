@@ -1796,6 +1796,30 @@ Tab5:Toggle({
         end
     end
 })
+
+    Tab5:Button({
+        Title = "体力上限无限(一局一开)",
+        Default = true,
+        Callback = function()
+            local player = game:GetService("Players").LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        if character:GetAttribute("MaxStamina") ~= nil then
+            character:SetAttribute("MaxStamina", math.huge)
+        elseif player:GetAttribute("MaxStamina") ~= nil then
+            player:SetAttribute("MaxStamina", math.huge)
+        else
+            for _, obj in pairs({character, player, character:FindFirstChildOfClass("Humanoid")}) do
+                if obj and obj:GetAttributes() then
+                    for name, _ in pairs(obj:GetAttributes()) do
+                        if name:lower():find("stamina") then
+                            obj:SetAttribute(name, math.huge)
+                        end
+                    end
+                end
+            end
+        end
+        end
+    })
 end
 
 WindUI:Popup({
