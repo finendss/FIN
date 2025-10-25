@@ -1,15 +1,17 @@
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-Ui/refs/heads/main/FIN-WindUi"))()
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
 local defenseOn = false
 local faceOn = false
-local detectDistance = 20
+local defenseDistance = 40 -- 防御检测距离固定为40米
+local faceDistance = 5000 -- 自动朝向距离固定为5000米
 local animId = "10470389827"
 local animTrack = nil
 local defenseLoop = nil
 local faceLoop = nil
 
---设置个防御动画
+-- 设置防御动画，重生后需要重新加载
 local function setupAnim()
     local char = Players.LocalPlayer.Character
     if char and char:FindFirstChild("Humanoid") then
@@ -34,7 +36,7 @@ local function stopAnim()
     end
 end
 
--- 视奸周围有没有玩家进入附近
+-- 检查周围有没有其他玩家进入防御范围
 local function playersClose()
     local me = Players.LocalPlayer
     local myChar = me.Character
@@ -50,7 +52,7 @@ local function playersClose()
                 local root = char:FindFirstChild("HumanoidRootPart")
                 if root then
                     local dist = (myRoot.Position - root.Position).Magnitude
-                    if dist <= detectDistance then
+                    if dist <= defenseDistance then
                         return true
                     end
                 end
@@ -61,7 +63,7 @@ local function playersClose()
     return false
 end
 
---视奸最近玩家
+-- 找到距离最近的玩家，用于自动朝向
 local function getClosestPlayer()
     local me = Players.LocalPlayer
     local myChar = me.Character
@@ -80,7 +82,7 @@ local function getClosestPlayer()
                 local root = char:FindFirstChild("HumanoidRootPart")
                 if root then
                     local dist = (myRoot.Position - root.Position).Magnitude
-                    if dist < closestDist and dist <= detectDistance then
+                    if dist < closestDist and dist <= faceDistance then
                         closestDist = dist
                         closest = player
                     end
@@ -92,7 +94,7 @@ local function getClosestPlayer()
     return closest
 end
 
---角色自动朝向其他最近玩家
+-- 核心功能：让角色自动面向最近的玩家
 local function turnToPlayer()
     if not faceOn then return end
     
@@ -119,7 +121,7 @@ local function turnToPlayer()
     end
 end
 
---自动朝向主循环
+-- 开启自动朝向的主循环
 local function beginFaceSystem()
     if faceLoop then
         faceLoop:Disconnect()
@@ -169,7 +171,7 @@ local function endDefenseSystem()
     stopAnim()
 end
 
--- 玩家重生后重新使用动画/不是ai哈
+-- 角色重生后重新绑定动画
 Players.LocalPlayer.CharacterAdded:Connect(function(char)
     task.wait(2)
     if defenseOn then
@@ -187,11 +189,6 @@ local function toggleDefense(state)
     end
 end
 
-local function changeDetectDistance(dist)
-    detectDistance = dist
-    return true
-end
-
 local function toggleFace(state)
     faceOn = state
     if state then
@@ -202,3 +199,107 @@ local function toggleFace(state)
         return true
     end
 end
+
+-- WindUI界面
+WindUI:Popup({
+    Title = "防御系统",
+    Icon = "shield",
+    Content = "自动防御和朝向系统已加载",
+    Buttons = {
+        {
+            Title = "确定",
+            Icon = "check",
+            Variant = "Primary",
+            Callback = function()
+                print("防御系统UI已启动")
+            end
+        }
+    }
+})
+
+local Window = WindUI:CreateWindow({
+    Title = "防御系统",
+    Icon = "shield",
+    Author = "防御模块",
+    Folder = "DefenseSystem",
+    Size = UDim2.fromOffset(400, 400),
+    Theme = "Dark"
+})
+
+local CombatTab = Window:Tab({
+    Title = "战斗功能",
+    Icon = "swords",
+    Locked = false,
+})
+
+CombatTab:Toggle({
+    Title = "自动防御系统",
+    Default = false,
+    Callback = function(state)
+        if toggleDefense(state) then
+            WindUI:Notify({
+                Title = "防御系统",
+                Content = state and "自动防御已启动" or "自动防御已关闭",
+                Duration = 2
+            })
+        else
+            WindUI:Notify({
+                Title = "错误",
+                Content = "无法加载防御动画",
+                Duration = 3
+            })
+        end
+    end
+})
+
+CombatTab:Toggle({
+    Title = "自动朝向玩家",
+    Default = false,
+    Callback = function(state)
+        if toggleFace(state) then
+            WindUI:Notify({
+                Title = "朝向系统",
+                Content = state and "自动朝向已启动" or "自动朝向已关闭",
+                Duration = 2
+            })
+        end
+    end
+})
+
+CombatTab:Paragraph({
+    Title = "系统说明",
+    Desc = "防御系统：40米内有玩家时自动播放防御动画\n朝向系统：5000米内自动面向最近玩家",
+    Color = "Blue"
+})
+
+local SettingsTab = Window:Tab({
+    Title = "设置",
+    Icon = "settings",
+    Locked = false,
+})
+
+SettingsTab:Button({
+    Title = "重新加载动画",
+    Default = false,
+    Callback = function()
+        if setupAnim() then
+            WindUI:Notify({
+                Title = "动画加载",
+                Content = "防御动画重新加载成功",
+                Duration = 2
+            })
+        else
+            WindUI:Notify({
+                Title = "错误",
+                Content = "无法加载防御动画",
+                Duration = 2
+            })
+        end
+    end
+})
+
+SettingsTab:Paragraph({
+    Title = "提示",
+    Desc = "如果动画不播放，可以尝试点击重新加载动画按钮",
+    Color = "Yellow"
+})
