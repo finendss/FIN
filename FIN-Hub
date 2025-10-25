@@ -1636,6 +1636,7 @@ pcall(function()
             CreateVisualization()
         end
     end)
+end)
 end
 
 WindUI:Popup({
