@@ -1644,7 +1644,120 @@ end)
         Locked = false,
     })
 
+    Tab5:Toggle({
+        Title = "绘制杀手",
+        Default = true,
+        Callback = function(Value)
+            local killerHighlights = {}
+        
+        if Value then
+            WindUI:Notify({
+                Title = "绘制杀手开启",
+                Content = "你看到见了👁️",
+                Duration = 3
+            })
+            
+            for _, killer in workspace.GameAssets.Teams.Killer:GetChildren() do
+                local h = Instance.new("Highlight")
+                h.FillColor = Color3.new(1, 0, 0)
+                h.FillTransparency = 0.65
+                h.OutlineColor = Color3.new(1, 1, 1)
+                h.OutlineTransparency = 0
+                h.Parent = killer
+                killerHighlights[killer] = h
+            end
+            
+            local killerConnection = workspace.GameAssets.Teams.Killer.ChildAdded:Connect(function(killer)
+                local h = Instance.new("Highlight")
+                h.FillColor = Color3.new(1, 0, 0)
+                h.FillTransparency = 0.65
+                h.OutlineColor = Color3.new(1, 1, 1)
+                h.OutlineTransparency = 0
+                h.Parent = killer
+                killerHighlights[killer] = h
+            end)
+            
+            killerHighlights._connection = killerConnection
+            
+        else
+            WindUI:Notify({
+                Title = "绘制杀手已关闭",
+                Content = "你看不见了😭",
+                Duration = 3
+            })
+            
+            for target, h in pairs(killerHighlights) do
+                if target ~= "_connection" then
+                    h:Destroy()
+                end
+            end
+            
+            if killerHighlights._connection then
+                killerHighlights._connection:Disconnect()
+            end
+            
+            killerHighlights = {}
+        end
+        end
+    })
 
+    Tab5:Toggle({
+        Title = "绘制幸存者",
+        Default = true,
+        Callback = function(Value)
+            local survivorHighlights = {}
+        
+        if Value then
+            WindUI:Notify({
+                Title = "绘制幸存者开启",
+                Content = "队友队友😍",
+                Duration = 3
+            })
+            
+            for _, survivor in workspace.GameAssets.Teams.Survivor:GetChildren() do
+                local h = Instance.new("Highlight")
+                h.FillColor = Color3.new(0, 0, 1)
+                h.FillTransparency = 0.65
+                h.OutlineColor = Color3.new(1, 1, 1)
+                h.OutlineTransparency = 0
+                h.Parent = survivor
+                survivorHighlights[survivor] = h
+            end
+            
+            local survivorConnection = workspace.GameAssets.Teams.Survivor.ChildAdded:Connect(function(survivor)
+                local h = Instance.new("Highlight")
+                h.FillColor = Color3.new(0, 0, 1)
+                h.FillTransparency = 0.65
+                h.OutlineColor = Color3.new(1, 1, 1)
+                h.OutlineTransparency = 0
+                h.Parent = survivor
+                survivorHighlights[survivor] = h
+            end)
+            
+            survivorHighlights._connection = survivorConnection
+            
+        else
+            WindUI:Notify({
+                Title = "绘制幸存者关闭",
+                Content = "队友呢😭",
+                Duration = 3
+            })
+            
+            for target, h in pairs(survivorHighlights) do
+                if target ~= "_connection" then
+                    h:Destroy()
+                end
+            end
+            
+            if survivorHighlights._connection then
+                survivorHighlights._connection:Disconnect()
+            end
+            
+            survivorHighlights = {}
+        end
+        end
+    })
+end
 
 WindUI:Popup({
     Title = "FIN-Hub",
