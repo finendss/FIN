@@ -1637,7 +1637,6 @@ pcall(function()
         end
     end)
 end)
-end
 
     local Tab5 = Window:Tab({
         Title = "死亡之死",
