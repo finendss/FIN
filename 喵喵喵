@@ -1762,6 +1762,32 @@ Tab5:Toggle({
         end
     end
 })
+
+    Tab5:Toggle({
+        Title = "无视杀手墙",
+        Default = true,
+        Callback = function()
+            local killerOnlyFolder = game:GetService("Workspace"):FindFirstChild("GameAssets"):FindFirstChild("Map"):FindFirstChild("Config"):FindFirstChild("KillerOnly")
+        if killerOnlyFolder then
+            for _, part in pairs(killerOnlyFolder:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = false
+                end
+            end
+            WindUI:Notify({
+                Title = "无视已开启",
+                Content = "应该有用哈",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "无视已关闭",
+                Content = "妈妈",
+                Duration = 3
+            })
+        end
+        end
+    })
 end
 
 WindUI:Popup({
