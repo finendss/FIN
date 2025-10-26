@@ -1886,6 +1886,221 @@ pcall(function()
     end)
 end)
 
+local Tab6 = Window:Tab({
+    Title = "最强战场",
+    Icon = "drama",
+    Locked = false,
+})
+
+local defenseOn = false
+local faceOn = false
+local defenseDistance = 30
+local faceDistance = 5000
+local animId = "10470389827"
+local animTrack = nil
+local defenseLoop = nil
+local faceLoop = nil
+
+local function setupAnim()
+    local char = Players.LocalPlayer.Character
+    if char and char:FindFirstChild("Humanoid") then
+        local humanoid = char:FindFirstChild("Humanoid")
+        local newAnim = Instance.new("Animation")
+        newAnim.AnimationId = "rbxassetid://" .. animId
+        animTrack = humanoid:LoadAnimation(newAnim)
+        return true
+    end
+    return false
+end
+
+local function startAnim()
+    if animTrack and not animTrack.IsPlaying then
+        animTrack:Play()
+    end
+end
+
+local function stopAnim()
+    if animTrack and animTrack.IsPlaying then
+        animTrack:Stop()
+    end
+end
+
+local function playersClose()
+    local me = Players.LocalPlayer
+    local myChar = me.Character
+    if not myChar then return false end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return false end
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= me then
+            local char = player.Character
+            if char then
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if root then
+                    local dist = (myRoot.Position - root.Position).Magnitude
+                    if dist <= defenseDistance then
+                        return true
+                    end
+                end
+            end
+        end
+    end
+    
+    return false
+end
+
+local function getClosestPlayer()
+    local me = Players.LocalPlayer
+    local myChar = me.Character
+    if not myChar then return nil end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return nil end
+    
+    local closest = nil
+    local closestDist = 9999
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= me then
+            local char = player.Character
+            if char then
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if root then
+                    local dist = (myRoot.Position - root.Position).Magnitude
+                    if dist < closestDist and dist <= faceDistance then
+                        closestDist = dist
+                        closest = player
+                    end
+                end
+            end
+        end
+    end
+    
+    return closest
+end
+
+local function turnToPlayer()
+    if not faceOn then return end
+    
+    local myChar = Players.LocalPlayer.Character
+    if not myChar then return end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return end
+    
+    local targetPlayer = getClosestPlayer()
+    if not targetPlayer then return end
+    
+    local targetChar = targetPlayer.Character
+    if not targetChar then return end
+    
+    local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
+    if not targetRoot then return end
+    
+    local dir = (targetRoot.Position - myRoot.Position).Unit
+    local lookDir = Vector3.new(dir.X, 0, dir.Z)
+    
+    if lookDir.Magnitude > 0 then
+        myRoot.CFrame = CFrame.new(myRoot.Position, myRoot.Position + lookDir)
+    end
+end
+
+local function beginFaceSystem()
+    if faceLoop then
+        faceLoop:Disconnect()
+    end
+    
+    faceLoop = RunService.Heartbeat:Connect(function()
+        if faceOn then
+            turnToPlayer()
+        end
+    end)
+end
+
+local function endFaceSystem()
+    if faceLoop then
+        faceLoop:Disconnect()
+        faceLoop = nil
+    end
+end
+
+local function beginDefenseSystem()
+    if defenseLoop then
+        defenseLoop:Disconnect()
+    end
+    
+    if not setupAnim() then
+        return false
+    end
+    
+    defenseLoop = RunService.Heartbeat:Connect(function()
+        if defenseOn and animTrack then
+            local nearby = playersClose()
+            if nearby then
+                startAnim()
+            else
+                stopAnim()
+            end
+        end
+    end)
+    return true
+end
+
+local function endDefenseSystem()
+    if defenseLoop then
+        defenseLoop:Disconnect()
+        defenseLoop = nil
+    end
+    stopAnim()
+end
+
+Players.LocalPlayer.CharacterAdded:Connect(function(char)
+    task.wait(2)
+    if defenseOn then
+        setupAnim()
+    end
+end)
+
+local function toggleDefense(state)
+    defenseOn = state
+    if state then
+        return beginDefenseSystem()
+    else
+        endDefenseSystem()
+        return true
+    end
+end
+
+local function toggleFace(state)
+    faceOn = state
+    if state then
+        beginFaceSystem()
+        return true
+    else
+        endFaceSystem()
+        return true
+    end
+end
+
+Tab6:Toggle({
+    Title = "靠近自动假防御",
+    Default = true,
+    Callback = function(state)
+        toggleDefense(state)
+    end
+})
+
+Tab6:Toggle({
+    Title = "自动朝向玩家",
+    Default = true,
+    Callback = function(state)
+        toggleFace(state)
+    end
+})
+
+
 local Tab5 = Window:Tab({
     Title = "死亡之死",
     Icon = "drama",
@@ -2177,216 +2392,3 @@ Tab5:Toggle({
     end
 })
 
-local Tab6 = Window:Tab({
-    Title = "最强战场",
-    Icon = "drama",
-    Locked = false,
-})
-
-local defenseOn = false
-local faceOn = false
-local defenseDistance = 30
-local faceDistance = 5000
-local animId = "10470389827"
-local animTrack = nil
-local defenseLoop = nil
-local faceLoop = nil
-
-local function setupAnim()
-    local char = Players.LocalPlayer.Character
-    if char and char:FindFirstChild("Humanoid") then
-        local humanoid = char:FindFirstChild("Humanoid")
-        local newAnim = Instance.new("Animation")
-        newAnim.AnimationId = "rbxassetid://" .. animId
-        animTrack = humanoid:LoadAnimation(newAnim)
-        return true
-    end
-    return false
-end
-
-local function startAnim()
-    if animTrack and not animTrack.IsPlaying then
-        animTrack:Play()
-    end
-end
-
-local function stopAnim()
-    if animTrack and animTrack.IsPlaying then
-        animTrack:Stop()
-    end
-end
-
-local function playersClose()
-    local me = Players.LocalPlayer
-    local myChar = me.Character
-    if not myChar then return false end
-    
-    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
-    if not myRoot then return false end
-    
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= me then
-            local char = player.Character
-            if char then
-                local root = char:FindFirstChild("HumanoidRootPart")
-                if root then
-                    local dist = (myRoot.Position - root.Position).Magnitude
-                    if dist <= defenseDistance then
-                        return true
-                    end
-                end
-            end
-        end
-    end
-    
-    return false
-end
-
-local function getClosestPlayer()
-    local me = Players.LocalPlayer
-    local myChar = me.Character
-    if not myChar then return nil end
-    
-    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
-    if not myRoot then return nil end
-    
-    local closest = nil
-    local closestDist = 9999
-    
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= me then
-            local char = player.Character
-            if char then
-                local root = char:FindFirstChild("HumanoidRootPart")
-                if root then
-                    local dist = (myRoot.Position - root.Position).Magnitude
-                    if dist < closestDist and dist <= faceDistance then
-                        closestDist = dist
-                        closest = player
-                    end
-                end
-            end
-        end
-    end
-    
-    return closest
-end
-
-local function turnToPlayer()
-    if not faceOn then return end
-    
-    local myChar = Players.LocalPlayer.Character
-    if not myChar then return end
-    
-    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
-    if not myRoot then return end
-    
-    local targetPlayer = getClosestPlayer()
-    if not targetPlayer then return end
-    
-    local targetChar = targetPlayer.Character
-    if not targetChar then return end
-    
-    local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
-    if not targetRoot then return end
-    
-    local dir = (targetRoot.Position - myRoot.Position).Unit
-    local lookDir = Vector3.new(dir.X, 0, dir.Z)
-    
-    if lookDir.Magnitude > 0 then
-        myRoot.CFrame = CFrame.new(myRoot.Position, myRoot.Position + lookDir)
-    end
-end
-
-local function beginFaceSystem()
-    if faceLoop then
-        faceLoop:Disconnect()
-    end
-    
-    faceLoop = RunService.Heartbeat:Connect(function()
-        if faceOn then
-            turnToPlayer()
-        end
-    end)
-end
-
-local function endFaceSystem()
-    if faceLoop then
-        faceLoop:Disconnect()
-        faceLoop = nil
-    end
-end
-
-local function beginDefenseSystem()
-    if defenseLoop then
-        defenseLoop:Disconnect()
-    end
-    
-    if not setupAnim() then
-        return false
-    end
-    
-    defenseLoop = RunService.Heartbeat:Connect(function()
-        if defenseOn and animTrack then
-            local nearby = playersClose()
-            if nearby then
-                startAnim()
-            else
-                stopAnim()
-            end
-        end
-    end)
-    return true
-end
-
-local function endDefenseSystem()
-    if defenseLoop then
-        defenseLoop:Disconnect()
-        defenseLoop = nil
-    end
-    stopAnim()
-end
-
-Players.LocalPlayer.CharacterAdded:Connect(function(char)
-    task.wait(2)
-    if defenseOn then
-        setupAnim()
-    end
-end)
-
-local function toggleDefense(state)
-    defenseOn = state
-    if state then
-        return beginDefenseSystem()
-    else
-        endDefenseSystem()
-        return true
-    end
-end
-
-local function toggleFace(state)
-    faceOn = state
-    if state then
-        beginFaceSystem()
-        return true
-    else
-        endFaceSystem()
-        return true
-    end
-end
-
-Tab6:Toggle({
-    Title = "靠近自动假防御",
-    Default = true,
-    Callback = function(state)
-        toggleDefense(state)
-    end
-})
-
-Tab6:Toggle({
-    Title = "自动朝向玩家",
-    Default = true,
-    Callback = function(state)
-        toggleFace(state)
-    end
-})
