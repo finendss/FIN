@@ -1675,7 +1675,7 @@ end)
         Locked = false,
     })
 
-    MainTab:Paragraph({
+    localTab:Paragraph({
         Title = "一些功能得专属服务器中才能显示",
         Desc = "死亡之死",
         Color = "Blue"
