@@ -1881,6 +1881,113 @@ local Tab6 = Window:Tab({
     Locked = false,
 })
 
+local autoTpToPlayer = false
+local tpLoop = nil
+
+local function getClosestPlayer()
+    local me = Players.LocalPlayer
+    local myChar = me.Character
+    if not myChar then return nil end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return nil end
+    
+    local closest = nil
+    local closestDist = math.huge
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= me then
+            local char = player.Character
+            if char then
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if root then
+                    local dist = (myRoot.Position - root.Position).Magnitude
+                    if dist < closestDist then
+                        closestDist = dist
+                        closest = player
+                    end
+                end
+            end
+        end
+    end
+    
+    return closest, closestDist
+end
+
+local function teleportToPlayerBack()
+    if not autoTpToPlayer then return end
+    
+    local myChar = Players.LocalPlayer.Character
+    if not myChar then return end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return end
+    
+    local targetPlayer, distance = getClosestPlayer()
+    if not targetPlayer then return end
+    
+    local targetChar = targetPlayer.Character
+    if not targetChar then return end
+    
+    local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
+    if not targetRoot then return end
+    
+    local targetCFrame = targetRoot.CFrame
+    local behindOffset = targetCFrame.LookVector * -4
+    local targetPosition = targetRoot.Position + behindOffset
+    
+    myRoot.CFrame = CFrame.new(targetPosition)
+end
+
+local function startAutoTeleport()
+    if tpLoop then
+        tpLoop:Disconnect()
+    end
+    
+    tpLoop = RunService.Heartbeat:Connect(function()
+        if autoTpToPlayer then
+            teleportToPlayerBack()
+        end
+    end)
+end
+
+local function stopAutoTeleport()
+    if tpLoop then
+        tpLoop:Disconnect()
+        tpLoop = nil
+    end
+end
+
+Tab6:Toggle({
+    Title = "自动杀戮",
+    Default = false,
+    Callback = function(state)
+        autoTpToPlayer = state
+        if state then
+            startAutoTeleport()
+            WindUI:Notify({
+                Title = "自动杀戮已开启",
+                Content = "打死别人👅👅",
+                Duration = 3
+            })
+        else
+            stopAutoTeleport()
+            WindUI:Notify({
+                Title = "杀戮已关闭",
+                Content = "休息会",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Players.LocalPlayer.CharacterAdded:Connect(function(char)
+    task.wait(2)
+    if autoTpToPlayer then
+        startAutoTeleport()
+    end
+end)
+
 local defenseOn = false
 local faceOn = false
 local defenseDistance = 30
@@ -1940,7 +2047,7 @@ local function playersClose()
     return false
 end
 
-local function getClosestPlayer()
+local function getClosestPlayerForFace()
     local me = Players.LocalPlayer
     local myChar = me.Character
     if not myChar then return nil end
@@ -1979,7 +2086,7 @@ local function turnToPlayer()
     local myRoot = myChar:FindFirstChild("HumanoidRootPart")
     if not myRoot then return end
     
-    local targetPlayer = getClosestPlayer()
+    local targetPlayer = getClosestPlayerForFace()
     if not targetPlayer then return end
     
     local targetChar = targetPlayer.Character
@@ -2052,43 +2159,31 @@ Players.LocalPlayer.CharacterAdded:Connect(function(char)
     end
 end)
 
-local function toggleDefense(state)
-    defenseOn = state
-    if state then
-        return beginDefenseSystem()
-    else
-        endDefenseSystem()
-        return true
-    end
-end
-
-local function toggleFace(state)
-    faceOn = state
-    if state then
-        beginFaceSystem()
-        return true
-    else
-        endFaceSystem()
-        return true
-    end
-end
-
 Tab6:Toggle({
     Title = "靠近自动假防御",
-    Default = true,
+    Default = false,
     Callback = function(state)
-        toggleDefense(state)
+        defenseOn = state
+        if state then
+            beginDefenseSystem()
+        else
+            endDefenseSystem()
+        end
     end
 })
 
 Tab6:Toggle({
     Title = "自动朝向玩家",
-    Default = true,
+    Default = false,
     Callback = function(state)
-        toggleFace(state)
+        faceOn = state
+        if state then
+            beginFaceSystem()
+        else
+            endFaceSystem()
+        end
     end
 })
-
 
 local Tab5 = Window:Tab({
     Title = "死亡之死",
