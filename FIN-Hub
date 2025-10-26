@@ -1,0 +1,108 @@
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-Ui/refs/heads/main/FIN-WindUi"))()
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+WindUI:Popup({
+    Title = "FIN-Hub",
+    Icon = "sparkles",
+    Content = "尊敬的：" .. game.Players.LocalPlayer.Name,
+    Buttons = {
+        {
+            Title = "启动",
+            Icon = "arrow-right",
+            Variant = "Primary",
+            Callback = function()
+                print("启动")
+                createMainWindow()
+            end
+        }
+    }
+})
+
+local Window = WindUI:CreateWindow({
+    Title = "防御系统",
+    Icon = "shield",
+    Author = "防御模块",
+    Folder = "DefenseSystem",
+    Size = UDim2.fromOffset(400, 400),
+    Theme = "Dark"
+})
+
+local CombatTab = Window:Tab({
+    Title = "战斗功能",
+    Icon = "swords",
+    Locked = false,
+})
+
+CombatTab:Toggle({
+    Title = "自动防御系统",
+    Default = false,
+    Callback = function(state)
+        if toggleDefense(state) then
+            WindUI:Notify({
+                Title = "防御系统",
+                Content = state and "自动防御已启动" or "自动防御已关闭",
+                Duration = 2
+            })
+        else
+            WindUI:Notify({
+                Title = "错误",
+                Content = "无法加载防御动画",
+                Duration = 3
+            })
+        end
+    end
+})
+
+CombatTab:Toggle({
+    Title = "自动朝向玩家",
+    Default = false,
+    Callback = function(state)
+        if toggleFace(state) then
+            WindUI:Notify({
+                Title = "朝向系统",
+                Content = state and "自动朝向已启动" or "自动朝向已关闭",
+                Duration = 2
+            })
+        end
+    end
+})
+
+CombatTab:Paragraph({
+    Title = "系统说明",
+    Desc = "防御系统：40米内有玩家时自动播放防御动画\n朝向系统：5000米内自动面向最近玩家",
+    Color = "Blue"
+})
+
+local SettingsTab = Window:Tab({
+    Title = "设置",
+    Icon = "settings",
+    Locked = false,
+})
+
+SettingsTab:Button({
+    Title = "重新加载动画",
+    Default = false,
+    Callback = function()
+        if setupAnim() then
+            WindUI:Notify({
+                Title = "动画加载",
+                Content = "防御动画重新加载成功",
+                Duration = 2
+            })
+        else
+            WindUI:Notify({
+                Title = "错误",
+                Content = "无法加载防御动画",
+                Duration = 2
+            })
+        end
+    end
+})
+
+SettingsTab:Paragraph({
+    Title = "提示",
+    Desc = "如果动画不播放，可以尝试点击重新加载动画按钮",
+    Color = "Yellow"
+})
+
