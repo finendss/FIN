@@ -428,10 +428,7 @@ Tab:Button({
     end
 })
 
-Tab:Paragraph({
-    Title = "光影与画质",
-    Desc = "好看的光线",
-})
+Tab:Section({Title = "光影与画质", TextXAlignment = "Left", TextSize = 17})
 
 Tab:Button({
     Title = "光影 1",
@@ -447,15 +444,7 @@ Tab:Button({
     end
 })
 
-Tab:Paragraph({
-    Title = "甩飞与传送",
-    Desc = "恐怖如斯",
-})
-
-Tab:Paragraph({
-    Title = "FE",
-    Desc = "有客户和本地端",
-})
+Tab:Section({Title = "FE", TextXAlignment = "Left", TextSize = 17})
 
 Tab:Button({
     Title = "动画中心",
