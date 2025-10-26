@@ -96,7 +96,7 @@ local Window = WindUI:CreateWindow({
         Title = "获取FIN-Hub主群qq",
         Desc = "以此获取最新内容",
         ImageSize = 20,
-        Color = "Bule",
+        Color = "Grey",
         Buttons = {
             {
                 Title = "复制",
@@ -126,7 +126,7 @@ MainTab:Paragraph({
         Title = "获取FIN-Hub的Discord",
         Desc = "以此获取信息",
         ImageSize = 20,
-        Color = "Yellow",
+        Color = "Grey",
         Buttons = {
             {
                 Title = "复制",
