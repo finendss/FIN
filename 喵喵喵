@@ -5,6 +5,74 @@ local TextChatService = game:GetService("TextChatService")
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 
+-- 体力功能变量
+local LocalPlayer = game.Players.LocalPlayer
+local Character, Char
+local HumanoidRootPart, HRP
+local Humanoid, Hum
+local NoStaminaLoss = false
+local NoFatigue = false
+local AutoInjectStamina = false
+local AI_MaxStamina, AI_WalkSpeed, AI_SprintSpeed
+
+-- 初始化角色变量
+pcall(function()
+    Character, Char = LocalPlayer.Character, LocalPlayer.Character
+end)
+pcall(function()
+    HumanoidRootPart, HRP = Character.HumanoidRootPart, Character.HumanoidRootPart
+end)
+pcall(function()
+    Humanoid, Hum = Character.Humanoid, Character.Humanoid
+end)
+
+-- 角色添加事件
+LocalPlayer.CharacterAdded:Connect(function()
+    pcall(function()
+        Character, Char = nil, nil
+        HumanoidRootPart, HRP = nil, nil
+        Humanoid, Hum = nil, nil
+        task.wait()
+        repeat task.wait() until LocalPlayer.Character
+        Character, Char = LocalPlayer.Character, LocalPlayer.Character
+        task.wait()
+        repeat task.wait() until Character:FindFirstChild("HumanoidRootPart")
+        HumanoidRootPart, HRP = Character.HumanoidRootPart, Character.HumanoidRootPart
+        task.wait()
+        repeat task.wait() until Character:FindFirstChild("Humanoid")
+        Humanoid, Hum = Character.Humanoid, Character.Humanoid
+    end)
+end)
+
+-- 获取体力模块
+local StaminaModule
+pcall(function()
+    StaminaModule = require(LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("MainGui"):WaitForChild("Client"):WaitForChild("Modules"):WaitForChild("Movement"))
+end)
+
+-- 设置体力属性函数
+function SetStaminaProperty(property, value)
+    if property == "MaxStamina" then
+        Char:SetAttribute("MaxStamina", value)
+    elseif property == "Stamina" then
+        if StaminaModule then
+            StaminaModule["Stamina"] = value
+        end
+    elseif property == "Fatigue" then
+        Char:SetAttribute("Fatigue", value)
+    elseif property == "WalkSpeed" then
+        Hum.WalkSpeed = value
+    elseif property == "SprintSpeed" then
+        Char:SetAttribute("SprintSpeed", value)
+    elseif property == "CanJump" then
+        if value == true then 
+            Hum.JumpPower = 50 
+        else 
+            Hum.JumpPower = 0 
+        end
+    end
+end
+
 local function createMainWindow()
     local Window = WindUI:CreateWindow({
         Title = "FIN-Hub",
@@ -1644,6 +1712,269 @@ end)
         Locked = false,
     })
 
+-- 死亡之死体力功能
+Tab5:Paragraph({
+    Title = "体力功能",
+    Desc = "管理你的体力属性"
+})
+
+-- 快速功能
+Tab5:Button({
+    Title = "无限体力",
+    Callback = function()
+        SetStaminaProperty("MaxStamina", math.huge)
+        SetStaminaProperty("Stamina", math.huge)
+        WindUI:Notify({
+            Title = "无限体力已启用",
+            Content = "体力已设置为无限",
+            Duration = 3
+        })
+    end
+})
+
+Tab5:Button({
+    Title = "变得更快",
+    Callback = function()
+        if Humanoid then
+            Humanoid.WalkSpeed = 50
+        end
+        SetStaminaProperty("SprintSpeed", 70)
+        WindUI:Notify({
+            Title = "速度已提升",
+            Content = "行走速度: 50, 冲刺速度: 70",
+            Duration = 3
+        })
+    end
+})
+
+Tab5:Button({
+    Title = "启用/禁用跳跃",
+    Callback = function()
+        if Humanoid then
+            if Humanoid.JumpPower == 0 then
+                SetStaminaProperty("CanJump", true)
+                WindUI:Notify({
+                    Title = "跳跃已启用",
+                    Content = "跳跃能力已恢复",
+                    Duration = 3
+                })
+            else
+                SetStaminaProperty("CanJump", false)
+                WindUI:Notify({
+                    Title = "跳跃已禁用",
+                    Content = "跳跃能力已关闭",
+                    Duration = 3
+                })
+            end
+        end
+    end
+})
+
+Tab5:Toggle({
+    Title = "无体力消耗",
+    Default = false,
+    Callback = function(Value)
+        NoStaminaLoss = Value
+        if NoStaminaLoss then
+            WindUI:Notify({
+                Title = "无体力消耗已开启",
+                Content = "体力将不会减少",
+                Duration = 3
+            })
+            while NoStaminaLoss do
+                task.wait(0.003)
+                if Character and Character:GetAttribute("MaxStamina") then
+                    SetStaminaProperty("Stamina", Character:GetAttribute("MaxStamina"))
+                end
+            end
+        else
+            WindUI:Notify({
+                Title = "无体力消耗已关闭",
+                Content = "体力消耗恢复正常",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tab5:Toggle({
+    Title = "无疲劳",
+    Default = false,
+    Callback = function(Value)
+        NoFatigue = Value
+        if NoFatigue then
+            WindUI:Notify({
+                Title = "无疲劳已开启",
+                Content = "将不会感到疲劳",
+                Duration = 3
+            })
+            while NoFatigue do
+                task.wait(0.003)
+                if Character and Character:GetAttribute("Fatigue") and Character:GetAttribute("Fatigue") == true then
+                    SetStaminaProperty("Fatigue", false)
+                end
+            end
+        else
+            WindUI:Notify({
+                Title = "无疲劳已关闭",
+                Content = "疲劳效果恢复正常",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- 高级设置
+Tab5:Paragraph({
+    Title = "高级设置",
+    Desc = "自定义体力属性"
+})
+
+-- 最大体力输入
+Tab5:Input({
+    Title = "最大体力",
+    Placeholder = "输入最大体力值",
+    Callback = function(Value)
+        if Value and tonumber(Value) then
+            SetStaminaProperty("MaxStamina", tonumber(Value))
+            WindUI:Notify({
+                Title = "最大体力已设置",
+                Content = "最大体力: " .. Value,
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- 当前体力输入
+Tab5:Input({
+    Title = "体力",
+    Placeholder = "输入当前体力值",
+    Callback = function(Value)
+        if Value and tonumber(Value) then
+            SetStaminaProperty("Stamina", tonumber(Value))
+            WindUI:Notify({
+                Title = "体力已设置",
+                Content = "当前体力: " .. Value,
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- 行走速度输入
+Tab5:Input({
+    Title = "行走速度",
+    Placeholder = "输入行走速度",
+    Callback = function(Value)
+        if Value and tonumber(Value) then
+            SetStaminaProperty("WalkSpeed", tonumber(Value))
+            WindUI:Notify({
+                Title = "行走速度已设置",
+                Content = "行走速度: " .. Value,
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- 冲刺速度输入
+Tab5:Input({
+    Title = "冲刺速度",
+    Placeholder = "输入冲刺速度",
+    Callback = function(Value)
+        if Value and tonumber(Value) then
+            SetStaminaProperty("SprintSpeed", tonumber(Value))
+            WindUI:Notify({
+                Title = "冲刺速度已设置",
+                Content = "冲刺速度: " .. Value,
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- 自动注入
+Tab5:Paragraph({
+    Title = "自动注入",
+    Desc = "回合开始后自动应用设置"
+})
+
+Tab5:Toggle({
+    Title = "自动注入体力设置",
+    Default = false,
+    Callback = function(Value)
+        AutoInjectStamina = Value
+        if Value then
+            WindUI:Notify({
+                Title = "自动注入已开启",
+                Content = "将在回合开始后应用设置",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "自动注入已关闭",
+                Content = "自动注入功能已禁用",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tab5:Input({
+    Title = "自动最大体力",
+    Placeholder = "自动设置的最大体力",
+    Callback = function(Value)
+        AI_MaxStamina = Value
+    end
+})
+
+Tab5:Input({
+    Title = "自动行走速度",
+    Placeholder = "自动设置的行走速度",
+    Callback = function(Value)
+        AI_WalkSpeed = Value
+    end
+})
+
+Tab5:Input({
+    Title = "自动冲刺速度",
+    Placeholder = "自动设置的冲刺速度",
+    Callback = function(Value)
+        AI_SprintSpeed = Value
+    end
+})
+
+-- 自动注入监听
+game:GetService("Workspace"):WaitForChild("GameAssets"):WaitForChild("Teams"):WaitForChild("Survivor").ChildAdded:Connect(function()
+    task.wait()
+    if AutoInjectStamina then
+        task.wait(21.5)
+        pcall(function()
+            if AI_MaxStamina and tonumber(AI_MaxStamina) then
+                SetStaminaProperty("MaxStamina", tonumber(AI_MaxStamina))
+                SetStaminaProperty("Stamina", tonumber(AI_MaxStamina))
+            end
+        end)
+        pcall(function()
+            if AI_WalkSpeed and tonumber(AI_WalkSpeed) then
+                SetStaminaProperty("WalkSpeed", tonumber(AI_WalkSpeed))
+            end
+        end)
+        pcall(function()
+            if AI_SprintSpeed and tonumber(AI_SprintSpeed) then
+                SetStaminaProperty("SprintSpeed", tonumber(AI_SprintSpeed))
+            end
+        end)
+        WindUI:Notify({
+            Title = "自动注入已完成",
+            Content = "体力设置已自动应用",
+            Duration = 3
+        })
+    end
+end)
+
+-- 原有功能保持不变
 local killerHighlights = {}
 local survivorHighlights = {}
 
@@ -1790,18 +2121,17 @@ Tab5:Toggle({
         else
             WindUI:Notify({
                 Title = "错误",
-                Content = "有可能是我弄错误了",
+                Content = "大厅开这个干什么，我草泥马",
                 Duration = 3
             })
         end
     end
 })
 
-    Tab5:Button({
-        Title = "体力上限无限(一局一开)",
-        Default = true,
-        Callback = function()
-            local player = game:GetService("Players").LocalPlayer
+Tab5:Button({
+    Title = "体力上限无限(一局一开)",
+    Callback = function()
+        local player = game:GetService("Players").LocalPlayer
         local character = player.Character or player.CharacterAdded:Wait()
         if character:GetAttribute("MaxStamina") ~= nil then
             character:SetAttribute("MaxStamina", math.huge)
@@ -1818,8 +2148,13 @@ Tab5:Toggle({
                 end
             end
         end
-        end
-    })
+        WindUI:Notify({
+            Title = "体力上限已设置",
+            Content = "体力上限已设置为无限",
+            Duration = 3
+        })
+    end
+})
 end
 
 WindUI:Popup({
