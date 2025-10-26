@@ -687,46 +687,174 @@ end
         end
     })
 
-    local Tab3 = Window:Tab({
-        Title = "自然灾害",
-        Icon = "drama",
-        Locked = false,
-    })
+local Tab3 = Window:Tab({
+    Title = "自然灾害",
+    Icon = "drama",
+    Locked = false,
+})
 
-    Tab3:Button({
-        Title = "磁吸黑洞",
-        Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Magnetic-black-hole"))()
-        end
-    })
+Tab3:Button({
+    Title = "磁吸黑洞",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Magnetic-black-hole"))()
+    end
+})
 
-    Tab3:Button({
-        Title = "黑洞v1",
-        Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Black-hole-v1"))()
-        end
-    })
+Tab3:Button({
+    Title = "黑洞v1",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Black-hole-v1"))()
+    end
+})
 
-    Tab3:Button({
-        Title = "黑洞v2",
-        Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Black-hole-v2"))()
-        end
-    })
+Tab3:Button({
+    Title = "黑洞v2",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Black-hole-v2"))()
+    end
+})
 
-    Tab3:Button({
-        Title = "物体悬浮",
-        Callback = function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/cytj777i/6669178/main/全局物体漂浮最终优化版"))()
-        end
-    })
+local partDestroyerEnabled = false
+local partDestroyerConnection
 
-    Tab3:Button({
-        Title = "零件破坏",
-        Callback = function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/cytj777i/-/main/零件破坏者v2"))()
+Tab3:Toggle({
+    Title = "崩飞零件",
+    Callback = function(state)
+        partDestroyerEnabled = state
+        
+        if partDestroyerEnabled then
+            WindUI:Notify({
+                Title = "已开启零件崩飞",
+                Content = "所有零件正在崩飞！",
+                Duration = 3
+            })
+            
+            local function protectedCall(func, ...)
+                local success, result = pcall(func, ...)
+                if not success then
+                    warn("执行错误: " .. tostring(result))
+                end
+                return success, result
+            end
+
+            local Players = game:GetService("Players")
+            local RunService = game:GetService("RunService")
+            local Workspace = game:GetService("Workspace")
+            local LocalPlayer = Players.LocalPlayer
+
+            if not getgenv().Network then
+                getgenv().Network = {
+                    BaseParts = {},
+                    Velocity = Vector3.new(14.46262424, 14.46262424, 14.46262424)
+                }
+
+                Network.RetainPart = function(Part)
+                    if typeof(Part) == "Instance" and Part:IsA("BasePart") and Part:IsDescendantOf(Workspace) then
+                        table.insert(Network.BaseParts, Part)
+                        protectedCall(function()
+                            Part.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
+                            Part.CanCollide = false
+                        end)
+                    end
+                end
+
+                local function EnablePartControl()
+                    protectedCall(function()
+                        LocalPlayer.ReplicationFocus = Workspace
+                    end)
+                    
+                    RunService.Heartbeat:Connect(function()
+                        protectedCall(function()
+                            sethiddenproperty(LocalPlayer, "SimulationRadius", math.huge)
+                            for _, Part in pairs(Network.BaseParts) do
+                                if Part:IsDescendantOf(Workspace) then
+                                    Part.Velocity = Network.Velocity
+                                end
+                            end
+                        end)
+                    end)
+                end
+
+                EnablePartControl()
+            end
+
+            local function ForcePart(v)
+                if v:IsA("Part") and not v.Anchored and not v.Parent:FindFirstChild("Humanoid") and not v.Parent:FindFirstChild("Head") and v.Name ~= "Handle" then
+                    for _, x in next, v:GetChildren() do
+                        if x:IsA("BodyAngularVelocity") or x:IsA("BodyForce") or x:IsA("BodyGyro") or x:IsA("BodyPosition") or x:IsA("BodyThrust") or x:IsA("BodyVelocity") or x:IsA("RocketPropulsion") then
+                            protectedCall(function() x:Destroy() end)
+                        end
+                    end
+                    if v:FindFirstChild("Attachment") then
+                        protectedCall(function() v:FindFirstChild("Attachment"):Destroy() end)
+                    end
+                    if v:FindFirstChild("AlignPosition") then
+                        protectedCall(function() v:FindFirstChild("AlignPosition"):Destroy() end)
+                    end
+                    if v:FindFirstChild("Torque") then
+                        protectedCall(function() v:FindFirstChild("Torque"):Destroy() end)
+                    end
+                    
+                    protectedCall(function()
+                        v.CanCollide = false
+                        
+                        local randomForce = Instance.new("BodyVelocity", v)
+                        randomForce.Velocity = Vector3.new(
+                            math.random(-100, 100),
+                            math.random(50, 100),
+                            math.random(-100, 100)
+                        )
+                        randomForce.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+                        
+                        local randomTorque = Instance.new("BodyAngularVelocity", v)
+                        randomTorque.AngularVelocity = Vector3.new(
+                            math.random(-20, 20),
+                            math.random(-20, 20),
+                            math.random(-20, 20)
+                        )
+                        randomTorque.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+                        
+                        delay(5, function()
+                            if randomForce and randomForce.Parent then
+                                protectedCall(function() randomForce:Destroy() end)
+                            end
+                            if randomTorque and randomTorque.Parent then
+                                protectedCall(function() randomTorque:Destroy() end)
+                            end
+                        end)
+                    end)
+                end
+            end
+
+            for _, obj in pairs(Workspace:GetDescendants()) do
+                if obj:IsA("Part") and not obj.Anchored and not obj.Parent:FindFirstChild("Humanoid") and not obj.Parent:FindFirstChild("Head") and obj.Name ~= "Handle" then
+                    ForcePart(obj)
+                end
+            end
+
+            partDestroyerConnection = Workspace.DescendantAdded:Connect(function(descendant)
+                if partDestroyerEnabled and descendant:IsA("Part") and not descendant.Anchored and 
+                   not descendant.Parent:FindFirstChild("Humanoid") and 
+                   not descendant.Parent:FindFirstChild("Head") and 
+                   descendant.Name ~= "Handle" then
+                    wait(0.1)
+                    ForcePart(descendant)
+                end
+            end)
+        else
+            WindUI:Notify({
+                Title = "已关闭零件崩飞",
+                Content = "停止崩飞零件",
+                Duration = 3
+            })
+            
+            if partDestroyerConnection then
+                partDestroyerConnection:Disconnect()
+                partDestroyerConnection = nil
+            end
         end
-    })
+    end
+})
 
     Tab3:Toggle({
         Title = "自动胜出",
