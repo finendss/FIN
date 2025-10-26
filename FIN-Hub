@@ -1933,7 +1933,7 @@ local function teleportToPlayerBack()
     if not targetRoot then return end
     
     local targetCFrame = targetRoot.CFrame
-    local behindOffset = targetCFrame.LookVector * -4
+    local behindOffset = targetCFrame.LookVector * -2
     local targetPosition = targetRoot.Position + behindOffset
     
     myRoot.CFrame = CFrame.new(targetPosition)
