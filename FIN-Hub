@@ -96,7 +96,7 @@ local Window = WindUI:CreateWindow({
         Title = "获取FIN-Hub主群qq",
         Desc = "以此获取最新内容",
         ImageSize = 20,
-        Color = "Grey",
+        Color = "Bule",
         Buttons = {
             {
                 Title = "复制",
@@ -113,7 +113,37 @@ local Window = WindUI:CreateWindow({
                     else
                         WindUI:Notify({
                             Title = "错误",
-                            Content = "复制功能不可用",
+                            Content = "复制出问题了",
+                            Duration = 5
+                        })
+                    end
+                end
+            }
+        }
+    })
+
+MainTab:Paragraph({
+        Title = "获取FIN-Hub的Discord",
+        Desc = "以此获取信息",
+        ImageSize = 20,
+        Color = "Yellow",
+        Buttons = {
+            {
+                Title = "复制",
+                Icon = "copy",
+                Variant = "Tertiary",
+                Callback = function()
+                    if type(setclipboard) == "function" then
+                        setclipboard("https://discord.gg/MNqw4EET")
+                        WindUI:Notify({
+                            Title = "已复制",
+                            Content = "已复制到剪贴板",
+                            Duration = 5 --消失时长
+                        })
+                    else
+                        WindUI:Notify({
+                            Title = "错误",
+                            Content = "复制出问题了",
                             Duration = 5
                         })
                     end
@@ -1643,6 +1673,12 @@ end)
         Title = "死亡之死",
         Icon = "drama",
         Locked = false,
+    })
+
+    MainTab:Paragraph({
+        Title = "一些功能得专属服务器中才能显示",
+        Desc = "死亡之死",
+        Color = "Blue"
     })
 
 local killerHighlights = {}
