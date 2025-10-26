@@ -364,20 +364,6 @@ MainTab:Paragraph({
     })
 
     Tab:Button({
-        Title = "光影 1",
-        Callback = function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Lightandshadow-1"))()
-        end
-    })
-
-    Tab:Button({
-        Title = "光影 2",
-        Callback = function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/LightandShadow-2"))()
-        end
-    })
-
-    Tab:Button({
         Title = "FE-死亡笔记",
         Callback = function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/FIN-DeathNote"))()
@@ -408,6 +394,105 @@ MainTab:Paragraph({
         Title = "踏空行走",
         Callback = function()
             loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
+        end
+    })
+
+    Tab:Button({
+        Title = "玩家进入服务器提示",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))()
+        end
+    })
+
+    Tab:Button({
+        Title = "FPS优化",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/gclich/FPS-X-GUI/main/FPS_X.lua"))()
+        end
+    })
+
+    Tab:Button({
+        Title = "电脑键盘",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
+        end
+    })
+
+    Tab:Button({
+        Title = "电脑鼠标",
+        Callback = function()
+            loadstring(game:HttpGet(('https://pastefy.ga/V75mqzaz/raw'),true))()
+        end
+    })
+
+    Tab:Button({
+        Title = "反挂机V2",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/9fFu43FF"))()
+        end
+    })
+
+    Tab:Paragraph({
+        Title = "光影与画质",
+        Desc = "好看的光线",
+    })
+
+    Tab:Button({
+        Title = "光影 1",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/Lightandshadow-1"))()
+        end
+    })
+
+    Tab:Button({
+        Title = "光影 2",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function/refs/heads/main/LightandShadow-2"))()
+        end
+    })
+
+    Tab:Paragraph({
+        Title = "甩飞与传送",
+        Desc = "恐怖如斯",
+    })
+
+    Tab:Paragraph({
+        Title = "FE",
+        Desc = "有客户和本地端",
+    })
+
+    Tab:Button({
+        Title = "动画中心",
+        Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/GamingScripter/Animation-Hub/main/Animation%20Gui", true))()    
+        end
+    })
+
+    Tab:Button({
+        Title = "变成其他玩家(r6)",
+        Callback = function()
+            loadstring(game:HttpGet("https://pastebin.com/raw/XR4sGcgJ"))()
+        end
+    })
+
+    Tab:Button({
+        Title = "变成1x1x1x1",
+        Callback = function()
+            loadstring(game:HttpGet(('https://pastebin.com/raw/JipYNCht'),true))()
+        end
+    })
+
+    Tab:Button({
+        Title = "无敌少侠飞行动作(r15)",
+        Callback = function()
+            loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invinicible-Flight-R15-45414"))()
+        end
+    })
+
+    Tab:Button({
+        Title = "无敌少侠飞行动作(r6)",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/ke9460394-dot/ugik/refs/heads/main/%E6%97%A0%E6%95%8C%E5%B0%91%E4%BE%A0%E9%A3%9E%E8%A1%8Cr6.txt"))()
         end
     })
 
@@ -629,6 +714,20 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-function
         end
     })
 
+    Tab3:Button({
+        Title = "物体悬浮",
+        Callback = function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/cytj777i/6669178/main/全局物体漂浮最终优化版"))()
+        end
+    })
+
+    Tab3:Button({
+        Title = "零件破坏",
+        Callback = function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/cytj777i/-/main/零件破坏者v2"))()
+        end
+    })
+
     Tab3:Toggle({
         Title = "自动胜出",
         Default = true,
@@ -739,13 +838,6 @@ end
         end
     end
 })
-
-    Tab3:Button({
-        Title = "FE-无敌少侠飞行动作",
-        Callback = function()
-      loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invinicible-Flight-R15-45414"))()
-        end
-    })
 
     Tab3:Button({
         Title = "传送到地图",
