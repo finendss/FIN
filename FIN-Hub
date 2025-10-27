@@ -1875,12 +1875,6 @@ pcall(function()
     end)
 end)
 
-local Tab6 = Window:Tab({
-    Title = "最强战场",
-    Icon = "drama",
-    Locked = false,
-})
-
 local autoTpToPlayer = false
 local tpLoop = nil
 
@@ -1933,7 +1927,7 @@ local function teleportToPlayerBack()
     if not targetRoot then return end
     
     local targetCFrame = targetRoot.CFrame
-    local behindOffset = targetCFrame.LookVector * -2
+    local behindOffset = targetCFrame.LookVector * -3
     local targetPosition = targetRoot.Position + behindOffset
     
     myRoot.CFrame = CFrame.new(targetPosition)
@@ -1986,7 +1980,7 @@ Players.LocalPlayer.CharacterAdded:Connect(function(char)
     if autoTpToPlayer then
         startAutoTeleport()
     end
-end)
+end) 
 
 local defenseOn = false
 local faceOn = false
