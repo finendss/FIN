@@ -2192,10 +2192,71 @@ local Tab5 = Window:Tab({
 })
 
 Tab5:Paragraph({
-    Title = "一些功能得专属服务器中才能显示",
+    Title = "请在专属服务器中使用",
     Desc = "死亡之死",
     Color = "Blue"
 })
+
+local LocalPlayer = game.Players.LocalPlayer
+local Character, Char
+local HumanoidRootPart, HRP
+local Humanoid, Hum
+local NoStaminaLoss = false
+local NoFatigue = false
+
+pcall(function()
+    Character, Char = LocalPlayer.Character, LocalPlayer.Character
+end)
+pcall(function()
+    HumanoidRootPart, HRP = Character.HumanoidRootPart, Character.HumanoidRootPart
+end)
+pcall(function()
+    Humanoid, Hum = Character.Humanoid, Character.Humanoid
+end)
+
+LocalPlayer.CharacterAdded:Connect(function()
+    pcall(function()
+        Character, Char = nil, nil
+        HumanoidRootPart, HRP = nil, nil
+        Humanoid, Hum = nil, nil
+        task.wait()
+        repeat task.wait() until LocalPlayer.Character
+        Character, Char = LocalPlayer.Character, LocalPlayer.Character
+        task.wait()
+        repeat task.wait() until Character:FindFirstChild("HumanoidRootPart")
+        HumanoidRootPart, HRP = Character.HumanoidRootPart, Character.HumanoidRootPart
+        task.wait()
+        repeat task.wait() until Character:FindFirstChild("Humanoid")
+        Humanoid, Hum = Character.Humanoid, Character.Humanoid
+    end)
+end)
+
+local StaminaModule
+pcall(function()
+    StaminaModule = require(LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("MainGui"):WaitForChild("Client"):WaitForChild("Modules"):WaitForChild("Movement"))
+end)
+
+function SetStaminaProperty(property, value)
+    if property == "MaxStamina" then
+        Char:SetAttribute("MaxStamina", value)
+    elseif property == "Stamina" then
+        if StaminaModule then
+            StaminaModule["Stamina"] = value
+        end
+    elseif property == "Fatigue" then
+        Char:SetAttribute("Fatigue", value)
+    elseif property == "WalkSpeed" then
+        Hum.WalkSpeed = value
+    elseif property == "SprintSpeed" then
+        Char:SetAttribute("SprintSpeed", value)
+    elseif property == "CanJump" then
+        if value == true then 
+            Hum.JumpPower = 50 
+        else 
+            Hum.JumpPower = 0 
+        end
+    end
+end
 
 local killerHighlights = {}
 local survivorHighlights = {}
@@ -2350,69 +2411,6 @@ Tab5:Toggle({
     end
 })
 
-local LocalPlayer = game.Players.LocalPlayer
-local Character, Char
-local HumanoidRootPart, HRP
-local Humanoid, Hum
-local NoStaminaLoss = false
-local NoFatigue = false
-local AutoInjectStamina = false
-local AI_MaxStamina, AI_WalkSpeed, AI_SprintSpeed
-
-pcall(function()
-    Character, Char = LocalPlayer.Character, LocalPlayer.Character
-end)
-pcall(function()
-    HumanoidRootPart, HRP = Character.HumanoidRootPart, Character.HumanoidRootPart
-end)
-pcall(function()
-    Humanoid, Hum = Character.Humanoid, Character.Humanoid
-end)
-
-LocalPlayer.CharacterAdded:Connect(function()
-    pcall(function()
-        Character, Char = nil, nil
-        HumanoidRootPart, HRP = nil, nil
-        Humanoid, Hum = nil, nil
-        task.wait()
-        repeat task.wait() until LocalPlayer.Character
-        Character, Char = LocalPlayer.Character, LocalPlayer.Character
-        task.wait()
-        repeat task.wait() until Character:FindFirstChild("HumanoidRootPart")
-        HumanoidRootPart, HRP = Character.HumanoidRootPart, Character.HumanoidRootPart
-        task.wait()
-        repeat task.wait() until Character:FindFirstChild("Humanoid")
-        Humanoid, Hum = Character.Humanoid, Character.Humanoid
-    end)
-end)
-
-local StaminaModule
-pcall(function()
-    StaminaModule = require(LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("MainGui"):WaitForChild("Client"):WaitForChild("Modules"):WaitForChild("Movement"))
-end)
-
-function SetStaminaProperty(property, value)
-    if property == "MaxStamina" then
-        Char:SetAttribute("MaxStamina", value)
-    elseif property == "Stamina" then
-        if StaminaModule then
-            StaminaModule["Stamina"] = value
-        end
-    elseif property == "Fatigue" then
-        Char:SetAttribute("Fatigue", value)
-    elseif property == "WalkSpeed" then
-        Hum.WalkSpeed = value
-    elseif property == "SprintSpeed" then
-        Char:SetAttribute("SprintSpeed", value)
-    elseif property == "CanJump" then
-        if value == true then 
-            Hum.JumpPower = 50 
-        else 
-            Hum.JumpPower = 0 
-        end
-    end
-end
-
 Tab5:Button({
     Title = "无限体力",
     Callback = function()
@@ -2475,4 +2473,3 @@ Tab5:Toggle({
         end
     end
 })
-
