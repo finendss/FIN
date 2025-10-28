@@ -1874,7 +1874,7 @@ pcall(function()
             end
         end
     })
-    
+
     LocalPlayer.CharacterAdded:Connect(function()
         if FINNB.Enabled and combatConnection then
             combatConnection:Disconnect()
@@ -1992,6 +1992,12 @@ Players.LocalPlayer.CharacterAdded:Connect(function(char)
         startAutoTeleport()
     end
 end) 
+
+local Tab6 = Window:Tab({
+    Title = "最强战场",
+    Icon = "drama",
+    Locked = false,
+})
 
 local defenseOn = false
 local faceOn = false
