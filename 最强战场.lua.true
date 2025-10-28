@@ -1,4 +1,4 @@
-local WindUI = 
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-Ui/refs/heads/main/德与中山-Ui"))()
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
@@ -66,3 +66,447 @@ Window:EditOpenButton({
 
 task.wait(0.2)
 
+local MainTab = Window:Tab({
+    Title = "主页",
+    Icon = "zap",
+    Locked = false,
+})
+
+MainTab:Section({Title = "免责声明", TextXAlignment = "Left", TextSize = 17})
+
+MainTab:Paragraph({
+    Title = "被封服务器与德与中山无关",
+    Desc = "被封号与德与中山无关",
+})
+
+local Tab = Window:Tab({
+    Title = "主要",
+    Icon = "drama",
+    Locked = false,
+})
+
+Tab:Toggle({
+    Title = "无晕值",
+    Value = false,
+    Callback = function(state)
+        _G.antifreeze = state
+        if state then
+            task.spawn(function()
+                while _G.antifreeze do
+                    local char = LocalPlayer.Character
+                    if char and char:FindFirstChild("Freeze") then char.Freeze:Destroy() end
+                    task.wait()
+                end
+            end)
+        end
+    end
+})
+
+
+Tab:Slider({
+    Title = "速度",
+    Value = {
+        Min = 16,
+        Max = 500,
+        Default = 16,
+    },
+    Increment = 1,
+    Callback = function(value)
+        if game.Players.LocalPlayer.Character then
+            local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.WalkSpeed = value
+            end
+        end
+    end
+})
+
+local Tab2 = Window:Tab({
+    Title = "自动化",
+    Icon = "drama",
+    Locked = false,
+})
+
+local autoTpToPlayer = false
+local tpLoop = nil
+
+local function getClosestPlayer()
+    local me = Players.LocalPlayer
+    local myChar = me.Character
+    if not myChar then return nil end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return nil end
+    
+    local closest = nil
+    local closestDist = math.huge
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= me then
+            local char = player.Character
+            if char then
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if root then
+                    local dist = (myRoot.Position - root.Position).Magnitude
+                    if dist < closestDist then
+                        closestDist = dist
+                        closest = player
+                    end
+                end
+            end
+        end
+    end
+    
+    return closest, closestDist
+end
+
+local function teleportToPlayerBack()
+    if not autoTpToPlayer then return end
+    
+    local myChar = Players.LocalPlayer.Character
+    if not myChar then return end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return end
+    
+    local targetPlayer, distance = getClosestPlayer()
+    if not targetPlayer then return end
+    
+    local targetChar = targetPlayer.Character
+    if not targetChar then return end
+    
+    local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
+    if not targetRoot then return end
+    
+    local targetCFrame = targetRoot.CFrame
+    local behindOffset = targetCFrame.LookVector * -2
+    local targetPosition = targetRoot.Position + behindOffset
+    
+    myRoot.CFrame = CFrame.new(targetPosition)
+end
+
+local function startAutoTeleport()
+    if tpLoop then
+        tpLoop:Disconnect()
+    end
+    
+    tpLoop = RunService.Heartbeat:Connect(function()
+        if autoTpToPlayer then
+            teleportToPlayerBack()
+        end
+    end)
+end
+
+local function stopAutoTeleport()
+    if tpLoop then
+        tpLoop:Disconnect()
+        tpLoop = nil
+    end
+end
+
+Tab2:Toggle({
+    Title = "自动锁敌",
+    Default = false,
+    Callback = function(state)
+        autoTpToPlayer = state
+        if state then
+            startAutoTeleport()
+            WindUI:Notify({
+                Title = "自动锁敌已开启",
+                Content = "打死别人👅",
+                Duration = 3
+            })
+        else
+            stopAutoTeleport()
+            WindUI:Notify({
+                Title = "锁敌已关闭",
+                Content = "休息会",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Players.LocalPlayer.CharacterAdded:Connect(function(char)
+    task.wait(2)
+    if autoTpToPlayer then
+        startAutoTeleport()
+    end
+end)
+
+local defenseOn = false
+local faceOn = false
+local attackOn = false
+local defenseDistance = 30
+local faceDistance = 5000
+local attackDistance = 10
+local animId = "10470389827"
+local animTrack = nil
+local defenseLoop = nil
+local faceLoop = nil
+local attackLoop = nil
+
+local function setupAnim()
+    local char = Players.LocalPlayer.Character
+    if char and char:FindFirstChild("Humanoid") then
+        local humanoid = char:FindFirstChild("Humanoid")
+        local newAnim = Instance.new("Animation")
+        newAnim.AnimationId = "rbxassetid://" .. animId
+        animTrack = humanoid:LoadAnimation(newAnim)
+        return true
+    end
+    return false
+end
+
+local function startAnim()
+    if animTrack and not animTrack.IsPlaying then
+        animTrack:Play()
+    end
+end
+
+local function stopAnim()
+    if animTrack and animTrack.IsPlaying then
+        animTrack:Stop()
+    end
+end
+
+local function playersInAttackRange()
+    local me = Players.LocalPlayer
+    local myChar = me.Character
+    if not myChar then return false end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return false end
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= me then
+            local char = player.Character
+            if char then
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if root then
+                    local dist = (myRoot.Position - root.Position).Magnitude
+                    if dist <= attackDistance then
+                        return true
+                    end
+                end
+            end
+        end
+    end
+    
+    return false
+end
+
+local function performAttack()
+    local args = {
+        {
+            Goal = "LeftClick",
+            Mobile = true
+        }
+    }
+    local char = Players.LocalPlayer.Character
+    if char and char:FindFirstChild("Communicate") then
+        char.Communicate:FireServer(unpack(args))
+    end
+end
+
+local function playersClose()
+    local me = Players.LocalPlayer
+    local myChar = me.Character
+    if not myChar then return false end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return false end
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= me then
+            local char = player.Character
+            if char then
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if root then
+                    local dist = (myRoot.Position - root.Position).Magnitude
+                    if dist <= defenseDistance then
+                        return true
+                    end
+                end
+            end
+        end
+    end
+    
+    return false
+end
+
+local function getClosestPlayerForFace()
+    local me = Players.LocalPlayer
+    local myChar = me.Character
+    if not myChar then return nil end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return nil end
+    
+    local closest = nil
+    local closestDist = 9999
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= me then
+            local char = player.Character
+            if char then
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if root then
+                    local dist = (myRoot.Position - root.Position).Magnitude
+                    if dist < closestDist and dist <= faceDistance then
+                        closestDist = dist
+                        closest = player
+                    end
+                end
+            end
+        end
+    end
+    
+    return closest
+end
+
+local function turnToPlayer()
+    if not faceOn then return end
+    
+    local myChar = Players.LocalPlayer.Character
+    if not myChar then return end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return end
+    
+    local targetPlayer = getClosestPlayerForFace()
+    if not targetPlayer then return end
+    
+    local targetChar = targetPlayer.Character
+    if not targetChar then return end
+    
+    local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
+    if not targetRoot then return end
+    
+    local dir = (targetRoot.Position - myRoot.Position).Unit
+    local lookDir = Vector3.new(dir.X, 0, dir.Z)
+    
+    if lookDir.Magnitude > 0 then
+        myRoot.CFrame = CFrame.new(myRoot.Position, myRoot.Position + lookDir)
+    end
+end
+
+local function beginAttackSystem()
+    if attackLoop then
+        attackLoop:Disconnect()
+    end
+    
+    attackLoop = RunService.Heartbeat:Connect(function()
+        if attackOn then
+            local inRange = playersInAttackRange()
+            if inRange then
+                performAttack()
+            end
+        end
+    end)
+end
+
+local function endAttackSystem()
+    if attackLoop then
+        attackLoop:Disconnect()
+        attackLoop = nil
+    end
+end
+
+local function beginFaceSystem()
+    if faceLoop then
+        faceLoop:Disconnect()
+    end
+    
+    faceLoop = RunService.Heartbeat:Connect(function()
+        if faceOn then
+            turnToPlayer()
+        end
+    end)
+end
+
+local function endFaceSystem()
+    if faceLoop then
+        faceLoop:Disconnect()
+        faceLoop = nil
+    end
+end
+
+local function beginDefenseSystem()
+    if defenseLoop then
+        defenseLoop:Disconnect()
+    end
+    
+    if not setupAnim() then
+        return false
+    end
+    
+    defenseLoop = RunService.Heartbeat:Connect(function()
+        if defenseOn and animTrack then
+            local nearby = playersClose()
+            if nearby then
+                startAnim()
+            else
+                stopAnim()
+            end
+        end
+    end)
+    return true
+end
+
+local function endDefenseSystem()
+    if defenseLoop then
+        defenseLoop:Disconnect()
+        defenseLoop = nil
+    end
+    stopAnim()
+end
+
+Players.LocalPlayer.CharacterAdded:Connect(function(char)
+    task.wait(2)
+    if defenseOn then
+        setupAnim()
+    end
+    if attackOn then
+        beginAttackSystem()
+    end
+end)
+
+Tab2:Toggle({
+    Title = "靠近自动假防御",
+    Default = false,
+    Callback = function(state)
+        defenseOn = state
+        if state then
+            beginDefenseSystem()
+        else
+            endDefenseSystem()
+        end
+    end
+})
+
+Tab2:Toggle({
+    Title = "朝向自瞄",
+    Default = false,
+    Callback = function(state)
+        faceOn = state
+        if state then
+            beginFaceSystem()
+        else
+            endFaceSystem()
+        end
+    end
+})
+
+Tab2:Toggle({
+    Title = "自动攻击",
+    Default = false,
+    Callback = function(state)
+        attackOn = state
+        if state then
+            beginAttackSystem()
+        else
+            endAttackSystem()
+        end
+    end
+})
