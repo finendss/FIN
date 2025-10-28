@@ -72,10 +72,19 @@ Window:EditOpenButton({
 task.wait(0.2)
 
 local MainTab = Window:Tab({
-    Title = "主页",
+    Title = "主页(必看)",
     Icon = "zap",
     Locked = false,
 })
+
+MainTab:Section({Title = "免责声明", TextXAlignment = "Left", TextSize = 17})
+
+MainTab:Paragraph({
+    Title = "被封服务器与FIN-Hub无关",
+    Desc = "被封号与FIN-Hub无关",
+})
+
+MainTab:Section({Title = "信息", TextXAlignment = "Left", TextSize = 17})
 
 MainTab:Paragraph({
     Title = "作者:鑫晴",
@@ -91,6 +100,8 @@ MainTab:Paragraph({
     Title = "当前服务器ID: " .. game.PlaceId,
     Desc = "感谢你的支持",
 })
+
+MainTab:Section({Title = "获取更多消息", TextXAlignment = "Left", TextSize = 17})
 
 MainTab:Paragraph({
     Title = "获取FIN-Hub主群qq",
