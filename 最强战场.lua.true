@@ -510,3 +510,31 @@ Tab2:Toggle({
         end
     end
 })
+
+local Tab3 = Window:Tab({
+    Title = "传送",
+    Icon = "drama",
+    Locked = false,
+})
+
+Tab3:Button({
+    Title = "传送到墙上",
+    Icon = "arrow-up",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        
+        if character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                local targetPosition = Vector3.new(302.3, 671.1, 384.1)
+                humanoidRootPart.CFrame = CFrame.new(targetPosition)
+            end
+        end
+                WindUI:Notify({
+                    Title = "传送成功",
+                    Content = "已传送到墙上",
+                    Duration = 3
+                })
+    end
+})
