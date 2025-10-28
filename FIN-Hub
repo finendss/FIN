@@ -2001,12 +2001,15 @@ end)
 
 local defenseOn = false
 local faceOn = false
+local attackOn = false
 local defenseDistance = 30
 local faceDistance = 5000
+local attackDistance = 15
 local animId = "10470389827"
 local animTrack = nil
 local defenseLoop = nil
 local faceLoop = nil
+local attackLoop = nil
 
 local function setupAnim()
     local char = Players.LocalPlayer.Character
@@ -2029,6 +2032,45 @@ end
 local function stopAnim()
     if animTrack and animTrack.IsPlaying then
         animTrack:Stop()
+    end
+end
+
+local function playersInAttackRange()
+    local me = Players.LocalPlayer
+    local myChar = me.Character
+    if not myChar then return false end
+    
+    local myRoot = myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return false end
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= me then
+            local char = player.Character
+            if char then
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if root then
+                    local dist = (myRoot.Position - root.Position).Magnitude
+                    if dist <= attackDistance then
+                        return true
+                    end
+                end
+            end
+        end
+    end
+    
+    return false
+end
+
+local function performAttack()
+    local args = {
+        {
+            Goal = "LeftClick",
+            Mobile = true
+        }
+    }
+    local char = Players.LocalPlayer.Character
+    if char and char:FindFirstChild("Communicate") then
+        char.Communicate:FireServer(unpack(args))
     end
 end
 
@@ -2114,6 +2156,28 @@ local function turnToPlayer()
     end
 end
 
+local function beginAttackSystem()
+    if attackLoop then
+        attackLoop:Disconnect()
+    end
+    
+    attackLoop = RunService.Heartbeat:Connect(function()
+        if attackOn then
+            local inRange = playersInAttackRange()
+            if inRange then
+                performAttack()
+            end
+        end
+    end)
+end
+
+local function endAttackSystem()
+    if attackLoop then
+        attackLoop:Disconnect()
+        attackLoop = nil
+    end
+end
+
 local function beginFaceSystem()
     if faceLoop then
         faceLoop:Disconnect()
@@ -2168,6 +2232,9 @@ Players.LocalPlayer.CharacterAdded:Connect(function(char)
     if defenseOn then
         setupAnim()
     end
+    if attackOn then
+        beginAttackSystem()
+    end
 end)
 
 Tab6:Toggle({
@@ -2192,6 +2259,19 @@ Tab6:Toggle({
             beginFaceSystem()
         else
             endFaceSystem()
+        end
+    end
+})
+
+Tab6:Toggle({
+    Title = "靠近自动平A",
+    Default = false,
+    Callback = function(state)
+        attackOn = state
+        if state then
+            beginAttackSystem()
+        else
+            endAttackSystem()
         end
     end
 })
