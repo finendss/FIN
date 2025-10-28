@@ -102,25 +102,6 @@ Tab:Toggle({
     end
 })
 
-
-Tab:Slider({
-    Title = "速度",
-    Value = {
-        Min = 16,
-        Max = 500,
-        Default = 16,
-    },
-    Increment = 1,
-    Callback = function(value)
-        if game.Players.LocalPlayer.Character then
-            local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-            if humanoid then
-                humanoid.WalkSpeed = value
-            end
-        end
-    end
-})
-
 local Tab2 = Window:Tab({
     Title = "自动化",
     Icon = "drama",
@@ -534,6 +515,28 @@ Tab3:Button({
                 WindUI:Notify({
                     Title = "传送成功",
                     Content = "已传送到墙上",
+                    Duration = 3
+                })
+    end
+})
+
+Tab3:Button({
+    Title = "传送到中间",
+    Icon = "arrow-up",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        
+        if character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                local targetPosition = Vector3.new(124.2, 440.8, -29.9)
+                humanoidRootPart.CFrame = CFrame.new(targetPosition)
+            end
+        end
+                WindUI:Notify({
+                    Title = "传送成功",
+                    Content = "已传送到中间",
                     Duration = 3
                 })
     end
