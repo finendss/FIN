@@ -101,7 +101,7 @@ MainTab:Paragraph({
     Desc = "感谢你的支持",
 })
 
-MainTab:Section({Title = "获取更多消息", TextXAlignment = "Left", TextSize = 17})
+MainTab:Section({Title = "获取更多信息", TextXAlignment = "Left", TextSize = 17})
 
 MainTab:Paragraph({
     Title = "获取FIN-Hub主群qq",
@@ -1874,7 +1874,7 @@ pcall(function()
             end
         end
     })
-
+    
     LocalPlayer.CharacterAdded:Connect(function()
         if FINNB.Enabled and combatConnection then
             combatConnection:Disconnect()
@@ -1885,6 +1885,12 @@ pcall(function()
         end
     end)
 end)
+
+local Tab6 = Window:Tab({
+    Title = "最强战场",
+    Icon = "drama",
+    Locked = false,
+})
 
 local autoTpToPlayer = false
 local tpLoop = nil
@@ -1938,7 +1944,7 @@ local function teleportToPlayerBack()
     if not targetRoot then return end
     
     local targetCFrame = targetRoot.CFrame
-    local behindOffset = targetCFrame.LookVector * -3
+    local behindOffset = targetCFrame.LookVector * -2
     local targetPosition = targetRoot.Position + behindOffset
     
     myRoot.CFrame = CFrame.new(targetPosition)
@@ -1991,13 +1997,7 @@ Players.LocalPlayer.CharacterAdded:Connect(function(char)
     if autoTpToPlayer then
         startAutoTeleport()
     end
-end) 
-
-local Tab6 = Window:Tab({
-    Title = "最强战场",
-    Icon = "drama",
-    Locked = false,
-})
+end)
 
 local defenseOn = false
 local faceOn = false
