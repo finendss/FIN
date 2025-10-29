@@ -1899,6 +1899,8 @@ local Tab6 = Window:Tab({
     Locked = false,
 })
 
+Tab6:Section({Title = "主要", TextXAlignment = "Left", TextSize = 17})
+
 local autoTpToPlayer = false
 local tpLoop = nil
 
@@ -2283,10 +2285,253 @@ Tab6:Toggle({
     end
 })
 
-local Tab7 = Window:Tab({
-    Title = "",
-    Icon = "drama",
-    Locked = false,
+Tab6:Toggle({
+    Title = "自动拾取垃圾桶",
+    Default = false,
+    Callback = function(state)
+        AUTO_TRASH_MASTER = state
+
+        if state then
+            task.spawn(
+                function()
+                    local Players = game:GetService("Players")
+                    local Workspace = game:GetService("Workspace")
+                    local RunService = game:GetService("RunService")
+                    local TRASH_RANGE = 15
+                    local PLAYER_RANGE = 100
+                    local PICKUP_DISTANCE = 2
+                    local ATTACK_DISTANCE = 2
+                    local HEIGHT_OFFSET = 3
+                    local localPlayer = Players.LocalPlayer
+                    local character, rootPart, humanoid
+
+                    local function updateCharacter()
+                        character = localPlayer.Character
+                        if character then
+                            rootPart = character:FindFirstChild("HumanoidRootPart")
+                            humanoid = character:FindFirstChildOfClass("Humanoid")
+                        else
+                            rootPart = nil
+                            humanoid = nil
+                        end
+                    end
+
+                    updateCharacter()
+                    localPlayer.CharacterAdded:Connect(updateCharacter)
+
+                    local function getTrashPart(trashModel)
+                        return trashModel:FindFirstChild("Handle") or trashModel:FindFirstChild("MainPart") or trashModel:FindFirstChild("TrashCan") or trashModel.PrimaryPart or trashModel:FindFirstChildWhichIsA("BasePart")
+                    end
+
+                    local function performAction(action)
+                        if AUTO_TRASH_MASTER and character then
+                            local communicate = character:FindFirstChild("Communicate")
+                            if communicate then
+                                communicate:FireServer({["Goal"] = action})
+                            end
+                        end
+                    end
+
+                    local function calculateOffsetPosition(targetPos, referencePos)
+                        local direction = (targetPos - referencePos).Unit
+                        direction = Vector3.new(direction.X, 0, direction.Z).Unit
+
+                        if direction.Magnitude < 0.1 then
+                            direction = Vector3.new(math.random(), 0, math.random()).Unit
+                        end
+
+                        return targetPos + (direction * PICKUP_DISTANCE)
+                    end
+
+                    local function calculateBehindPosition(targetRoot)
+                        local lookVector = targetRoot.CFrame.LookVector
+                        lookVector = Vector3.new(lookVector.X, 0, lookVector.Z).Unit
+
+                        return targetRoot.Position - (lookVector * ATTACK_DISTANCE)
+                    end
+
+                    local function findNearestPlayer()
+                        if not rootPart then
+                            return nil, nil
+                        end
+
+                        local nearestPlayer = nil
+                        local nearestDistance = math.huge
+                        local targetPosition = nil
+
+                        for _, targetPlayer in ipairs(Players:GetPlayers()) do
+                            if targetPlayer ~= localPlayer and targetPlayer.Character then
+                                local targetChar = targetPlayer.Character
+                                local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
+                                local targetHum = targetChar:FindFirstChildOfClass("Humanoid")
+
+                                if targetRoot and targetHum and targetHum.Health > 0 then
+                                    local distance = (rootPart.Position - targetRoot.Position).Magnitude
+                                    if distance <= PLAYER_RANGE and distance < nearestDistance then
+                                        nearestDistance = distance
+                                        nearestPlayer = targetPlayer
+                                        targetPosition = calculateBehindPosition(targetRoot)
+                                    end
+                                end
+                            end
+                        end
+
+                        return nearestPlayer, targetPosition
+                    end
+
+                    local function teleportTo(position, faceTarget)
+                        if rootPart and AUTO_TRASH_MASTER then
+                            local raycastParams = RaycastParams.new()
+                            raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+                            raycastParams.FilterDescendantsInstances = {character}
+
+                            local groundPosition = position
+                            local ray = Workspace:Raycast(position + Vector3.new(0, 10, 0), Vector3.new(0, -20, 0), raycastParams)
+                            if ray and ray.Position then
+                                groundPosition = ray.Position + Vector3.new(0, HEIGHT_OFFSET, 0)
+                            else
+                                groundPosition = position + Vector3.new(0, HEIGHT_OFFSET, 0)
+                            end
+
+                            if faceTarget then
+                                local lookVector = (faceTarget - groundPosition).Unit
+                                rootPart.CFrame = CFrame.new(groundPosition, groundPosition + lookVector)
+                            else
+                                rootPart.CFrame = CFrame.new(groundPosition)
+                            end
+                        end
+                    end
+
+                    while AUTO_TRASH_MASTER and game:GetService("RunService").Heartbeat:Wait() do
+                        pcall(
+                            function()
+                                updateCharacter()
+                                if not character or not rootPart or not humanoid or humanoid.Health <= 0 then
+                                    task.wait(1)
+                                    return
+                                end
+
+                                if not character:GetAttribute("HasTrashcan") then
+                                    local trashFolder = Workspace:FindFirstChild("Trash") or (Workspace:FindFirstChild("Map") and Workspace.Map:FindFirstChild("Trash"))
+
+                                    if not trashFolder then
+                                        task.wait(1)
+                                        return
+                                    end
+
+                                    local nearestTrash, nearestDistance, trashPosition
+                                    for _, trashModel in ipairs(trashFolder:GetChildren()) do
+                                        if trashModel:IsA("Model") then
+                                            local trashPart = getTrashPart(trashModel)
+                                            if trashPart then
+                                                local distance = (rootPart.Position - trashPart.Position).Magnitude
+                                                if distance <= TRASH_RANGE and (not nearestDistance or distance < nearestDistance) then
+                                                    nearestTrash = trashModel
+                                                    nearestDistance = distance
+                                                    trashPosition = trashPart.Position
+                                                end
+                                            end
+                                        end
+                                    end
+
+                                    if nearestTrash and trashPosition then
+                                        local offsetPosition = calculateOffsetPosition(trashPosition, rootPart.Position)
+
+                                        teleportTo(offsetPosition, trashPosition)
+                                        task.wait(0.2)
+
+                                        local direction = (trashPosition - rootPart.Position).Unit
+                                        local lookVector = Vector3.new(direction.X, 0, direction.Z).Unit
+                                        if lookVector.Magnitude > 0.1 then
+                                            rootPart.CFrame = CFrame.new(rootPart.Position, rootPart.Position + lookVector)
+                                        end
+
+                                        performAction("LeftClick")
+                                        task.wait(0.15)
+                                        performAction("LeftClickRelease")
+
+                                        local waitTime = 0
+                                        while waitTime < 2 and AUTO_TRASH_MASTER do
+                                            if character:GetAttribute("HasTrashcan") then
+                                                break
+                                            end
+                                            task.wait(0.1)
+                                            waitTime = waitTime + 0.1
+                                        end
+                                    else
+                                        task.wait(1)
+                                    end
+                                else
+                                    local nearestPlayer, behindPos = findNearestPlayer()
+
+                                    if nearestPlayer and behindPos then
+                                        local targetChar = nearestPlayer.Character
+                                        local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
+
+                                        if not targetRoot then
+                                            task.wait(0.5)
+                                            return
+                                        end
+
+                                        teleportTo(behindPos, targetRoot.Position)
+                                        task.wait(0.2)
+
+                                        local direction = (targetRoot.Position - rootPart.Position).Unit
+                                        local lookVector = Vector3.new(direction.X, 0, direction.Z).Unit
+                                        if lookVector.Magnitude > 0.1 then
+                                            rootPart.CFrame = CFrame.new(rootPart.Position, rootPart.Position + lookVector)
+                                        end
+
+                                        performAction("LeftClick")
+                                        task.wait(0.1)
+                                        performAction("LeftClickRelease")
+
+                                        task.wait(1.5)
+                                    else
+                                        task.wait(1)
+                                    end
+                                end
+                            end
+                        )
+                    end
+                end
+            )
+        end
+    end
+})
+
+Tab6:Section({Title = "传送", TextXAlignment = "Left", TextSize = 17})
+
+Tab6:Button({
+    Title = "传送到墙上",
+    Callback = function()
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(253.515198, 699.103455, 420.533813)
+    end
+})
+
+Tab6:Button({
+    Title = "传送到地图",
+    Callback = function()
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(63.4928513, 440.505829, -92.9229507)
+    end
+})
+
+local TPYW
+
+Tab6:Button({
+    Title = "设置原位",
+    Callback = function()
+    TPYW = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+    end
+})
+
+Tab6:Button({
+    Title = "传送到原位",
+    Callback = function()
+    if TPYW then
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = TPYW
+    end
+    end
 })
 
 local Tab5 = Window:Tab({
@@ -2364,11 +2609,81 @@ end
 
 local killerHighlights = {}
 local survivorHighlights = {}
+local killerConnection, killerRemovedConnection
+local survivorConnection, survivorRemovedConnection
+
+local function cleanupHighlights(highlightsTable)
+    for target, highlight in pairs(highlightsTable) do
+        if highlight and typeof(highlight) == "Instance" and highlight:IsA("Highlight") then
+            highlight:Destroy()
+        end
+    end
+    return {}
+end
+
+local function createHighlight(target, color)
+    local humanoid = target:FindFirstChildOfClass("Humanoid")
+    local rootPart = target:FindFirstChild("HumanoidRootPart") or target:FindFirstChild("Torso")
+    
+    if humanoid and rootPart then
+        local highlight = Instance.new("Highlight")
+        highlight.FillColor = color
+        highlight.FillTransparency = 0.65
+        highlight.OutlineColor = Color3.new(1, 1, 1)
+        highlight.OutlineTransparency = 0
+        highlight.Adornee = target
+        highlight.Parent = target
+        return highlight
+    end
+    return nil
+end
+
+local function initializeTeamHighlights(teamFolder, highlightsTable, color)
+    if not teamFolder then
+        warn("Team folder not found: " .. tostring(teamFolder))
+        return
+    end
+    
+    for _, member in teamFolder:GetChildren() do
+        if member:IsA("Model") then
+            local highlight = createHighlight(member, color)
+            if highlight then
+                highlightsTable[member] = highlight
+            end
+        end
+    end
+    
+    local connection = teamFolder.ChildAdded:Connect(function(child)
+        if child:IsA("Model") then
+            task.wait(0.5)
+            local highlight = createHighlight(child, color)
+            if highlight then
+                highlightsTable[child] = highlight
+            end
+        end
+    end)
+    
+    local removedConnection = teamFolder.ChildRemoved:Connect(function(child)
+        if highlightsTable[child] then
+            if highlightsTable[child] and typeof(highlightsTable[child]) == "Instance" then
+                highlightsTable[child]:Destroy()
+            end
+            highlightsTable[child] = nil
+        end
+    end)
+    
+    return connection, removedConnection
+end
+
+local killerEnabled = true
+local survivorEnabled = true
 
 Tab5:Toggle({
     Title = "绘制杀手",
     Default = true,
     Callback = function(Value)
+        local killerTeam = workspace.GameAssets.Teams.Killer
+        
         if Value then
             WindUI:Notify({
                 Title = "绘制杀手开启",
@@ -2376,30 +2691,13 @@ Tab5:Toggle({
                 Duration = 3
             })
             
-            for _, killer in workspace.GameAssets.Teams.Killer:GetChildren() do
-                local h = Instance.new("Highlight")
-                h.FillColor = Color3.new(1, 0, 0)
-                h.FillTransparency = 0.65
-                h.OutlineColor = Color3.new(1, 1, 1)
-                h.OutlineTransparency = 0
-                h.Parent = killer
-                killerHighlights[killer] = h
-            end
+            killerConnection, killerRemovedConnection = initializeTeamHighlights(
+                killerTeam, 
+                killerHighlights, 
+                Color3.new(1, 0, 0)
+            )
             
-            if killerHighlights._connection then
-                killerHighlights._connection:Disconnect()
-            end
-            
-            killerHighlights._connection = workspace.GameAssets.Teams.Killer.ChildAdded:Connect(function(killer)
-                local h = Instance.new("Highlight")
-                h.FillColor = Color3.new(1, 0, 0)
-                h.FillTransparency = 0.65
-                h.OutlineColor = Color3.new(1, 1, 1)
-                h.OutlineTransparency = 0
-                h.Parent = killer
-                killerHighlights[killer] = h
-            end)
-            
+            killerEnabled = true
         else
             WindUI:Notify({
                 Title = "绘制杀手已关闭",
@@ -2407,18 +2705,23 @@ Tab5:Toggle({
                 Duration = 3
             })
             
-            for target, h in pairs(killerHighlights) do
-                if target ~= "_connection" then
-                    h:Destroy()
+            if killerConnection then
+                killerConnection:Disconnect()
+                killerConnection = nil
+            end
+            if killerRemovedConnection then
+                killerRemovedConnection:Disconnect()
+                killerRemovedConnection = nil
+            end
+            
+            for target, highlight in pairs(killerHighlights) do
+                if highlight and typeof(highlight) == "Instance" and highlight:IsA("Highlight") then
+                    highlight:Destroy()
                 end
             end
-            
-            if killerHighlights._connection then
-                killerHighlights._connection:Disconnect()
-                killerHighlights._connection = nil
-            end
-            
             killerHighlights = {}
+            
+            killerEnabled = false
         end
     end
 })
@@ -2427,6 +2730,8 @@ Tab5:Toggle({
     Title = "绘制幸存者",
     Default = true,
     Callback = function(Value)
+        local survivorTeam = workspace.GameAssets.Teams.Survivor
+        
         if Value then
             WindUI:Notify({
                 Title = "绘制幸存者开启",
@@ -2434,30 +2739,13 @@ Tab5:Toggle({
                 Duration = 3
             })
             
-            for _, survivor in workspace.GameAssets.Teams.Survivor:GetChildren() do
-                local h = Instance.new("Highlight")
-                h.FillColor = Color3.new(0, 0, 1)
-                h.FillTransparency = 0.65
-                h.OutlineColor = Color3.new(1, 1, 1)
-                h.OutlineTransparency = 0
-                h.Parent = survivor
-                survivorHighlights[survivor] = h
-            end
+            survivorConnection, survivorRemovedConnection = initializeTeamHighlights(
+                survivorTeam, 
+                survivorHighlights, 
+                Color3.new(0, 0, 1)
+            )
             
-            if survivorHighlights._connection then
-                survivorHighlights._connection:Disconnect()
-            end
-            
-            survivorHighlights._connection = workspace.GameAssets.Teams.Survivor.ChildAdded:Connect(function(survivor)
-                local h = Instance.new("Highlight")
-                h.FillColor = Color3.new(0, 0, 1)
-                h.FillTransparency = 0.65
-                h.OutlineColor = Color3.new(1, 1, 1)
-                h.OutlineTransparency = 0
-                h.Parent = survivor
-                survivorHighlights[survivor] = h
-            end)
-            
+            survivorEnabled = true
         else
             WindUI:Notify({
                 Title = "绘制幸存者关闭",
@@ -2465,18 +2753,23 @@ Tab5:Toggle({
                 Duration = 3
             })
             
-            for target, h in pairs(survivorHighlights) do
-                if target ~= "_connection" then
-                    h:Destroy()
+            if survivorConnection then
+                survivorConnection:Disconnect()
+                survivorConnection = nil
+            end
+            if survivorRemovedConnection then
+                survivorRemovedConnection:Disconnect()
+                survivorRemovedConnection = nil
+            end
+            
+            for target, highlight in pairs(survivorHighlights) do
+                if highlight and typeof(highlight) == "Instance" and highlight:IsA("Highlight") then
+                    highlight:Destroy()
                 end
             end
-            
-            if survivorHighlights._connection then
-                survivorHighlights._connection:Disconnect()
-                survivorHighlights._connection = nil
-            end
-            
             survivorHighlights = {}
+            
+            survivorEnabled = false
         end
     end
 })
