@@ -1970,21 +1970,21 @@ local function stopAutoTeleport()
 end
 
 Tab6:Toggle({
-    Title = "自动杀戮",
+    Title = "自动锁敌",
     Default = false,
     Callback = function(state)
         autoTpToPlayer = state
         if state then
             startAutoTeleport()
             WindUI:Notify({
-                Title = "自动杀戮已开启",
+                Title = "自动锁敌已开启",
                 Content = "打死别人👅👅",
                 Duration = 3
             })
         else
             stopAutoTeleport()
             WindUI:Notify({
-                Title = "杀戮已关闭",
+                Title = "自动锁敌已关闭",
                 Content = "休息会",
                 Duration = 3
             })
@@ -2251,7 +2251,7 @@ Tab6:Toggle({
 })
 
 Tab6:Toggle({
-    Title = "自动朝向玩家",
+    Title = "朝向玩家",
     Default = false,
     Callback = function(state)
         faceOn = state
@@ -2264,7 +2264,7 @@ Tab6:Toggle({
 })
 
 Tab6:Toggle({
-    Title = "靠近自动平A",
+    Title = "自动平A",
     Default = false,
     Callback = function(state)
         attackOn = state
