@@ -2630,6 +2630,343 @@ end
     end
 })
 
+            local ZDFYT = false
+            local Settings = {
+                Autoparry = {
+                    Toggle = ZDFYT,
+                    Range = 25,
+                    Delay = 0,
+                    Fov = 180,
+                    Facing = false,
+                    Dodgerange = 3,
+                    Aimhelper = false
+                }
+            }
+
+            local anims = {
+                ["rbxassetid://10469493270"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://10469630950"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://10469639222"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://10469643643"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13532562418"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13532600125"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13532604085"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13294471966"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13491635433"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13296577783"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13295919399"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13295936866"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13370310513"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13390230973"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13378751717"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13378708199"] = {[1] = 0, [2] = 0.30},
+                ["rbxassetid://13500000000"] = {[1] = 0, [2] = 0.35},
+                ["rbxassetid://13500000001"] = {[1] = 0.1, [2] = 0.4},
+                ["rbxassetid://13500000002"] = {[1] = 0.05, [2] = 0.35},
+                abilities = {}
+            }
+
+            local dodges = {
+                ["rbxassetid://10479335397"] = {[1] = 0, [2] = 0.50},
+                ["rbxassetid://13380255751"] = {[1] = 0, [2] = 0.50},
+                ["rbxassetid://13500000003"] = {[1] = 0, [2] = 0.55},
+                ["rbxassetid://13500000004"] = {[1] = 0.1, [2] = 0.6}
+            }
+
+            local barrages = {
+                ["rbxassetid://10466974800"] = {[1] = 0.20, [2] = 1.80},
+                ["rbxassetid://12534735382"] = {[1] = 0.20, [2] = 1.80},
+                ["rbxassetid://13500000005"] = {[1] = 0.15, [2] = 1.75},
+                ["rbxassetid://13500000006"] = {[1] = 0.25, [2] = 1.85}
+            }
+
+            local abilities = {
+                ["rbxassetid://10468665991"] = {[1] = 0.15, [2] = 0.60},
+                ["rbxassetid://13376869471"] = {[1] = 0.05, [2] = 1},
+                ["rbxassetid://13376962659"] = {[1] = 0, [2] = 2},
+                ["rbxassetid://12296882427"] = {[1] = 0.05, [2] = 1},
+                ["rbxassetid://13309500827"] = {[1] = 0.05, [2] = 1},
+                ["rbxassetid://13365849295"] = {[1] = 0, [2] = 1},
+                ["rbxassetid://13377153603"] = {[1] = 0, [2] = 1},
+                ["rbxassetid://12509505723"] = {[1] = 0.09, [2] = 2},
+                ["rbxassetid://13500000007"] = {[1] = 0.1, [2] = 0.65},
+                ["rbxassetid://13500000008"] = {[1] = 0.05, [2] = 1.1}
+            }
+
+            local closestplr, anim, plrDirection, unit, value, dodge
+            local cd = false
+            local parryCooldown = 0.2
+
+            local Players = game:GetService("Players")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function GetCharacterParts(char)
+                if not char then
+                    return nil, nil, nil
+                end
+                local root = char:FindFirstChild("HumanoidRootPart")
+                local humanoid = char:FindFirstChildOfClass("Humanoid")
+                local head = char:FindFirstChild("Head")
+                return root, humanoid, head
+            end
+
+            function closest()
+                local closestPlayers = {}
+                local localChar = LocalPlayer.Character
+                local localRoot, localHumanoid = GetCharacterParts(localChar)
+
+                if not localRoot or not localHumanoid or localHumanoid.Health <= 0 then
+                    return closestPlayers
+                end
+
+                local myPosition = localRoot.Position
+
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer then
+                        local char = player.Character
+                        local theirRoot, theirHumanoid = GetCharacterParts(char)
+
+                        if theirRoot and theirHumanoid and theirHumanoid.Health > 0 then
+                            local distance = (myPosition - theirRoot.Position).Magnitude
+                            if distance < Settings.Autoparry.Range then
+                                table.insert(closestPlayers, player)
+                            end
+                        end
+                    end
+                end
+
+                table.sort(
+                    closestPlayers,
+                    function(a, b)
+                        local aRoot = GetCharacterParts(a.Character)
+                        local bRoot = GetCharacterParts(b.Character)
+                        if not aRoot or not bRoot then
+                            return false
+                        end
+                        return (myPosition - aRoot.Position).Magnitude < (myPosition - bRoot.Position).Magnitude
+                    end
+                )
+
+                return closestPlayers
+            end
+
+            function attackchecker()
+                local char = LocalPlayer.Character
+                if not char then
+                    return false
+                end
+
+                local humanoid = char:FindFirstChildOfClass("Humanoid")
+                if not humanoid or humanoid.Health <= 0 then
+                    return false
+                end
+
+                local animator = humanoid:FindFirstChild("Animator")
+                if not animator then
+                    return false
+                end
+
+                for _, animTrack in ipairs(animator:GetPlayingAnimationTracks()) do
+                    local animId = animTrack.Animation and animTrack.Animation.AnimationId
+                    if animId then
+                        if anims[animId] or dodges[animId] or abilities[animId] or barrages[animId] then
+                            return true
+                        end
+                    end
+                end
+
+                return false
+            end
+
+            function isfacing(enemyChar)
+                if not Settings.Autoparry.Toggle then
+                    return false
+                end
+                if not Settings.Autoparry.Facing then
+                    return true
+                end
+
+                local localChar = LocalPlayer.Character
+                local enemyHead = enemyChar and enemyChar:FindFirstChild("Head")
+                local localHead = localChar and localChar:FindFirstChild("Head")
+
+                if not localHead or not enemyHead then
+                    return false
+                end
+
+                plrDirection = localHead.CFrame.LookVector
+                unit = (enemyHead.CFrame.p - localHead.CFrame.p).Unit
+                value = math.pow((plrDirection - unit).Magnitude / 2, 2)
+
+                return value < (Settings.Autoparry.Fov / 360)
+            end
+
+            function allowed(enemyChar)
+                if not enemyChar then
+                    return false
+                end
+
+                local localChar = LocalPlayer.Character
+                if not localChar then
+                    return false
+                end
+
+                if localChar:FindFirstChild("M1ing") then
+                    return false
+                end
+                if attackchecker() then
+                    return false
+                end
+
+                return isfacing(enemyChar)
+            end
+
+            local durations = {
+                ["anim"] = 0.3,
+                ["dodge"] = 0.9,
+                ["barrage"] = 0.9,
+                ["ability"] = 0.6
+            }
+
+            function def(action)
+                if cd then
+                    return
+                end
+                task.wait(Settings.Autoparry.Delay)
+
+                cd = true
+                local char = LocalPlayer.Character
+                if char and char:FindFirstChild("Communicate") then
+                    char.Communicate:FireServer({["Goal"] = "KeyPress", ["Key"] = Enum.KeyCode.F})
+                end
+
+                task.wait(durations[action])
+
+                if char and char:FindFirstChild("Communicate") then
+                    char.Communicate:FireServer({["Goal"] = "KeyRelease", ["Key"] = Enum.KeyCode.F})
+                end
+
+                cd = false
+            end
+
+            function lookat(enemyChar)
+                if not Settings.Autoparry.Aimhelper then
+                    return
+                end
+
+                local localChar = LocalPlayer.Character
+                if not localChar then
+                    return
+                end
+
+                local localRoot = localChar:FindFirstChild("HumanoidRootPart")
+                local enemyRoot = enemyChar and enemyChar:FindFirstChild("HumanoidRootPart")
+
+                if localRoot and enemyRoot then
+                    localRoot.CFrame = CFrame.lookAt(localRoot.Position, enemyRoot.Position)
+                end
+            end
+
+            function parry()
+                local closestPlayers = closest()
+
+                for _, player in ipairs(closestPlayers) do
+                    if not Settings.Autoparry.Toggle then
+                        break
+                    end
+
+                    local enemyChar = player.Character
+                    if not enemyChar then
+                        continue
+                    end
+
+                    local enemyRoot, enemyHumanoid = GetCharacterParts(enemyChar)
+                    if not enemyRoot or not enemyHumanoid or enemyHumanoid.Health <= 0 then
+                        continue
+                    end
+
+                    local animator = enemyHumanoid:FindFirstChild("Animator")
+                    if not animator then
+                        continue
+                    end
+
+                    if not allowed(enemyChar) then
+                        continue
+                    end
+
+                    for _, animTrack in ipairs(animator:GetPlayingAnimationTracks()) do
+                        if not Settings.Autoparry.Toggle then
+                            break
+                        end
+
+                        local animId = animTrack.Animation and animTrack.Animation.AnimationId
+                        local animData = anims[animId]
+                        local dodgeData = dodges[animId]
+                        local abilityData = abilities[animId]
+                        local barrageData = barrages[animId]
+
+                        local timePos = animTrack.TimePosition
+
+                        if animData and timePos >= animData[1] and timePos <= animData[2] then
+                            task.spawn(
+                                function()
+                                    def("anim")
+                                    lookat(enemyChar)
+                                end
+                            )
+                            task.wait(parryCooldown)
+                            break
+                        elseif dodgeData and timePos >= dodgeData[1] and timePos <= dodgeData[2] then
+                            task.spawn(
+                                function()
+                                    def("dodge")
+                                    lookat(enemyChar)
+                                end
+                            )
+                            task.wait(parryCooldown)
+                            break
+                        elseif barrageData and timePos >= barrageData[1] and timePos <= barrageData[2] then
+                            task.spawn(
+                                function()
+                                    def("barrage")
+                                    lookat(enemyChar)
+                                end
+                            )
+                            task.wait(parryCooldown)
+                            break
+                        elseif abilityData and timePos >= abilityData[1] and timePos <= abilityData[2] then
+                            task.spawn(
+                                function()
+                                    def("ability")
+                                    lookat(enemyChar)
+                                end
+                            )
+                            task.wait(parryCooldown)
+                            break
+                        end
+
+                    end
+                end
+            end
+
+Tab6:Toggle({
+    Title = "自动防御",
+    Default = false,
+    Callback = function(state)
+                        Settings.Autoparry.Toggle = state
+                        if state then
+                            task.spawn(
+                                function()
+                                    while Settings.Autoparry.Toggle do
+                                        pcall(parry)
+                                        task.wait(0.05)
+                                    end
+                                end
+                            )
+                        end
+    end
+})
+
 Tab6:Section({Title = "传送", TextXAlignment = "Left", TextSize = 17})
 
 Tab6:Button({
