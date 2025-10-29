@@ -458,6 +458,13 @@ Tab:Button({
 Tab:Section({Title = "FE", TextXAlignment = "Left", TextSize = 17})
 
 Tab:Button({
+    Title = "无头断腿美化",
+    Callback = function()
+         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Permanent-Headless-And-korblox-Script-4140"))()
+    end
+})
+
+Tab:Button({
     Title = "动画中心",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/GamingScripter/Animation-Hub/main/Animation%20Gui", true))()    
@@ -2274,6 +2281,12 @@ Tab6:Toggle({
             endAttackSystem()
         end
     end
+})
+
+local Tab7 = Window:Tab({
+    Title = "",
+    Icon = "drama",
+    Locked = false,
 })
 
 local Tab5 = Window:Tab({
