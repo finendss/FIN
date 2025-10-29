@@ -2289,214 +2289,218 @@ Tab6:Toggle({
     Title = "自动拾取垃圾桶",
     Default = false,
     Callback = function(state)
-        AUTO_TRASH_MASTER = state
+                        AUTO_TRASH_MASTER = state
 
-        if state then
-            task.spawn(
-                function()
-                    local Players = game:GetService("Players")
-                    local Workspace = game:GetService("Workspace")
-                    local RunService = game:GetService("RunService")
-                    local TRASH_RANGE = 15
-                    local PLAYER_RANGE = 100
-                    local PICKUP_DISTANCE = 2
-                    local ATTACK_DISTANCE = 2
-                    local HEIGHT_OFFSET = 3
-                    local localPlayer = Players.LocalPlayer
-                    local character, rootPart, humanoid
+                        if state then
+                            task.spawn(
+                                function()
+                                    local Players = game:GetService("Players")
+                                    local Workspace = game:GetService("Workspace")
+                                    local RunService = game:GetService("RunService")
+                                    local TRASH_RANGE = 15
+                                    local PLAYER_RANGE = 100
+                                    local PICKUP_DISTANCE = 2
+                                    local ATTACK_DISTANCE = 2
+                                    local HEIGHT_OFFSET = 3
+                                    local localPlayer = Players.LocalPlayer
+                                    local character, rootPart, humanoid
 
-                    local function updateCharacter()
-                        character = localPlayer.Character
-                        if character then
-                            rootPart = character:FindFirstChild("HumanoidRootPart")
-                            humanoid = character:FindFirstChildOfClass("Humanoid")
-                        else
-                            rootPart = nil
-                            humanoid = nil
-                        end
-                    end
-
-                    updateCharacter()
-                    localPlayer.CharacterAdded:Connect(updateCharacter)
-
-                    local function getTrashPart(trashModel)
-                        return trashModel:FindFirstChild("Handle") or trashModel:FindFirstChild("MainPart") or trashModel:FindFirstChild("TrashCan") or trashModel.PrimaryPart or trashModel:FindFirstChildWhichIsA("BasePart")
-                    end
-
-                    local function performAction(action)
-                        if AUTO_TRASH_MASTER and character then
-                            local communicate = character:FindFirstChild("Communicate")
-                            if communicate then
-                                communicate:FireServer({["Goal"] = action})
-                            end
-                        end
-                    end
-
-                    local function calculateOffsetPosition(targetPos, referencePos)
-                        local direction = (targetPos - referencePos).Unit
-                        direction = Vector3.new(direction.X, 0, direction.Z).Unit
-
-                        if direction.Magnitude < 0.1 then
-                            direction = Vector3.new(math.random(), 0, math.random()).Unit
-                        end
-
-                        return targetPos + (direction * PICKUP_DISTANCE)
-                    end
-
-                    local function calculateBehindPosition(targetRoot)
-                        local lookVector = targetRoot.CFrame.LookVector
-                        lookVector = Vector3.new(lookVector.X, 0, lookVector.Z).Unit
-
-                        return targetRoot.Position - (lookVector * ATTACK_DISTANCE)
-                    end
-
-                    local function findNearestPlayer()
-                        if not rootPart then
-                            return nil, nil
-                        end
-
-                        local nearestPlayer = nil
-                        local nearestDistance = math.huge
-                        local targetPosition = nil
-
-                        for _, targetPlayer in ipairs(Players:GetPlayers()) do
-                            if targetPlayer ~= localPlayer and targetPlayer.Character then
-                                local targetChar = targetPlayer.Character
-                                local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
-                                local targetHum = targetChar:FindFirstChildOfClass("Humanoid")
-
-                                if targetRoot and targetHum and targetHum.Health > 0 then
-                                    local distance = (rootPart.Position - targetRoot.Position).Magnitude
-                                    if distance <= PLAYER_RANGE and distance < nearestDistance then
-                                        nearestDistance = distance
-                                        nearestPlayer = targetPlayer
-                                        targetPosition = calculateBehindPosition(targetRoot)
-                                    end
-                                end
-                            end
-                        end
-
-                        return nearestPlayer, targetPosition
-                    end
-
-                    local function teleportTo(position, faceTarget)
-                        if rootPart and AUTO_TRASH_MASTER then
-                            local raycastParams = RaycastParams.new()
-                            raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
-                            raycastParams.FilterDescendantsInstances = {character}
-
-                            local groundPosition = position
-                            local ray = Workspace:Raycast(position + Vector3.new(0, 10, 0), Vector3.new(0, -20, 0), raycastParams)
-                            if ray and ray.Position then
-                                groundPosition = ray.Position + Vector3.new(0, HEIGHT_OFFSET, 0)
-                            else
-                                groundPosition = position + Vector3.new(0, HEIGHT_OFFSET, 0)
-                            end
-
-                            if faceTarget then
-                                local lookVector = (faceTarget - groundPosition).Unit
-                                rootPart.CFrame = CFrame.new(groundPosition, groundPosition + lookVector)
-                            else
-                                rootPart.CFrame = CFrame.new(groundPosition)
-                            end
-                        end
-                    end
-
-                    while AUTO_TRASH_MASTER and game:GetService("RunService").Heartbeat:Wait() do
-                        pcall(
-                            function()
-                                updateCharacter()
-                                if not character or not rootPart or not humanoid or humanoid.Health <= 0 then
-                                    task.wait(1)
-                                    return
-                                end
-
-                                if not character:GetAttribute("HasTrashcan") then
-                                    local trashFolder = Workspace:FindFirstChild("Trash") or (Workspace:FindFirstChild("Map") and Workspace.Map:FindFirstChild("Trash"))
-
-                                    if not trashFolder then
-                                        task.wait(1)
-                                        return
+                                    local function updateCharacter()
+                                        character = localPlayer.Character
+                                        if character then
+                                            rootPart = character:FindFirstChild("HumanoidRootPart")
+                                            humanoid = character:FindFirstChildOfClass("Humanoid")
+                                        else
+                                            rootPart = nil
+                                            humanoid = nil
+                                        end
                                     end
 
-                                    local nearestTrash, nearestDistance, trashPosition
-                                    for _, trashModel in ipairs(trashFolder:GetChildren()) do
-                                        if trashModel:IsA("Model") then
-                                            local trashPart = getTrashPart(trashModel)
-                                            if trashPart then
-                                                local distance = (rootPart.Position - trashPart.Position).Magnitude
-                                                if distance <= TRASH_RANGE and (not nearestDistance or distance < nearestDistance) then
-                                                    nearestTrash = trashModel
-                                                    nearestDistance = distance
-                                                    trashPosition = trashPart.Position
+                                    updateCharacter()
+                                    localPlayer.CharacterAdded:Connect(updateCharacter)
+
+                                    local function getTrashPart(trashModel)
+                                        return trashModel:FindFirstChild("Handle") or trashModel:FindFirstChild("MainPart") or trashModel:FindFirstChild("TrashCan") or trashModel.PrimaryPart or trashModel:FindFirstChildWhichIsA("BasePart")
+                                    end
+
+                                    local function performAction(action)
+                                        if AUTO_TRASH_MASTER and character then
+                                            local communicate = character:FindFirstChild("Communicate")
+                                            if communicate then
+                                                communicate:FireServer({["Goal"] = action})
+                                            end
+                                        end
+                                    end
+
+                                    local function calculateOffsetPosition(targetPos, referencePos)
+                                        local direction = (targetPos - referencePos).Unit
+                                        direction = Vector3.new(direction.X, 0, direction.Z).Unit
+
+                                        if direction.Magnitude < 0.1 then
+                                            direction = Vector3.new(math.random(), 0, math.random()).Unit
+                                        end
+
+                                        return targetPos + (direction * PICKUP_DISTANCE)
+                                    end
+
+                                    local function calculateBehindPosition(targetRoot)
+                                        local lookVector = targetRoot.CFrame.LookVector
+                                        lookVector = Vector3.new(lookVector.X, 0, lookVector.Z).Unit
+
+                                        return targetRoot.Position - (lookVector * ATTACK_DISTANCE)
+                                    end
+
+                                    local function findNearestPlayer()
+                                        if not rootPart then
+                                            return nil, nil
+                                        end
+
+                                        local nearestPlayer = nil
+                                        local nearestDistance = math.huge
+                                        local targetPosition = nil
+
+                                        for _, targetPlayer in ipairs(Players:GetPlayers()) do
+                                            if targetPlayer ~= localPlayer and targetPlayer.Character then
+                                                local targetChar = targetPlayer.Character
+                                                local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
+                                                local targetHum = targetChar:FindFirstChildOfClass("Humanoid")
+
+                                                if targetRoot and targetHum and targetHum.Health > 0 then
+                                                    local distance = (rootPart.Position - targetRoot.Position).Magnitude
+                                                    if distance <= PLAYER_RANGE and distance < nearestDistance then
+                                                        nearestDistance = distance
+                                                        nearestPlayer = targetPlayer
+                                                        targetPosition = calculateBehindPosition(targetRoot)
+                                                    end
                                                 end
                                             end
                                         end
+
+                                        return nearestPlayer, targetPosition
                                     end
 
-                                    if nearestTrash and trashPosition then
-                                        local offsetPosition = calculateOffsetPosition(trashPosition, rootPart.Position)
+                                    local function teleportTo(position, faceTarget)
+                                        if rootPart and AUTO_TRASH_MASTER then
+                                            local raycastParams = RaycastParams.new()
+                                            raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+                                            raycastParams.FilterDescendantsInstances = {character}
 
-                                        teleportTo(offsetPosition, trashPosition)
-                                        task.wait(0.2)
-
-                                        local direction = (trashPosition - rootPart.Position).Unit
-                                        local lookVector = Vector3.new(direction.X, 0, direction.Z).Unit
-                                        if lookVector.Magnitude > 0.1 then
-                                            rootPart.CFrame = CFrame.new(rootPart.Position, rootPart.Position + lookVector)
-                                        end
-
-                                        performAction("LeftClick")
-                                        task.wait(0.15)
-                                        performAction("LeftClickRelease")
-
-                                        local waitTime = 0
-                                        while waitTime < 2 and AUTO_TRASH_MASTER do
-                                            if character:GetAttribute("HasTrashcan") then
-                                                break
+                                            local groundPosition = position
+                                            local ray = Workspace:Raycast(position + Vector3.new(0, 10, 0), Vector3.new(0, -20, 0), raycastParams)
+                                            if ray and ray.Position then
+                                                groundPosition = ray.Position + Vector3.new(0, HEIGHT_OFFSET, 0)
+                                            else
+                                                groundPosition = position + Vector3.new(0, HEIGHT_OFFSET, 0)
                                             end
-                                            task.wait(0.1)
-                                            waitTime = waitTime + 0.1
+
+                                            if faceTarget then
+                                                local lookVector = (faceTarget - groundPosition).Unit
+                                                rootPart.CFrame = CFrame.new(groundPosition, groundPosition + lookVector)
+                                            else
+                                                rootPart.CFrame = CFrame.new(groundPosition)
+                                            end
                                         end
-                                    else
-                                        task.wait(1)
                                     end
-                                else
-                                    local nearestPlayer, behindPos = findNearestPlayer()
 
-                                    if nearestPlayer and behindPos then
-                                        local targetChar = nearestPlayer.Character
-                                        local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
+                                    while AUTO_TRASH_MASTER and game:GetService("RunService").Heartbeat:Wait() do
+                                        pcall(
+                                            function()
+                                                updateCharacter()
+                                                if not character or not rootPart or not humanoid or humanoid.Health <= 0 then
+                                                    task.wait(1)
+                                                    return
+                                                end
 
-                                        if not targetRoot then
-                                            task.wait(0.5)
-                                            return
-                                        end
+                                                if not character:GetAttribute("HasTrashcan") then
+                                                    local trashFolder = Workspace:FindFirstChild("Trash") or (Workspace:FindFirstChild("Map") and Workspace.Map:FindFirstChild("Trash"))
 
-                                        teleportTo(behindPos, targetRoot.Position)
-                                        task.wait(0.2)
+                                                    if not trashFolder then
+                                                        task.wait(1)
+                                                        return
+                                                    end
 
-                                        local direction = (targetRoot.Position - rootPart.Position).Unit
-                                        local lookVector = Vector3.new(direction.X, 0, direction.Z).Unit
-                                        if lookVector.Magnitude > 0.1 then
-                                            rootPart.CFrame = CFrame.new(rootPart.Position, rootPart.Position + lookVector)
-                                        end
+                                                    local nearestTrash, nearestDistance, trashPosition
+                                                    for _, trashModel in ipairs(trashFolder:GetChildren()) do
+                                                        if trashModel:IsA("Model") then
+                                                            local trashPart = getTrashPart(trashModel)
+                                                            if trashPart then
+                                                                local distance = (rootPart.Position - trashPart.Position).Magnitude
+                                                                if distance <= TRASH_RANGE and (not nearestDistance or distance < nearestDistance) then
+                                                                    nearestTrash = trashModel
+                                                                    nearestDistance = distance
+                                                                    trashPosition = trashPart.Position
+                                                                end
+                                                            end
+                                                        end
+                                                    end
 
-                                        performAction("LeftClick")
-                                        task.wait(0.1)
-                                        performAction("LeftClickRelease")
+                                                    if nearestTrash and trashPosition then
+                                                        local offsetPosition = calculateOffsetPosition(trashPosition, rootPart.Position)
 
-                                        task.wait(1.5)
-                                    else
-                                        task.wait(1)
+                                                        teleportTo(offsetPosition, trashPosition)
+                                                        task.wait(0.2)
+
+                                                        local direction = (trashPosition - rootPart.Position).Unit
+                                                        local lookVector = Vector3.new(direction.X, 0, direction.Z).Unit
+                                                        if lookVector.Magnitude > 0.1 then
+                                                            rootPart.CFrame = CFrame.new(rootPart.Position, rootPart.Position + lookVector)
+                                                        end
+
+                                                        performAction("LeftClick")
+                                                        task.wait(0.15)
+                                                        performAction("LeftClickRelease")
+
+                                                        local waitTime = 0
+                                                        while waitTime < 2 and AUTO_TRASH_MASTER do
+                                                            if character:GetAttribute("HasTrashcan") then
+                                                                SafeDebugPrint("成功拾取垃圾桶")
+                                                                break
+                                                            end
+                                                            task.wait(0.1)
+                                                            waitTime = waitTime + 0.1
+                                                        end
+                                                    else
+                                                        task.wait(1)
+                                                    end
+                                                else
+                                                    local nearestPlayer, behindPos = findNearestPlayer()
+
+                                                    if nearestPlayer and behindPos then
+                                                        local targetChar = nearestPlayer.Character
+                                                        local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
+
+                                                        if not targetRoot then
+                                                            task.wait(0.5)
+                                                            return
+                                                        end
+
+                                                        teleportTo(behindPos, targetRoot.Position)
+                                                        task.wait(0.2)
+
+                                                        local direction = (targetRoot.Position - rootPart.Position).Unit
+                                                        local lookVector = Vector3.new(direction.X, 0, direction.Z).Unit
+                                                        if lookVector.Magnitude > 0.1 then
+                                                            rootPart.CFrame = CFrame.new(rootPart.Position, rootPart.Position + lookVector)
+                                                        end
+
+                                                        performAction("LeftClick")
+                                                        task.wait(0.1)
+                                                        performAction("LeftClickRelease")
+
+                                                        SafeDebugPrint("攻击玩家: " .. nearestPlayer.Name)
+
+                                                        task.wait(1.5)
+                                                    else
+                                                        SafeDebugPrint("未找到可攻击玩家")
+                                                        task.wait(1)
+                                                    end
+                                                end
+                                            end
+                                        )
                                     end
                                 end
-                            end
-                        )
-                    end
-                end
-            )
-        end
+                            )
+                        end
     end
 })
 
