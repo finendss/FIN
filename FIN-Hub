@@ -1903,6 +1903,17 @@ Tab6:Section({Title = "主要", TextXAlignment = "Left", TextSize = 17})
 
 local autoTpToPlayer = false
 local tpLoop = nil
+local currentTpTarget = nil
+
+local function isPlayerAlive(player)
+    local char = player.Character
+    if not char then return false end
+    
+    local humanoid = char:FindFirstChild("Humanoid")
+    if not humanoid then return false end
+    
+    return humanoid.Health > 0
+end
 
 local function getClosestPlayer()
     local me = Players.LocalPlayer
@@ -1916,7 +1927,7 @@ local function getClosestPlayer()
     local closestDist = math.huge
     
     for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= me then
+        if player ~= me and isPlayerAlive(player) then
             local char = player.Character
             if char then
                 local root = char:FindFirstChild("HumanoidRootPart")
@@ -1943,14 +1954,22 @@ local function teleportToPlayerBack()
     local myRoot = myChar:FindFirstChild("HumanoidRootPart")
     if not myRoot then return end
     
-    local targetPlayer, distance = getClosestPlayer()
-    if not targetPlayer then return end
+    if not currentTpTarget or not isPlayerAlive(currentTpTarget) then
+        currentTpTarget = getClosestPlayer()
+        if not currentTpTarget then return end
+    end
     
-    local targetChar = targetPlayer.Character
-    if not targetChar then return end
+    local targetChar = currentTpTarget.Character
+    if not targetChar then
+        currentTpTarget = nil
+        return
+    end
     
     local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
-    if not targetRoot then return end
+    if not targetRoot then
+        currentTpTarget = nil
+        return
+    end
     
     local targetCFrame = targetRoot.CFrame
     local behindOffset = targetCFrame.LookVector * -2
@@ -1964,6 +1983,8 @@ local function startAutoTeleport()
         tpLoop:Disconnect()
     end
     
+    currentTpTarget = nil
+    
     tpLoop = RunService.Heartbeat:Connect(function()
         if autoTpToPlayer then
             teleportToPlayerBack()
@@ -1976,6 +1997,7 @@ local function stopAutoTeleport()
         tpLoop:Disconnect()
         tpLoop = nil
     end
+    currentTpTarget = nil
 end
 
 Tab6:Toggle({
@@ -2019,6 +2041,7 @@ local animTrack = nil
 local defenseLoop = nil
 local faceLoop = nil
 local attackLoop = nil
+local currentFaceTarget = nil
 
 local function setupAnim()
     local char = Players.LocalPlayer.Character
@@ -2053,7 +2076,7 @@ local function playersInAttackRange()
     if not myRoot then return false end
     
     for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= me then
+        if player ~= me and isPlayerAlive(player) then
             local char = player.Character
             if char then
                 local root = char:FindFirstChild("HumanoidRootPart")
@@ -2092,7 +2115,7 @@ local function playersClose()
     if not myRoot then return false end
     
     for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= me then
+        if player ~= me and isPlayerAlive(player) then
             local char = player.Character
             if char then
                 local root = char:FindFirstChild("HumanoidRootPart")
@@ -2121,7 +2144,7 @@ local function getClosestPlayerForFace()
     local closestDist = 9999
     
     for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= me then
+        if player ~= me and isPlayerAlive(player) then
             local char = player.Character
             if char then
                 local root = char:FindFirstChild("HumanoidRootPart")
@@ -2148,14 +2171,22 @@ local function turnToPlayer()
     local myRoot = myChar:FindFirstChild("HumanoidRootPart")
     if not myRoot then return end
     
-    local targetPlayer = getClosestPlayerForFace()
-    if not targetPlayer then return end
+    if not currentFaceTarget or not isPlayerAlive(currentFaceTarget) then
+        currentFaceTarget = getClosestPlayerForFace()
+        if not currentFaceTarget then return end
+    end
     
-    local targetChar = targetPlayer.Character
-    if not targetChar then return end
+    local targetChar = currentFaceTarget.Character
+    if not targetChar then
+        currentFaceTarget = nil
+        return
+    end
     
     local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
-    if not targetRoot then return end
+    if not targetRoot then
+        currentFaceTarget = nil
+        return
+    end
     
     local dir = (targetRoot.Position - myRoot.Position).Unit
     local lookDir = Vector3.new(dir.X, 0, dir.Z)
@@ -2192,6 +2223,8 @@ local function beginFaceSystem()
         faceLoop:Disconnect()
     end
     
+    currentFaceTarget = nil
+    
     faceLoop = RunService.Heartbeat:Connect(function()
         if faceOn then
             turnToPlayer()
@@ -2204,6 +2237,7 @@ local function endFaceSystem()
         faceLoop:Disconnect()
         faceLoop = nil
     end
+    currentFaceTarget = nil
 end
 
 local function beginDefenseSystem()
@@ -2244,6 +2278,8 @@ Players.LocalPlayer.CharacterAdded:Connect(function(char)
     if attackOn then
         beginAttackSystem()
     end
+    currentTpTarget = nil
+    currentFaceTarget = nil
 end)
 
 Tab6:Toggle({
