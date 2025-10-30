@@ -1,1 +1,143 @@
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/finendss/FIN-Ui/refs/heads/main/德与中山-Ui"))()
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+WindUI:Popup({
+    Title = "德与中山",
+    Icon = "sparkles",
+    Content = "尊敬的：" .. game.Players.LocalPlayer.Name,
+    Buttons = {
+        {
+            Title = "启动",
+            Icon = "arrow-right",
+            Variant = "Primary",
+            Callback = function()
+                print("启动")
+            end
+        }
+    }
+})
+
+local Window = WindUI:CreateWindow({
+    Title = "德与中山/南极洲探险",
+    Icon = "sparkles",
+    Author = "德与中山-Hub",
+    Folder = "DefenseSystem",
+    Size = UDim2.fromOffset(400, 400),
+    Theme = "Dark"
+})
+
+local TimeTag = Window:Tag({
+    Title = "00:00",
+    Color = Color3.fromHex("#30ff6a")
+})
+
+local hue = 0
+task.spawn(function()
+    while true do
+        local now = os.date("*t")
+        local hours = string.format("%02d", now.hour)
+        local minutes = string.format("%02d", now.min)
+        
+        hue = (hue + 0.01) % 1
+        local color = Color3.fromHSV(hue, 1, 1)
+        
+        TimeTag:SetTitle(hours .. ":" .. minutes)
+
+        task.wait(0.06)
+    end
+end)
+
+task.wait(0.3)
+
+Window:EditOpenButton({
+    Title = "德与中山",
+    Icon = "monitor",
+    CornerRadius = UDim.new(0,16),
+    StrokeThickness = 2,
+    Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromHex("FF0000")),
+        ColorSequenceKeypoint.new(0.66, Color3.fromHex("0000FF")),
+        ColorSequenceKeypoint.new(0.83, Color3.fromHex("4B0082")),
+        ColorSequenceKeypoint.new(1, Color3.fromHex("9400D3"))
+    }),
+    Draggable = true,
+})
+
+task.wait(0.2)
+
+local MainTab = Window:Tab({
+    Title = "主页",
+    Icon = "zap",
+    Locked = false,
+})
+
+MainTab:Section({Title = "免责声明", TextXAlignment = "Left", TextSize = 17})
+
+MainTab:Paragraph({
+    Title = "被封服务器与德与中山无关",
+    Desc = "被封号与德与中山无关",
+})
+
+local Tab = Window:Tab({
+    Title ="传送",
+    Icon = "drama",
+    Locked = false,
+})
+
+    Tab:Button({
+        Title = "传送到南极点",
+        Default = true,
+        Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(10940.6982421875, 548.9979858398438, 16.84609031677246)
+        end
+    })
+
+    Tab:Button({
+        Title = "传送到攀冰处",
+        Default = true,
+        Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3197.6259765625, 848.4337158203125, -51.407386779785156)
+        end
+    })
+
+    Tab:Button({
+        Title = "传送到汽车制造点",
+        Default = true,
+        Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2282.958251953125, 100.99801635742188, -62.833335876464844)
+        end
+    })
+
+    Tab:Button({
+        Title = "传送到营地1",
+        Default = true,
+        Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-3675.547607421875, 228.99801635742188, 218.94447326660156)
+        end
+    })
+
+    Tab:Button({
+        Title = "传送到营地2",
+        Default = true,
+        Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1797.17822265625, 104.79232025146484, -123.54420471191406)
+        end
+    })
+
+    Tab:Button({
+        Title = "传送到营地3",
+        Default = true,
+        Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(5921.45703125, 320.99798583984375, -11.849882125854492)
+        end
+    })
+
+    Tab:Button({
+        Title = "传送到营地4",
+        Default = true,
+        Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(8973.5390625, 596.2758178710938, 102.99405670166016)
+        end
+    })
 
