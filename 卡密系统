@@ -1,19 +1,18 @@
 -- 紫色主题卡密系统GUI + 右侧弹出通知系统 + 粒子特效 + 防抓包
 -- 作者：HL团队
--- 优化版本 - 透明背景 + 安全防护
+-- 修复卡顿版本
 
 -- 系统配置
 local Config = {
-    ScriptName = "高级脚本",
-    Key = "111", -- 正确的卡密
+    ScriptName = "FIN-Hub卡密系统",
+    Key = "Key_Xingqing_FIN", -- 正确的卡密
     QQ = "123456789", -- 官方QQ群
-    NoKeyMessage = "卡密错误，请重新获取", -- 卡密错误提示
-    Version = "卡密系统版本2.1"
+    NoKeyMessage = "卡密错误，请加入主群获取", -- 卡密错误提示
+    Version = "By 鑫晴"
 }
 
 -- 防抓包安全检测
 local function SecurityCheck()
-    -- 检查常见的抓包工具和Hook
     local suspiciousGlobals = {
         "hookfunction", "hookfunc", "detour_function", "crypt",
         "getrawmetatable", "setrawmetatable", "getnamecallmethod",
@@ -26,18 +25,15 @@ local function SecurityCheck()
         getrawmetatable = true
     }
     
-    -- 检查可疑全局变量
     for _, globalName in ipairs(suspiciousGlobals) do
         if _G[globalName] ~= nil then
             return false, "检测到可疑环境"
         end
     end
     
-    -- 检查debug表
     if debug then
         for _, funcName in ipairs(suspiciousTables.debug) do
             if debug[funcName] and type(debug[funcName]) == "function" then
-                -- 检查函数是否被hook
                 local funcInfo = debug.getinfo(debug[funcName])
                 if funcInfo and funcInfo.short_src ~= "[C]" then
                     return false, "检测到调试环境"
@@ -46,7 +42,6 @@ local function SecurityCheck()
         end
     end
     
-    -- 检查hookfunction
     if hookfunction and type(hookfunction) == "function" then
         local funcInfo = debug.getinfo(hookfunction)
         if funcInfo and funcInfo.short_src ~= "[C]" then
@@ -54,7 +49,6 @@ local function SecurityCheck()
         end
     end
     
-    -- 检查getrawmetatable
     if getrawmetatable and type(getrawmetatable) == "function" then
         local funcInfo = debug.getinfo(getrawmetatable)
         if funcInfo and funcInfo.short_src ~= "[C]" then
@@ -68,20 +62,14 @@ end
 -- 安全HTTP请求函数
 local function SecureHttpGet(url)
     local success, result = pcall(function()
-        -- 环境安全检查
         local isSafe, reason = SecurityCheck()
         if not isSafe then
             error("安全检测失败: " .. reason)
         end
         
-        -- 使用游戏的原生HTTP服务
         local httpService = game:GetService("HttpService")
-        
-        -- 添加随机参数防止缓存
         local randomParam = "&t=" .. tostring(tick())
         local finalUrl = url .. randomParam
-        
-        -- 执行请求
         return httpService:GetAsync(finalUrl)
     end)
     
@@ -95,14 +83,11 @@ end
 
 -- 反调试保护
 local function AntiDebug()
-    -- 定期检查调试环境
     coroutine.wrap(function()
         while true do
-            wait(math.random(5, 15)) -- 随机间隔检查
-            
+            wait(math.random(5, 15))
             local isSafe, reason = SecurityCheck()
             if not isSafe then
-                -- 检测到调试环境，采取保护措施
                 game.Players.LocalPlayer:Kick("安全检测失败: " .. reason)
                 break
             end
@@ -110,7 +95,6 @@ local function AntiDebug()
     end)()
 end
 
--- 启动反调试保护
 AntiDebug()
 
 -- 创建GUI
@@ -125,13 +109,13 @@ NotificationsGui.Name = "Notifications_" .. tostring(math.random(10000, 99999))
 NotificationsGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 NotificationsGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- 创建粒子背景GUI
+-- 创建粒子背景GUI - 完全透明背景
 local ParticlesGui = Instance.new("ScreenGui")
 ParticlesGui.Name = "ParticlesBackground_" .. tostring(math.random(10000, 99999))
 ParticlesGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ParticlesGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- 粒子系统
+-- 增强粒子系统 - 完全透明背景
 local function createParticleSystem()
     local particles = {}
     local particleColors = {
@@ -140,28 +124,37 @@ local function createParticleSystem()
         Color3.fromRGB(100, 50, 180),
         Color3.fromRGB(160, 110, 240),
         Color3.fromRGB(180, 130, 255),
-        Color3.fromRGB(90, 40, 160)
+        Color3.fromRGB(90, 40, 160),
+        Color3.fromRGB(200, 150, 255),
+        Color3.fromRGB(80, 30, 140)
     }
     
-    for i = 1, 30 do -- 增加到30个粒子
+    for i = 1, 35 do -- 增加到35个粒子
         local particle = Instance.new("Frame")
         particle.Name = "Particle_" .. tostring(i)
         particle.Parent = ParticlesGui
         particle.BackgroundColor3 = particleColors[math.random(1, #particleColors)]
         particle.BorderSizePixel = 0
-        particle.Size = UDim2.new(0, math.random(3, 10), 0, math.random(3, 10))
+        particle.Size = UDim2.new(0, math.random(4, 12), 0, math.random(4, 12))
         particle.Position = UDim2.new(0, math.random(-100, 2000), 0, math.random(-100, 1200))
         particle.ZIndex = 0
-        particle.BackgroundTransparency = 0.7 -- 增加透明度
+        particle.BackgroundTransparency = 0.8 -- 更高透明度
         
         -- 圆角粒子
         local corner = Instance.new("UICorner")
         corner.CornerRadius = UDim.new(1, 0)
         corner.Parent = particle
         
+        -- 粒子发光效果
+        local glow = Instance.new("UIStroke")
+        glow.Parent = particle
+        glow.Color = particle.BackgroundColor3
+        glow.Thickness = 2
+        glow.Transparency = 0.7
+        
         -- 粒子动画
-        local speedX = math.random(-40, 40) / 10
-        local speedY = math.random(-40, 40) / 10
+        local speedX = math.random(-50, 50) / 10
+        local speedY = math.random(-50, 50) / 10
         
         coroutine.wrap(function()
             while particle and particle.Parent do
@@ -177,122 +170,162 @@ local function createParticleSystem()
                 elseif newY > 1200 then newY = -100 end
                 
                 particle.Position = UDim2.new(0, newX, 0, newY)
-                wait(0.02) -- 更快的更新频率
+                
+                -- 脉动效果
+                local pulse = math.sin(tick() * 2 + i) * 0.2 + 0.8
+                particle.BackgroundTransparency = 0.8 + (1 - pulse) * 0.15
+                
+                wait(0.02)
             end
         end)()
         
         table.insert(particles, particle)
     end
+    
+    -- 添加一些星光粒子
+    for i = 1, 15 do
+        local star = Instance.new("ImageLabel")
+        star.Name = "Star_" .. tostring(i)
+        star.Parent = ParticlesGui
+        star.BackgroundTransparency = 1
+        star.Image = "rbxassetid://9753762469" -- 星星图标
+        star.ImageColor3 = Color3.fromRGB(180, 140, 255)
+        star.Size = UDim2.new(0, math.random(8, 16), 0, math.random(8, 16))
+        star.Position = UDim2.new(0, math.random(-100, 2000), 0, math.random(-100, 1200))
+        star.ZIndex = 0
+        star.ImageTransparency = 0.9
+        
+        coroutine.wrap(function()
+            while star and star.Parent do
+                -- 闪烁效果
+                local blink = math.sin(tick() * 3 + i) * 0.5 + 0.5
+                star.ImageTransparency = 0.9 - blink * 0.3
+                wait(0.1)
+            end
+        end)()
+    end
 end
 
--- 启动粒子系统
 createParticleSystem()
 
 -- 创建完全透明的背景
-local BlurBackground = Instance.new("Frame")
-BlurBackground.Name = "BlurBackground"
-BlurBackground.Parent = ScreenGui
-BlurBackground.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-BlurBackground.BackgroundTransparency = 1 -- 完全透明
-BlurBackground.Size = UDim2.new(1, 0, 1, 0)
-BlurBackground.ZIndex = 0
+local BackgroundEffect = Instance.new("Frame")
+BackgroundEffect.Name = "BackgroundEffect"
+BackgroundEffect.Parent = ScreenGui
+BackgroundEffect.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+BackgroundEffect.BackgroundTransparency = 1 -- 完全透明
+BackgroundEffect.Size = UDim2.new(1, 0, 1, 0)
+BackgroundEffect.ZIndex = 0
 
-local BackgroundCorner = Instance.new("UICorner")
-BackgroundCorner.CornerRadius = UDim.new(0, 0)
-BackgroundCorner.Parent = BlurBackground
-
--- 主容器 - 更加透明
+-- 主容器 - 玻璃拟态效果
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-MainFrame.BackgroundColor3 = Color3.fromRGB(15, 10, 25) -- 更深的底色
-MainFrame.BackgroundTransparency = 0.3 -- 增加透明度
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 15, 40)
+MainFrame.BackgroundTransparency = 0.15
 MainFrame.BorderSizePixel = 0
 MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-MainFrame.Size = UDim2.new(0, 400, 0, 350)
+MainFrame.Size = UDim2.new(0, 420, 0, 380)
 MainFrame.ZIndex = 2
 
--- 背景光晕效果 - 更加透明
-local GlowEffect = Instance.new("ImageLabel")
-GlowEffect.Name = "GlowEffect"
-GlowEffect.Parent = MainFrame
-GlowEffect.BackgroundTransparency = 1
-GlowEffect.Size = UDim2.new(1, 40, 1, 40)
-GlowEffect.Position = UDim2.new(0, -20, 0, -20)
-GlowEffect.Image = "rbxassetid://8992231221"
-GlowEffect.ImageColor3 = Color3.fromRGB(60, 30, 120)
-GlowEffect.ImageTransparency = 0.8 -- 增加光晕透明度
-GlowEffect.ScaleType = Enum.ScaleType.Slice
-GlowEffect.SliceCenter = Rect.new(100, 100, 100, 100)
-GlowEffect.ZIndex = 1
+-- 玻璃拟态效果
+local GlassEffect = Instance.new("Frame")
+GlassEffect.Name = "GlassEffect"
+GlassEffect.Parent = MainFrame
+GlassEffect.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+GlassEffect.BackgroundTransparency = 0.95
+GlassEffect.Size = UDim2.new(1, 0, 1, 0)
+GlassEffect.ZIndex = 1
 
 -- 圆角
 local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(0, 20)
+UICorner.CornerRadius = UDim.new(0, 24)
 UICorner.Parent = MainFrame
 
--- 边框效果 - 更加透明
+-- 边框效果 - 霓虹光效
 local UIStroke = Instance.new("UIStroke")
 UIStroke.Parent = MainFrame
-UIStroke.Color = Color3.fromRGB(100, 65, 165)
-UIStroke.Thickness = 2
-UIStroke.Transparency = 0.5 -- 增加边框透明度
+UIStroke.Color = Color3.fromRGB(140, 90, 220)
+UIStroke.Thickness = 3
+UIStroke.Transparency = 0.3
 UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
--- 顶部标题栏 - 更加透明
+-- 动态边框光效
+coroutine.wrap(function()
+    while MainFrame and MainFrame.Parent do
+        local hue = tick() % 5 / 5
+        local color = Color3.fromHSV(hue, 0.7, 1)
+        UIStroke.Color = color:Lerp(Color3.fromRGB(140, 90, 220), 0.7)
+        wait(0.1)
+    end
+end)()
+
+-- 顶部标题栏
 local TopBar = Instance.new("Frame")
 TopBar.Name = "TopBar"
 TopBar.Parent = MainFrame
-TopBar.BackgroundColor3 = Color3.fromRGB(30, 20, 50)
-TopBar.BackgroundTransparency = 0.3 -- 增加透明度
+TopBar.BackgroundColor3 = Color3.fromRGB(30, 20, 55)
+TopBar.BackgroundTransparency = 0.2
 TopBar.BorderSizePixel = 0
-TopBar.Size = UDim2.new(1, 0, 0, 50)
+TopBar.Size = UDim2.new(1, 0, 0, 60)
 
 local UICorner_2 = Instance.new("UICorner")
-UICorner_2.CornerRadius = UDim.new(0, 20, 0, 0)
+UICorner_2.CornerRadius = UDim.new(0, 24, 0, 0)
 UICorner_2.Parent = TopBar
 
--- 顶部装饰线
+-- 顶部装饰线 - 流光效果
 local TopAccent = Instance.new("Frame")
 TopAccent.Name = "TopAccent"
 TopAccent.Parent = TopBar
-TopAccent.BackgroundColor3 = Color3.fromRGB(140, 90, 220)
+TopAccent.BackgroundColor3 = Color3.fromRGB(160, 110, 255)
 TopAccent.BorderSizePixel = 0
-TopAccent.Position = UDim2.new(0, 0, 1, -2)
-TopAccent.Size = UDim2.new(1, 0, 0, 2)
+TopAccent.Position = UDim2.new(0, 0, 1, -3)
+TopAccent.Size = UDim2.new(1, 0, 0, 3)
 
--- 渐变效果
-local UIGradient = Instance.new("UIGradient")
-UIGradient.Color = ColorSequence.new({
+local AccentGradient = Instance.new("UIGradient")
+AccentGradient.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(0, Color3.fromRGB(140, 90, 220)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 130, 255))
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180, 130, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(140, 90, 220))
 })
-UIGradient.Rotation = 45
-UIGradient.Parent = TopAccent
+AccentGradient.Rotation = 0
+AccentGradient.Parent = TopAccent
 
+-- 流光动画
+coroutine.wrap(function()
+    while TopAccent and TopAccent.Parent do
+        local offset = tick() % 3 / 3
+        AccentGradient.Offset = Vector2.new(-offset, 0)
+        wait(0.05)
+    end
+end)()
+
+-- 标题文字
 local Title = Instance.new("TextLabel")
 Title.Name = "Title"
 Title.Parent = TopBar
 Title.BackgroundTransparency = 1
-Title.Position = UDim2.new(0, 20, 0, 0)
-Title.Size = UDim2.new(1, -40, 0.6, 0)
-Title.Font = Enum.Font.GothamBold
+Title.Position = UDim2.new(0, 25, 0, 8)
+Title.Size = UDim2.new(1, -50, 0, 28)
+Title.Font = Enum.Font.GothamBlack
 Title.Text = Config.ScriptName .. " - 卡密验证"
-Title.TextColor3 = Color3.fromRGB(240, 230, 255)
-Title.TextSize = 18
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 20
 Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.TextStrokeTransparency = 0.8
+Title.TextStrokeColor3 = Color3.fromRGB(80, 50, 140)
 
 local Subtitle = Instance.new("TextLabel")
 Subtitle.Name = "Subtitle"
 Subtitle.Parent = TopBar
 Subtitle.BackgroundTransparency = 1
-Subtitle.Position = UDim2.new(0, 20, 0.6, 0)
-Subtitle.Size = UDim2.new(1, -40, 0.4, 0)
+Subtitle.Position = UDim2.new(0, 25, 0, 36)
+Subtitle.Size = UDim2.new(1, -50, 0, 18)
 Subtitle.Font = Enum.Font.Gotham
-Subtitle.Text = "请输入您的卡密以继续使用脚本"
-Subtitle.TextColor3 = Color3.fromRGB(180, 160, 220)
-Subtitle.TextSize = 12
+Subtitle.Text = "请输入点亮密码以继续使用脚本" -- 修正文本
+Subtitle.TextColor3 = Color3.fromRGB(200, 180, 240)
+Subtitle.TextSize = 13
 Subtitle.TextXAlignment = Enum.TextXAlignment.Left
 
 -- 内容区域
@@ -300,64 +333,79 @@ local ContentFrame = Instance.new("Frame")
 ContentFrame.Name = "ContentFrame"
 ContentFrame.Parent = MainFrame
 ContentFrame.BackgroundTransparency = 1
-ContentFrame.Position = UDim2.new(0, 0, 0, 55)
-ContentFrame.Size = UDim2.new(1, 0, 1, -55)
+ContentFrame.Position = UDim2.new(0, 0, 0, 65)
+ContentFrame.Size = UDim2.new(1, 0, 1, -65)
 
 -- 卡密输入区域
 local InputSection = Instance.new("Frame")
 InputSection.Name = "InputSection"
 InputSection.Parent = ContentFrame
 InputSection.BackgroundTransparency = 1
-InputSection.Position = UDim2.new(0, 25, 0, 20)
-InputSection.Size = UDim2.new(1, -50, 0, 110)
+InputSection.Position = UDim2.new(0, 30, 0, 25)
+InputSection.Size = UDim2.new(1, -60, 0, 120)
 
 local KeyLabel = Instance.new("TextLabel")
 KeyLabel.Name = "KeyLabel"
 KeyLabel.Parent = InputSection
 KeyLabel.BackgroundTransparency = 1
-KeyLabel.Size = UDim2.new(1, 0, 0, 25)
-KeyLabel.Font = Enum.Font.Gotham
+KeyLabel.Size = UDim2.new(1, 0, 0, 30)
+KeyLabel.Font = Enum.Font.GothamBold
 KeyLabel.Text = "请输入卡密"
-KeyLabel.TextColor3 = Color3.fromRGB(200, 190, 230)
-KeyLabel.TextSize = 14
+KeyLabel.TextColor3 = Color3.fromRGB(220, 210, 250)
+KeyLabel.TextSize = 16
 KeyLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 local KeyInput = Instance.new("TextBox")
 KeyInput.Name = "KeyInput"
 KeyInput.Parent = InputSection
-KeyInput.BackgroundColor3 = Color3.fromRGB(25, 20, 35)
-KeyInput.BackgroundTransparency = 0.3 -- 增加透明度
+KeyInput.BackgroundColor3 = Color3.fromRGB(25, 20, 45)
+KeyInput.BackgroundTransparency = 0.2
 KeyInput.BorderSizePixel = 0
-KeyInput.Position = UDim2.new(0, 0, 0, 30)
-KeyInput.Size = UDim2.new(1, 0, 0, 45)
+KeyInput.Position = UDim2.new(0, 0, 0, 35)
+KeyInput.Size = UDim2.new(1, 0, 0, 50)
 KeyInput.Font = Enum.Font.Gotham
-KeyInput.PlaceholderColor3 = Color3.fromRGB(120, 100, 160)
+KeyInput.PlaceholderColor3 = Color3.fromRGB(130, 110, 180)
 KeyInput.PlaceholderText = "在此处输入您的卡密"
 KeyInput.Text = ""
-KeyInput.TextColor3 = Color3.fromRGB(240, 230, 255)
-KeyInput.TextSize = 16
+KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.TextSize = 17
+KeyInput.ClearTextOnFocus = false
 
 local UICorner_3 = Instance.new("UICorner")
-UICorner_3.CornerRadius = UDim.new(0, 12)
+UICorner_3.CornerRadius = UDim.new(0, 14)
 UICorner_3.Parent = KeyInput
 
 -- 输入框边框
 local InputStroke = Instance.new("UIStroke")
 InputStroke.Parent = KeyInput
-InputStroke.Color = Color3.fromRGB(80, 55, 130)
-InputStroke.Thickness = 1.5
-InputStroke.Transparency = 0.4 -- 增加边框透明度
+InputStroke.Color = Color3.fromRGB(100, 75, 160)
+InputStroke.Thickness = 2
+InputStroke.Transparency = 0.2
+
+-- 输入框光效
+local InputGlow = Instance.new("ImageLabel")
+InputGlow.Name = "InputGlow"
+InputGlow.Parent = KeyInput
+InputGlow.BackgroundTransparency = 1
+InputGlow.Size = UDim2.new(1, 20, 1, 20)
+InputGlow.Position = UDim2.new(0, -10, 0, -10)
+InputGlow.Image = "rbxassetid://8992231221"
+InputGlow.ImageColor3 = Color3.fromRGB(80, 50, 140)
+InputGlow.ImageTransparency = 0.9
+InputGlow.ScaleType = Enum.ScaleType.Slice
+InputGlow.SliceCenter = Rect.new(100, 100, 100, 100)
+InputGlow.ZIndex = -1
 
 local InputHint = Instance.new("TextLabel")
 InputHint.Name = "InputHint"
 InputHint.Parent = InputSection
 InputHint.BackgroundTransparency = 1
-InputHint.Position = UDim2.new(0, 0, 0, 80)
+InputHint.Position = UDim2.new(0, 0, 0, 90)
 InputHint.Size = UDim2.new(1, 0, 0, 20)
 InputHint.Font = Enum.Font.Gotham
-InputHint.Text = "请确保准确输入卡密，避免空格"
-InputHint.TextColor3 = Color3.fromRGB(130, 110, 170)
-InputHint.TextSize = 11
+InputHint.Text = "请输入卡密"
+InputHint.TextColor3 = Color3.fromRGB(150, 130, 200)
+InputHint.TextSize = 12
 InputHint.TextXAlignment = Enum.TextXAlignment.Left
 
 -- 按钮区域
@@ -365,49 +413,66 @@ local ButtonSection = Instance.new("Frame")
 ButtonSection.Name = "ButtonSection"
 ButtonSection.Parent = ContentFrame
 ButtonSection.BackgroundTransparency = 1
-ButtonSection.Position = UDim2.new(0, 25, 0, 150)
-ButtonSection.Size = UDim2.new(1, -50, 0, 50)
+ButtonSection.Position = UDim2.new(0, 30, 0, 165)
+ButtonSection.Size = UDim2.new(1, -60, 0, 60)
 
 local VerifyButton = Instance.new("TextButton")
 VerifyButton.Name = "VerifyButton"
 VerifyButton.Parent = ButtonSection
-VerifyButton.BackgroundColor3 = Color3.fromRGB(110, 70, 190)
-VerifyButton.BackgroundTransparency = 0.2 -- 增加透明度
+VerifyButton.BackgroundColor3 = Color3.fromRGB(120, 80, 210)
+VerifyButton.BackgroundTransparency = 0.1
 VerifyButton.BorderSizePixel = 0
 VerifyButton.Position = UDim2.new(0, 0, 0, 0)
 VerifyButton.Size = UDim2.new(0.48, 0, 1, 0)
-VerifyButton.Font = Enum.Font.GothamBold
-VerifyButton.Text = "验证卡密"
+VerifyButton.Font = Enum.Font.GothamBlack
+VerifyButton.Text = "验证"
 VerifyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-VerifyButton.TextSize = 16
+VerifyButton.TextSize = 17
+VerifyButton.AutoButtonColor = false
 
 local UICorner_4 = Instance.new("UICorner")
-UICorner_4.CornerRadius = UDim.new(0, 12)
+UICorner_4.CornerRadius = UDim.new(0, 14)
 UICorner_4.Parent = VerifyButton
 
 -- 验证按钮渐变效果
 local VerifyGradient = Instance.new("UIGradient")
 VerifyGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(120, 80, 200)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 60, 180))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(130, 90, 220)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(110, 70, 190))
 })
+VerifyGradient.Rotation = 90
 VerifyGradient.Parent = VerifyButton
+
+-- 按钮光效
+local ButtonGlow = Instance.new("ImageLabel")
+ButtonGlow.Name = "ButtonGlow"
+ButtonGlow.Parent = VerifyButton
+ButtonGlow.BackgroundTransparency = 1
+ButtonGlow.Size = UDim2.new(1, 20, 1, 20)
+ButtonGlow.Position = UDim2.new(0, -10, 0, -10)
+ButtonGlow.Image = "rbxassetid://8992231221"
+ButtonGlow.ImageColor3 = Color3.fromRGB(140, 100, 230)
+ButtonGlow.ImageTransparency = 0.9
+ButtonGlow.ScaleType = Enum.ScaleType.Slice
+ButtonGlow.SliceCenter = Rect.new(100, 100, 100, 100)
+ButtonGlow.ZIndex = -1
 
 local ExitButton = Instance.new("TextButton")
 ExitButton.Name = "ExitButton"
 ExitButton.Parent = ButtonSection
-ExitButton.BackgroundColor3 = Color3.fromRGB(40, 30, 60)
-ExitButton.BackgroundTransparency = 0.3 -- 增加透明度
+ExitButton.BackgroundColor3 = Color3.fromRGB(45, 35, 75)
+ExitButton.BackgroundTransparency = 0.2
 ExitButton.BorderSizePixel = 0
 ExitButton.Position = UDim2.new(0.52, 0, 0, 0)
 ExitButton.Size = UDim2.new(0.48, 0, 1, 0)
-ExitButton.Font = Enum.Font.Gotham
+ExitButton.Font = Enum.Font.GothamBold
 ExitButton.Text = "退出UI"
-ExitButton.TextColor3 = Color3.fromRGB(200, 190, 230)
-ExitButton.TextSize = 15
+ExitButton.TextColor3 = Color3.fromRGB(220, 210, 250)
+ExitButton.TextSize = 16
+ExitButton.AutoButtonColor = false
 
 local UICorner_5 = Instance.new("UICorner")
-UICorner_5.CornerRadius = UDim.new(0, 12)
+UICorner_5.CornerRadius = UDim.new(0, 14)
 UICorner_5.Parent = ExitButton
 
 -- 底部区域
@@ -415,23 +480,24 @@ local BottomSection = Instance.new("Frame")
 BottomSection.Name = "BottomSection"
 BottomSection.Parent = ContentFrame
 BottomSection.BackgroundTransparency = 1
-BottomSection.Position = UDim2.new(0, 25, 0, 220)
-BottomSection.Size = UDim2.new(1, -50, 0, 70)
+BottomSection.Position = UDim2.new(0, 30, 0, 245)
+BottomSection.Size = UDim2.new(1, -60, 0, 80)
 
 local CopyGroupButton = Instance.new("TextButton")
 CopyGroupButton.Name = "CopyGroupButton"
 CopyGroupButton.Parent = BottomSection
-CopyGroupButton.BackgroundColor3 = Color3.fromRGB(35, 25, 50)
-CopyGroupButton.BackgroundTransparency = 0.3 -- 增加透明度
+CopyGroupButton.BackgroundColor3 = Color3.fromRGB(40, 30, 65)
+CopyGroupButton.BackgroundTransparency = 0.2
 CopyGroupButton.BorderSizePixel = 0
-CopyGroupButton.Size = UDim2.new(1, 0, 0, 40)
+CopyGroupButton.Size = UDim2.new(1, 0, 0, 45)
 CopyGroupButton.Font = Enum.Font.Gotham
 CopyGroupButton.Text = "复制官方群号"
-CopyGroupButton.TextColor3 = Color3.fromRGB(180, 160, 220)
-CopyGroupButton.TextSize = 14
+CopyGroupButton.TextColor3 = Color3.fromRGB(200, 190, 240)
+CopyGroupButton.TextSize = 15
+CopyGroupButton.AutoButtonColor = false
 
 local UICorner_6 = Instance.new("UICorner")
-UICorner_6.CornerRadius = UDim.new(0, 10)
+UICorner_6.CornerRadius = UDim.new(0, 12)
 UICorner_6.Parent = CopyGroupButton
 
 -- 按钮图标
@@ -440,44 +506,66 @@ CopyIcon.Name = "CopyIcon"
 CopyIcon.Parent = CopyGroupButton
 CopyIcon.BackgroundTransparency = 1
 CopyIcon.Position = UDim2.new(0, 15, 0, 0)
-CopyIcon.Size = UDim2.new(0, 40, 1, 0)
+CopyIcon.Size = UDim2.new(0, 45, 1, 0)
 CopyIcon.Font = Enum.Font.GothamBold
 CopyIcon.Text = "📋"
-CopyIcon.TextColor3 = Color3.fromRGB(160, 130, 210)
-CopyIcon.TextSize = 16
+CopyIcon.TextColor3 = Color3.fromRGB(180, 150, 230)
+CopyIcon.TextSize = 18
 CopyIcon.TextXAlignment = Enum.TextXAlignment.Left
 
 local VersionLabel = Instance.new("TextLabel")
 VersionLabel.Name = "VersionLabel"
 VersionLabel.Parent = BottomSection
 VersionLabel.BackgroundTransparency = 1
-VersionLabel.Position = UDim2.new(0, 0, 0, 45)
-VersionLabel.Size = UDim2.new(1, 0, 0, 20)
+VersionLabel.Position = UDim2.new(0, 0, 0, 50)
+VersionLabel.Size = UDim2.new(1, 0, 0, 25)
 VersionLabel.Font = Enum.Font.Gotham
 VersionLabel.Text = Config.Version
-VersionLabel.TextColor3 = Color3.fromRGB(110, 90, 150)
-VersionLabel.TextSize = 11
+VersionLabel.TextColor3 = Color3.fromRGB(120, 100, 170)
+VersionLabel.TextSize = 12
 VersionLabel.TextXAlignment = Enum.TextXAlignment.Center
 
 -- 按钮交互效果
 local function createButtonEffect(button)
-    local originalColor = button.BackgroundColor3
     local originalSize = button.Size
     
+    -- 悬停效果
     button.MouseEnter:Connect(function()
         game:GetService("TweenService"):Create(
             button,
-            TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-            {BackgroundTransparency = 0.1}
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {
+                BackgroundTransparency = button == VerifyButton and 0.05 or 0.1,
+                Size = originalSize + UDim2.new(0, 4, 0, 4)
+            }
         ):Play()
+        
+        if button == VerifyButton then
+            game:GetService("TweenService"):Create(
+                ButtonGlow,
+                TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                {ImageTransparency = 0.7}
+            ):Play()
+        end
     end)
     
     button.MouseLeave:Connect(function()
         game:GetService("TweenService"):Create(
             button,
-            TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-            {BackgroundTransparency = 0.3}
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {
+                BackgroundTransparency = button == VerifyButton and 0.1 or 0.2,
+                Size = originalSize
+            }
         ):Play()
+        
+        if button == VerifyButton then
+            game:GetService("TweenService"):Create(
+                ButtonGlow,
+                TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                {ImageTransparency = 0.9}
+            ):Play()
+        end
     end)
     
     -- 点击效果
@@ -503,7 +591,48 @@ createButtonEffect(VerifyButton)
 createButtonEffect(ExitButton)
 createButtonEffect(CopyGroupButton)
 
--- 自定义通知系统 - 右侧弹出紧凑版
+-- 输入框焦点效果
+KeyInput.Focused:Connect(function()
+    game:GetService("TweenService"):Create(
+        KeyInput,
+        TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {BackgroundTransparency = 0.1}
+    ):Play()
+    
+    game:GetService("TweenService"):Create(
+        InputStroke,
+        TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {Color = Color3.fromRGB(160, 120, 240)}
+    ):Play()
+    
+    game:GetService("TweenService"):Create(
+        InputGlow,
+        TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {ImageTransparency = 0.8}
+    ):Play()
+end)
+
+KeyInput.FocusLost:Connect(function()
+    game:GetService("TweenService"):Create(
+        KeyInput,
+        TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {BackgroundTransparency = 0.2}
+    ):Play()
+    
+    game:GetService("TweenService"):Create(
+        InputStroke,
+        TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {Color = Color3.fromRGB(100, 75, 160)}
+    ):Play()
+    
+    game:GetService("TweenService"):Create(
+        InputGlow,
+        TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {ImageTransparency = 0.9}
+    ):Play()
+end)
+
+-- 自定义通知系统 - 优化版（更小、更透明、圆角）
 local notificationQueue = {}
 local activeNotifications = 0
 local maxNotifications = 3
@@ -511,85 +640,83 @@ local maxNotifications = 3
 local function showNotification(title, message, notificationType, duration)
     duration = duration or 3
     
-    -- 如果有太多通知，等待
     while activeNotifications >= maxNotifications do
         wait(0.5)
     end
     
     activeNotifications = activeNotifications + 1
     
-    -- 计算通知位置（从右侧弹出）
-    local verticalOffset = (activeNotifications - 1) * 80
+    local verticalOffset = (activeNotifications - 1) * 70 -- 减小间距
     
     -- 创建通知框架
     local NotificationFrame = Instance.new("Frame")
     NotificationFrame.Name = "Notification"
     NotificationFrame.Parent = NotificationsGui
-    NotificationFrame.AnchorPoint = Vector2.new(1, 0) -- 右侧锚点
-    NotificationFrame.BackgroundColor3 = Color3.fromRGB(20, 15, 35)
-    NotificationFrame.BackgroundTransparency = 0.2 -- 增加透明度
+    NotificationFrame.AnchorPoint = Vector2.new(1, 0)
+    NotificationFrame.BackgroundColor3 = Color3.fromRGB(25, 20, 45)
+    NotificationFrame.BackgroundTransparency = 0.4 -- 更透明
     NotificationFrame.BorderSizePixel = 0
     NotificationFrame.Position = UDim2.new(1, 10, 0, 20 + verticalOffset)
-    NotificationFrame.Size = UDim2.new(0, 0, 0, 70)
+    NotificationFrame.Size = UDim2.new(0, 0, 0, 60) -- 更小高度
     NotificationFrame.ZIndex = 10
     
-    -- 通知圆角
+    -- 通知圆角 - 更大的圆角
     local NotificationCorner = Instance.new("UICorner")
-    NotificationCorner.CornerRadius = UDim.new(0, 12)
+    NotificationCorner.CornerRadius = UDim.new(0, 20) -- 增加圆角半径
     NotificationCorner.Parent = NotificationFrame
     
     -- 通知边框
     local NotificationStroke = Instance.new("UIStroke")
     NotificationStroke.Parent = NotificationFrame
-    NotificationStroke.Color = Color3.fromRGB(90, 60, 150)
-    NotificationStroke.Thickness = 1.5
-    NotificationStroke.Transparency = 0.4 -- 增加边框透明度
+    NotificationStroke.Color = Color3.fromRGB(100, 75, 170)
+    NotificationStroke.Thickness = 2
+    NotificationStroke.Transparency = 0.5 -- 更透明
     
     -- 通知左侧装饰条
     local NotificationAccent = Instance.new("Frame")
     NotificationAccent.Parent = NotificationFrame
-    NotificationAccent.BackgroundColor3 = notificationType == "success" and Color3.fromRGB(100, 200, 120) or Color3.fromRGB(220, 100, 100)
+    NotificationAccent.BackgroundColor3 = notificationType == "success" and Color3.fromRGB(100, 220, 140) or Color3.fromRGB(220, 100, 100)
     NotificationAccent.BorderSizePixel = 0
     NotificationAccent.Position = UDim2.new(0, 0, 0, 0)
-    NotificationAccent.Size = UDim2.new(0, 4, 1, 0)
+    NotificationAccent.Size = UDim2.new(0, 5, 1, 0)
     
     local AccentCorner = Instance.new("UICorner")
-    AccentCorner.CornerRadius = UDim.new(0, 12, 0, 12)
+    AccentCorner.CornerRadius = UDim.new(0, 20, 0, 20) -- 增加圆角半径
     AccentCorner.Parent = NotificationAccent
     
     -- 通知图标
     local NotificationIcon = Instance.new("TextLabel")
     NotificationIcon.Parent = NotificationFrame
     NotificationIcon.BackgroundTransparency = 1
-    NotificationIcon.Position = UDim2.new(0, 12, 0, 12)
-    NotificationIcon.Size = UDim2.new(0, 30, 0, 30)
-    NotificationIcon.Font = Enum.Font.GothamBold
+    NotificationIcon.Position = UDim2.new(0, 12, 0, 10) -- 调整位置
+    NotificationIcon.Size = UDim2.new(0, 25, 0, 25) -- 更小图标
+    NotificationIcon.Font = Enum.Font.GothamBlack
     NotificationIcon.Text = notificationType == "success" and "✓" or "✗"
-    NotificationIcon.TextColor3 = notificationType == "success" and Color3.fromRGB(100, 200, 120) or Color3.fromRGB(220, 100, 100)
-    NotificationIcon.TextSize = 18
+    NotificationIcon.TextColor3 = notificationType == "success" and Color3.fromRGB(100, 220, 140) or Color3.fromRGB(220, 100, 100)
+    NotificationIcon.TextSize = 16 -- 更小字体
     
     -- 通知标题
     local NotificationTitle = Instance.new("TextLabel")
     NotificationTitle.Parent = NotificationFrame
     NotificationTitle.BackgroundTransparency = 1
-    NotificationTitle.Position = UDim2.new(0, 50, 0, 10)
-    NotificationTitle.Size = UDim2.new(1, -60, 0, 20)
+    NotificationTitle.Position = UDim2.new(0, 45, 0, 8) -- 调整位置
+    NotificationTitle.Size = UDim2.new(1, -55, 0, 18) -- 调整尺寸
     NotificationTitle.Font = Enum.Font.GothamBold
     NotificationTitle.Text = title
-    NotificationTitle.TextColor3 = Color3.fromRGB(240, 230, 255)
-    NotificationTitle.TextSize = 15
+    NotificationTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationTitle.TextSize = 14 -- 更小字体
     NotificationTitle.TextXAlignment = Enum.TextXAlignment.Left
     
     -- 通知消息
     local NotificationMessage = Instance.new("TextLabel")
     NotificationMessage.Parent = NotificationFrame
     NotificationMessage.BackgroundTransparency = 1
-    NotificationMessage.Position = UDim2.new(0, 50, 0, 30)
-    NotificationMessage.Size = UDim2.new(1, -60, 0, 30)
+    NotificationMessage.Position = UDim2.new(0, 45, 0, 26) -- 调整位置
+    NotificationMessage.Size = UDim2.new(1, -55, 0, 26) -- 调整尺寸
     NotificationMessage.Font = Enum.Font.Gotham
     NotificationMessage.Text = message
-    NotificationMessage.TextColor3 = Color3.fromRGB(200, 190, 230)
-    NotificationMessage.TextSize = 12
+    NotificationMessage.TextColor3 = Color3.fromRGB(210, 200, 240)
+    NotificationMessage.TextSize = 11 -- 更小字体
     NotificationMessage.TextXAlignment = Enum.TextXAlignment.Left
     NotificationMessage.TextYAlignment = Enum.TextYAlignment.Top
     NotificationMessage.TextWrapped = true
@@ -597,13 +724,13 @@ local function showNotification(title, message, notificationType, duration)
     -- 进度条
     local ProgressBar = Instance.new("Frame")
     ProgressBar.Parent = NotificationFrame
-    ProgressBar.BackgroundColor3 = notificationType == "success" and Color3.fromRGB(80, 160, 100) or Color3.fromRGB(180, 80, 80)
+    ProgressBar.BackgroundColor3 = notificationType == "success" and Color3.fromRGB(80, 200, 120) or Color3.fromRGB(200, 80, 80)
     ProgressBar.BorderSizePixel = 0
-    ProgressBar.Position = UDim2.new(0, 0, 1, -2)
-    ProgressBar.Size = UDim2.new(1, 0, 0, 2)
+    ProgressBar.Position = UDim2.new(0, 0, 1, -3)
+    ProgressBar.Size = UDim2.new(1, 0, 0, 3)
     
     local ProgressCorner = Instance.new("UICorner")
-    ProgressCorner.CornerRadius = UDim.new(0, 0, 0, 12)
+    ProgressCorner.CornerRadius = UDim.new(0, 0, 0, 20) -- 增加圆角半径
     ProgressCorner.Parent = ProgressBar
     
     -- 动画效果
@@ -612,8 +739,8 @@ local function showNotification(title, message, notificationType, duration)
     -- 从右侧滑入动画
     local slideInTween = TweenService:Create(
         NotificationFrame,
-        TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-        {Size = UDim2.new(0, 280, 0, 70), Position = UDim2.new(1, -15, 0, 20 + verticalOffset)}
+        TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+        {Size = UDim2.new(0, 260, 0, 60), Position = UDim2.new(1, -15, 0, 20 + verticalOffset)} -- 更小宽度
     )
     slideInTween:Play()
     
@@ -621,79 +748,72 @@ local function showNotification(title, message, notificationType, duration)
     local progressTween = TweenService:Create(
         ProgressBar,
         TweenInfo.new(duration, Enum.EasingStyle.Linear),
-        {Size = UDim2.new(0, 0, 0, 2)}
+        {Size = UDim2.new(0, 0, 0, 3)}
     )
     
-    -- 等待滑入完成
-    wait(0.4)
-    
-    -- 开始进度条
+    wait(0.5)
     progressTween:Play()
-    
-    -- 等待持续时间
     wait(duration)
     
     -- 滑出动画
     local slideOutTween = TweenService:Create(
         NotificationFrame,
-        TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
-        {Size = UDim2.new(0, 0, 0, 70), Position = UDim2.new(1, 10, 0, 20 + verticalOffset)}
+        TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+        {Size = UDim2.new(0, 0, 0, 60), Position = UDim2.new(1, 10, 0, 20 + verticalOffset)}
     )
     slideOutTween:Play()
     
-    -- 等待滑出完成然后销毁
-    wait(0.3)
+    wait(0.4)
     NotificationFrame:Destroy()
     activeNotifications = activeNotifications - 1
 end
 
 -- 按钮功能
 VerifyButton.MouseButton1Click:Connect(function()
-    -- 环境安全检查
     local isSafe, reason = SecurityCheck()
     if not isSafe then
-        showNotification("安全警告", "检测到不安全环境，脚本已停止", "error", 3)
+        showNotification("警告", "检测到Spy或Hook，已停止", "error", 3)
         return
     end
     
     if KeyInput.Text == Config.Key then
-        -- 成功动画
+        -- 立即显示成功通知，但不阻塞
+        showNotification("验证成功", Config.ScriptName .. "已激活", "success", 1) -- 缩短为1秒
+        
+        -- 立即开始销毁动画，不等待
         local tween = game:GetService("TweenService"):Create(
             MainFrame,
-            TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
-            {Size = UDim2.new(0, 0, 0, 0)}
+            TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), -- 缩短动画时间
+            {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1}
         )
         tween:Play()
         
-        -- 显示成功通知
-        showNotification("验证成功", Config.ScriptName .. "脚本已激活", "success", 2)
+        -- 使用延迟销毁，不阻塞主线程
+        delay(0.3, function()
+            if ScreenGui then ScreenGui:Destroy() end
+            if ParticlesGui then ParticlesGui:Destroy() end
+        end)
         
-        wait(0.3)
-        ScreenGui:Destroy()
-        ParticlesGui:Destroy()
-        
+        -- 立即加载脚本，不等待任何动画
         -- 脚本从这里开始执行（使用安全HTTP请求）
         -- local scriptContent = SecureHttpGet("https://pandadevelopment.net/virtual/file/b4386787b6e41afc")
         -- if scriptContent then
         --     loadstring(scriptContent)()
         -- end
+        
     else
-        -- 错误动画
         local originalPosition = KeyInput.Position
         local tween1 = game:GetService("TweenService"):Create(
             KeyInput,
             TweenInfo.new(0.1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, 0, true),
-            {Position = originalPosition + UDim2.new(0, 5, 0, 0)}
+            {Position = originalPosition + UDim2.new(0, 8, 0, 0)}
         )
         tween1:Play()
         
-        KeyInput.BackgroundColor3 = Color3.fromRGB(70, 30, 50)
-        KeyInput.UIStroke.Color = Color3.fromRGB(180, 60, 100)
+        KeyInput.BackgroundColor3 = Color3.fromRGB(80, 30, 60)
+        KeyInput.UIStroke.Color = Color3.fromRGB(200, 80, 120)
         
-        -- 显示失败通知
-        showNotification("验证失败", "正在复制脚本官方群聊", "error", 2)
-        
-        wait(1)
+        -- 立即踢出，不等待通知
         game.Players.LocalPlayer:Kick(Config.NoKeyMessage)
     end
 end)
@@ -702,20 +822,21 @@ ExitButton.MouseButton1Click:Connect(function()
     local tween = game:GetService("TweenService"):Create(
         MainFrame,
         TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
-        {Size = UDim2.new(0, 0, 0, 0)}
+        {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1}
     )
     tween:Play()
     
-    wait(0.3)
-    ScreenGui:Destroy()
-    ParticlesGui:Destroy()
+    delay(0.3, function()
+        if ScreenGui then ScreenGui:Destroy() end
+        if ParticlesGui then ParticlesGui:Destroy() end
+        if NotificationsGui then NotificationsGui:Destroy() end
+    end)
 end)
 
 CopyGroupButton.MouseButton1Click:Connect(function()
-    -- 环境安全检查
     local isSafe, reason = SecurityCheck()
     if not isSafe then
-        showNotification("安全警告", "检测到不安全环境，操作已取消", "error", 3)
+        showNotification("警告", "检测到Spy或Hook，不加载脚本", "error", 3)
         return
     end
     
@@ -723,48 +844,27 @@ CopyGroupButton.MouseButton1Click:Connect(function()
         setclipboard(Config.QQ)
     end
     
-    -- 复制成功反馈
     local originalText = CopyGroupButton.Text
     CopyGroupButton.Text = "已复制!"
     
-    -- 显示复制成功通知
     showNotification("已复制", "官方群号已复制到剪贴板", "success", 3)
     
     wait(1.5)
     CopyGroupButton.Text = originalText
 end)
 
--- 输入框焦点效果
-KeyInput.Focused:Connect(function()
-    game:GetService("TweenService"):Create(
-        KeyInput,
-        TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-        {BackgroundTransparency = 0.1}
-    ):Play()
-    KeyInput.UIStroke.Color = Color3.fromRGB(140, 90, 220)
-end)
-
-KeyInput.FocusLost:Connect(function()
-    game:GetService("TweenService"):Create(
-        KeyInput,
-        TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-        {BackgroundTransparency = 0.3}
-    ):Play()
-    KeyInput.UIStroke.Color = Color3.fromRGB(80, 55, 130)
-end)
-
 -- 添加淡入动画
 local TweenService = game:GetService("TweenService")
 MainFrame.BackgroundTransparency = 1
 MainFrame.Size = UDim2.new(0, 0, 0, 0)
-BlurBackground.BackgroundTransparency = 1
+BackgroundEffect.BackgroundTransparency = 1
 
 wait(0.1)
 
 -- 背景淡入（保持完全透明）
 local bgFadeIn = TweenService:Create(
-    BlurBackground,
-    TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+    BackgroundEffect,
+    TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
     {BackgroundTransparency = 1} -- 保持完全透明
 )
 bgFadeIn:Play()
@@ -772,7 +872,11 @@ bgFadeIn:Play()
 -- 主框架动画
 local mainFadeIn = TweenService:Create(
     MainFrame,
-    TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-    {BackgroundTransparency = 0.3, Size = UDim2.new(0, 400, 0, 350)} -- 使用新的透明度值
+    TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+    {BackgroundTransparency = 0.15, Size = UDim2.new(0, 420, 0, 380)}
 )
 mainFadeIn:Play()
+
+-- 初始显示通知
+wait(1)
+showNotification("欢迎", "请输入卡密使用FIN-Hub", "success", 3)
