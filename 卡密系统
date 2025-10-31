@@ -5,7 +5,7 @@
 -- 系统配置
 local Config = {
     ScriptName = "FIN-Hub卡密系统",
-    Key = "Key_Xingqing_FIN", -- 正确的卡密
+    Key = "Key_XingQing_FIN", -- 正确的卡密
     QQ = "123456789", -- 官方QQ群
     NoKeyMessage = "卡密错误，请加入主群获取", -- 卡密错误提示
     Version = "By 鑫晴"
@@ -129,7 +129,7 @@ local function createParticleSystem()
         Color3.fromRGB(80, 30, 140)
     }
     
-    for i = 1, 35 do -- 增加到35个粒子
+    for i = 1, 40 do -- 增加到35个粒子
         local particle = Instance.new("Frame")
         particle.Name = "Particle_" .. tostring(i)
         particle.Parent = ParticlesGui
@@ -323,7 +323,7 @@ Subtitle.BackgroundTransparency = 1
 Subtitle.Position = UDim2.new(0, 25, 0, 36)
 Subtitle.Size = UDim2.new(1, -50, 0, 18)
 Subtitle.Font = Enum.Font.Gotham
-Subtitle.Text = "请输入点亮密码以继续使用脚本" -- 修正文本
+Subtitle.Text = "By 鑫晴" -- 修正文本
 Subtitle.TextColor3 = Color3.fromRGB(200, 180, 240)
 Subtitle.TextSize = 13
 Subtitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -350,7 +350,7 @@ KeyLabel.Parent = InputSection
 KeyLabel.BackgroundTransparency = 1
 KeyLabel.Size = UDim2.new(1, 0, 0, 30)
 KeyLabel.Font = Enum.Font.GothamBold
-KeyLabel.Text = "请输入卡密"
+KeyLabel.Text = "请输入FIN-Hub卡密以继续使用"
 KeyLabel.TextColor3 = Color3.fromRGB(220, 210, 250)
 KeyLabel.TextSize = 16
 KeyLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -466,7 +466,7 @@ ExitButton.BorderSizePixel = 0
 ExitButton.Position = UDim2.new(0.52, 0, 0, 0)
 ExitButton.Size = UDim2.new(0.48, 0, 1, 0)
 ExitButton.Font = Enum.Font.GothamBold
-ExitButton.Text = "退出UI"
+ExitButton.Text = "退出"
 ExitButton.TextColor3 = Color3.fromRGB(220, 210, 250)
 ExitButton.TextSize = 16
 ExitButton.AutoButtonColor = false
